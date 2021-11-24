@@ -1,15 +1,15 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { useQuery } from "@apollo/client";
-import { GET_USERS } from "graphql/usuarios/queries";
 import { Link } from 'react-router-dom';
+import { GET_USUARIOS } from "graphql/usuarios/queries";
 
 
 
 const Usuarios = () => {
-  const {data, error, loading} = useQuery(GET_USERS);
+  const {data, error, loading} = useQuery(GET_USUARIOS);
 
-  let users_db = [
+  /* let users_db = [
     {
       _id: "1",
       email: "john@doe.com",
@@ -28,10 +28,10 @@ const Usuarios = () => {
       role: "admin",
       status: "active",
     },
-  ];
+  ]; */
 
   //useEffect para datos traido del back
-  /* useEffect(() => {
+  useEffect(() => {
     console.log('data servidor', data);
   }, [data]);
 
@@ -39,13 +39,13 @@ const Usuarios = () => {
     if (error) {
       toast.error('Error consultando los usuarios');
     }
-  }, [error]); */
+  }, [error]);
 
 
-  const [users, setUsers] = useState([]);
+  //const [users, setUsers] = useState([]);
   const [busqueda, setBusqueda] = useState("");
 
-  const get_users = () => {
+  /* const get_users = () => {
     // Se obtiene los datos de la API
     setUsers(users_db);
   };
@@ -53,7 +53,7 @@ const Usuarios = () => {
   useEffect(() => {
     get_users();
   }, []);
-
+ */
   const bChange = (e) => {
     setBusqueda(e.target.value);
   };
@@ -91,15 +91,15 @@ const Usuarios = () => {
           </tr>
         </thead>
         <tbody>
-          {users
-            .filter((user) => {
+          {data &&
+            data.Usuarios.filter((user) => {
               if (
                 user._id
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase()) ||
-                user.name.toLowerCase().includes(busqueda.toLowerCase()) ||
-                user.id_user.toLowerCase().includes(busqueda.toLowerCase())
+                user.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+                user.identificacion.toLowerCase().includes(busqueda.toLowerCase())
               ) {
                 return user;
               }
@@ -107,12 +107,12 @@ const Usuarios = () => {
             .map((item) => {
               return (
                 <tr key={item._id}>
-                  <td>{item.id_user}</td>
-                  <td>{item.name}</td>
-                  <td>{item.last_name}</td>
-                  <td>{item.email}</td>
-                  <td>{item.role}</td>
-                  <td>{item.status}</td>
+                  <td>{item.identificacion}</td>
+                  <td>{item.nombre}</td>
+                  <td>{item.apellido}</td>
+                  <td>{item.correo}</td>
+                  <td>{item.rol}</td>
+                  <td>{item.estado}</td>
                   <td>
                     <Link to={`/usuarios/EditarUsuario/${item._id}`}>
                       <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white' >

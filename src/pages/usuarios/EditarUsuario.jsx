@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { EDITAR_USUARIO } from 'graphql/usuarios/mutations';
 import DropDown from 'components/Dropdown';
 import { Enum_EstadoUsuario } from 'utils/enum';
-import { GET_USER } from 'graphql/usuarios/queries';
+import { GET_USUARIO } from 'graphql/usuarios/queries';
 
 const EditarUsuario = () => {
   const { form, formData, updateFormData } = useFormData(null);
@@ -18,7 +18,7 @@ const EditarUsuario = () => {
     data: queryData,
     error: queryError,
     loading: queryLoading,
-  } = useQuery(GET_USER, {
+  } = useQuery(GET_USUARIO, {
     variables: { _id },
   });
 
@@ -67,6 +67,13 @@ const EditarUsuario = () => {
         className='flex flex-col items-center justify-center'
       >
         <Input
+          label='Identificación de la persona:'
+          type='text'
+          name='identificacion'
+          defaultValue={queryData.Usuario.identificacion}
+          required={true}
+        />
+        <Input
           label='Nombre de la persona:'
           type='text'
           name='nombre'
@@ -85,13 +92,6 @@ const EditarUsuario = () => {
           type='email'
           name='correo'
           defaultValue={queryData.Usuario.correo}
-          required={true}
-        />
-        <Input
-          label='Identificación de la persona:'
-          type='text'
-          name='identificacion'
-          defaultValue={queryData.Usuario.identificacion}
           required={true}
         />
         <DropDown

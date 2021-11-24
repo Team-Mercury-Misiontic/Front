@@ -17,7 +17,7 @@ import "styles/tabla.css";
 
 //Reemplazar link de despliegue back
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000/graphql"
+  uri: "https://backen-mercury.herokuapp.com/graphql"
 });
 
 const client = new ApolloClient({
