@@ -21,7 +21,7 @@ const httpLink = createHttpLink({
 });
 
 const client = new ApolloClient({
-  uri: httpLink,
+  link: httpLink,
   cache: new InMemoryCache()
 });
 
@@ -37,7 +37,7 @@ function App() {
                 <Route path="" element={<Index />} />
                 <Route path="Proyectos" element={<Proyectos />} />
                 <Route path="Usuarios" element={<Usuarios />} />
-                <Route path='/usuarios/editar/:_id' element={<EditarUsuario />} />
+                <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />
                 <Route path="Inscripciones" element={<Inscripciones />} />
                 <Route path="Perfil" element={<Perfil />} />
               </Route>
