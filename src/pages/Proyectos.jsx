@@ -22,7 +22,7 @@ const Proyectos = ()=> {
                     <h1>Proyectos liderados</h1>
                 </div>
                 <div >
-                    <NavLink to="/NuevoProyecto" className="bg-gray-300" >Crear Proyecto</NavLink>
+                    <NavLink to="/Proyectos/NuevoProyecto" className="bg-gray-300" >Crear Proyecto</NavLink>
                 </div>              
                 <Lider/>
             </div>
