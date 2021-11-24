@@ -1,0 +1,10 @@
+{
+    "_id": 1,
+    "nombre": "Axel",
+    "apellido": "Niño",
+    "identificacion": "123456789",
+    "correo": "An@gmail.com",
+    "estado": "activo",
+    "rol": "lider",
+    "contraseña": "Esta es la contraseña"
+}
