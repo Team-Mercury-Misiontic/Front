@@ -16,12 +16,13 @@ import "styles/tabla.css";
 // import PrivateRoute from 'components/PrivateRoute';
 
 //Reemplazar link de despliegue back
-const httpLink = createHttpLink({
-  uri: "https://backen-mercury.herokuapp.com/graphql"
-});
+// const httpLink = createHttpLink({
+//   uri: "https://backen-mercury.herokuapp.com/graphql"
+// });
 
 const client = new ApolloClient({
-  uri: httpLink,
+  //uri: httpLink,
+  uri: "https://backen-mercury.herokuapp.com/graphql",
   cache: new InMemoryCache()
 });
 
