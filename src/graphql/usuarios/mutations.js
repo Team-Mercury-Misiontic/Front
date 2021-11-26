@@ -28,4 +28,19 @@ const EDITAR_USUARIO = gql`
   }
 `;
 
-export { EDITAR_USUARIO };
+const ELIMINAR_USUARIO = gql`
+  mutation EliminarUsuario(
+    $_id: String
+    $correo: String
+  ) {
+    eliminarUsuario(
+      _id: $_id
+      correo: $correo
+    ){
+      _id
+      correo      
+    }
+  }
+`;
+
+export { EDITAR_USUARIO, ELIMINAR_USUARIO };
