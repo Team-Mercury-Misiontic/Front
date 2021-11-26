@@ -6,9 +6,10 @@ import ButtonLoading from 'components/ButtonLoading';
 import useFormData from 'hooks/useFormData';
 import { toast } from 'react-toastify';
 import { EDITAR_USUARIO } from 'graphql/usuarios/mutations';
-import DropDown from 'components/Dropdown';
+import DropDown from 'components/DropDown';
 import { Enum_EstadoUsuario } from 'utils/enum';
 import { GET_USUARIO } from 'graphql/usuarios/queries';
+import ReactLoading from 'react-loading';
 
 const EditarUsuario = () => {
   const { form, formData, updateFormData } = useFormData(null);
@@ -52,11 +53,11 @@ const EditarUsuario = () => {
     }
   }, [queryError, mutationError]);
 
-  if (queryLoading) return <div>Cargando....</div>;
+  if (queryLoading) return <ReactLoading type='cylon' color='#4c2882' height={667} width={365} />;
 
   return (
     <div className='flew flex-col w-full h-full items-center justify-center p-10'>
-      <Link to='/usuarios'>
+      <Link to='/Usuarios'>
         <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
       </Link>
       <h1 className='m-4 text-3xl text-gray-800 font-bold text-center'>Editar Usuario</h1>
@@ -64,7 +65,7 @@ const EditarUsuario = () => {
         onSubmit={submitForm}
         onChange={updateFormData}
         ref={form}
-        className='flex flex-col items-center justify-center'
+        className='flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl'
       >
         <Input
           label='Identificación de la persona:'
@@ -101,7 +102,7 @@ const EditarUsuario = () => {
           required={true}
           options={Enum_EstadoUsuario}
         />
-        <span>Rol del usuario: {queryData.Usuario.rol}</span>
+        <span className='m-auto text-center rounded-md text-black text-lg'>Rol del usuario: {queryData.Usuario.rol}</span>
         <ButtonLoading
           disabled={Object.keys(formData).length === 0}
           loading={mutationLoading}

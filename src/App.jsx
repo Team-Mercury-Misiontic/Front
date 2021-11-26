@@ -17,13 +17,12 @@ import "styles/tabla.css";
 // import PrivateRoute from 'components/PrivateRoute';
 
 //Reemplazar link de despliegue back
-// const httpLink = createHttpLink({
-//   uri: "https://backen-mercury.herokuapp.com/graphql"
-// });
+const httpLink = createHttpLink({
+  uri: "https://backen-mercury.herokuapp.com/graphql"
+});
 
 const client = new ApolloClient({
-  //uri: httpLink,
-  uri: "https://backen-mercury.herokuapp.com/graphql",
+  link: httpLink,
   cache: new InMemoryCache()
 });
 
@@ -40,7 +39,7 @@ function App() {
                 <Route path="Proyectos" element={<Proyectos />} />
                 <Route path="Proyectos/NuevoProyecto" element={<NuevoProyecto />} />
                 <Route path="Usuarios" element={<Usuarios />} />
-                <Route path='/usuarios/editar/:_id' element={<EditarUsuario />} />
+                <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />
                 <Route path="Inscripciones" element={<Inscripciones />} />
                 <Route path="Perfil" element={<Perfil />} />
               </Route>
