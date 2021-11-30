@@ -5,8 +5,10 @@ import { useParams, Link } from "react-router-dom";
 import { GET_USUARIOS, GET_USUARIO } from "graphql/usuarios/queries";
 import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
 import PrivateComponent from "components/PrivateComponent";
+//import PrivateRoute from "components/PrivateRoute";
 import ReactLoading from "react-loading";
 import { Dialog, Tooltip } from "@material-ui/core";
+import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
 
 const Usuarios = () => {
   const { _id } = useParams();
@@ -54,6 +56,7 @@ const Usuarios = () => {
     );
 
   return (
+    //<PrivateRoute roleList={["ADMINISTRADOR"]}>
     <Fragment>
       <h1 className="text-3xl font-extrabold text-gray-900 my-3 text-center">
         USUARIOS DEL SISTEMA
@@ -106,8 +109,8 @@ const Usuarios = () => {
                   <td>{item.nombre}</td>
                   <td>{item.apellido}</td>
                   <td>{item.correo}</td>
-                  <td>{item.rol}</td>
-                  <td>{item.estado}</td>
+                  <td>{Enum_Rol[item.rol]}</td>
+                  <td>{Enum_EstadoUsuario[item.estado]}</td>
                   <td>
                     <Link to={`/usuarios/EditarUsuario/${item._id}`}>
                       <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
@@ -167,6 +170,7 @@ const Usuarios = () => {
       </PrivateComponent>
       ;
     </Fragment>
+    //</PrivateRoute>
   );
 };
 
