@@ -1,4 +1,4 @@
-const Enum_Rol = {
+  const Enum_Rol = {
     ADMINISTRADOR: 'Administrador',
     ESTUDIANTE: 'Estudiante',
     LIDER: 'Líder',
@@ -9,5 +9,16 @@ const Enum_Rol = {
     AUTORIZADO: 'Autorizado',
     NO_AUTORIZADO: 'No autorizado',
   };
+
+  const Enum_FaseProyecto = {
+    INICIADO: "Iniciado",
+    DESARROLLO: "Desarrollo",
+    TERMINADO: "Terminado",
+    NULA: "Nula",
+  }
+  const Enum_EstadoProyecto = {
+    ACTIVO: "Activo",
+    INACTIVO: "Inactivo"
+  }
   
-  export { Enum_Rol, Enum_EstadoUsuario };
+  export { Enum_Rol, Enum_EstadoUsuario, Enum_FaseProyecto, Enum_EstadoProyecto};

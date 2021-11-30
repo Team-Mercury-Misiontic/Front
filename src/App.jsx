@@ -4,8 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserContext } from "context/userContext";
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
 import Index from "pages/Index";
-import Proyectos from "pages/Proyectos";
-import NuevoProyecto from "pages/NuevoProyecto";
+import Proyectos from "pages/proyectos/Proyectos";
+import NuevoProyecto from "pages/proyectos/NuevoProyecto";
+import EditarProyecto from "pages/proyectos/EditarProyecto"
+import VerProyecto from "pages/proyectos/VerProyecto"
 import Usuarios from "pages/usuarios/Usuarios";
 import EditarUsuario from "pages/usuarios/EditarUsuario";
 import Perfil from "pages/Perfil";
@@ -37,7 +39,9 @@ function App() {
               <Route path="/" element={<PrivateLayout />}>
                 <Route path="" element={<Index />} />
                 <Route path="Proyectos" element={<Proyectos />} />
+                <Route path="Proyectos/:_id" element={<VerProyecto />} />   
                 <Route path="Proyectos/NuevoProyecto" element={<NuevoProyecto />} />
+                <Route path="Proyectos/EditarProyecto/:_id" element={<EditarProyecto />} />
                 <Route path="Usuarios" element={<Usuarios />} />
                 <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />
                 <Route path="Inscripciones" element={<Inscripciones />} />
