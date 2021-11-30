@@ -7,7 +7,7 @@ import { Enum_FaseProyecto , Enum_EstadoProyecto } from 'utils/enum';
 import ButtonLoading from 'components/ButtonLoading';
 import Input from 'components/Input';
 import useFormData from 'hooks/useFormData';
-import DropDown from 'components/Dropdown';
+import DropDown from 'components/DropDown';
 import {useQuery, useMutation} from '@apollo/client';
 
 const EditarProyecto=()=> {
