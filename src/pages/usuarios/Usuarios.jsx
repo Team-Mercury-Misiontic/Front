@@ -5,7 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import { GET_USUARIOS, GET_USUARIO } from "graphql/usuarios/queries";
 import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
 import PrivateComponent from "components/PrivateComponent";
-import PrivateRoute from "components/PrivateRoute";
+//import PrivateRoute from "components/PrivateRoute";
 import ReactLoading from "react-loading";
 import { Dialog, Tooltip } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
@@ -29,15 +29,15 @@ const Usuarios = () => {
 
   const [busqueda, setBusqueda] = useState("");
   //const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const bChange = (e) => {
     setBusqueda(e.target.value);
   };
 
   const [eliminarUsuario, { data: mutationData, error: mutationError }] =
-    useMutation(ELIMINAR_USUARIO);
-  const [openDialog, setOpenDialog] = useState(false);
-  //setOpenDialog(false);
+      useMutation(ELIMINAR_USUARIO);
+
 
   useEffect(() => {
     if (mutationData) {
@@ -57,7 +57,8 @@ const Usuarios = () => {
     );
 
   return (
-    <PrivateRoute roleList={["ADMINISTRADOR"]}>
+    //<PrivateRoute roleList={["ADMINISTRADOR"]}>
+    <Fragment>
       <h1 className="text-3xl font-extrabold text-gray-900 my-3 text-center">
         USUARIOS DEL SISTEMA
       </h1>
@@ -116,7 +117,10 @@ const Usuarios = () => {
                       </button>{" "}
                     </Link>
                     {"   "}
-                    <button className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white">
+                    <button
+                      className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
+                      onClick={() => setOpenDialog(true)}
+                    >
                       Eliminar
                     </button>
                     <div className="flex w-full justify-around">
@@ -155,7 +159,47 @@ const Usuarios = () => {
           ) : (<div>No autorizado</div>
         </tbody>
       </table>
-    </PrivateRoute>
+
+      <Dialog open={openDialog}>
+        <div className="p-8 flex flex-col">
+          <h1 className="text-gray-900 text-2xl font-bold">
+            ¿Está seguro de querer eliminar el usuario?
+          </h1>
+          <div className="flex w-full items-center justify-center my-4">
+            <button
+                onClick={() => eliminarUsuario()
+                    .then(r => setOpenDialog(false))
+                }
+                className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
+            >
+              Sí
+            </button>
+            <button
+                onClick={() => setOpenDialog(false)}
+                className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Dialog>
+
+      <PrivateComponent roleList={["admin"]}>
+        <td>
+          <div className="flex w-full justify-around">
+            <Tooltip title="Eliminar Usuario" arrow>
+              <i
+                onClick={() => setOpenDialog(true)}
+                className="fas fa-trash text-red-700 hover:text-red-500"
+              />
+            </Tooltip>
+          </div>
+          ;
+        </td>
+      </PrivateComponent>
+      ;
+    </Fragment>
+    //</PrivateRoute>
   );
 };
 
