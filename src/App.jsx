@@ -5,6 +5,7 @@ import { UserContext } from "context/userContext";
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
 import Index from "pages/Index";
 import Proyectos from "pages/Proyectos";
+import NuevoProyecto from "pages/NuevoProyecto";
 import Usuarios from "pages/usuarios/Usuarios";
 import EditarUsuario from "pages/usuarios/EditarUsuario";
 import Perfil from "pages/Perfil";
@@ -36,6 +37,7 @@ function App() {
               <Route path="/" element={<PrivateLayout />}>
                 <Route path="" element={<Index />} />
                 <Route path="Proyectos" element={<Proyectos />} />
+                <Route path="Proyectos/NuevoProyecto" element={<NuevoProyecto />} />
                 <Route path="Usuarios" element={<Usuarios />} />
                 <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />
                 <Route path="Inscripciones" element={<Inscripciones />} />

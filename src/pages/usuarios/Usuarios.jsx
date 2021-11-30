@@ -38,6 +38,7 @@ const Usuarios = () => {
   const [eliminarUsuario, { data: mutationData, error: mutationError }] =
       useMutation(ELIMINAR_USUARIO);
 
+
   useEffect(() => {
     if (mutationData) {
       toast.success("Usuario eliminado correctamente");
@@ -82,9 +83,7 @@ const Usuarios = () => {
             <th scope="col">Correo</th>
             <th scope="col">Rol</th>
             <th scope="col">Estado</th>
-            <PrivateComponent roleList={["admin"]}>
-              <th scope="col">Acciones</th>
-            </PrivateComponent>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -124,10 +123,40 @@ const Usuarios = () => {
                     >
                       Eliminar
                     </button>
+                    <div className="flex w-full justify-around">
+                      <Tooltip title="Eliminar Usuario" arrow>
+                        <i
+                          onClick={() => setOpenDialog(true)}
+                          className="fas fa-trash text-red-700 hover:text-red-500"
+                        />
+                      </Tooltip>
+                    </div>
+                    <Dialog open={openDialog}>
+                      <div className="p-8 flex flex-col">
+                        <h1 className="text-gray-900 text-2xl font-bold">
+                          ¿Está seguro de querer eliminar el usuario?
+                        </h1>
+                        <div className="flex w-full items-center justify-center my-4">
+                          <button
+                            onClick={() => eliminarUsuario()}
+                            className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
+                          >
+                            Sí
+                          </button>
+                          <button
+                            onClick={() => setOpenDialog(false)}
+                            className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
+                          >
+                            No
+                          </button>
+                        </div>
+                      </div>
+                    </Dialog>
                   </td>
                 </tr>
               );
             })}
+          ) : (<div>No autorizado</div>
         </tbody>
       </table>
 
