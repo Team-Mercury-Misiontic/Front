@@ -4,7 +4,6 @@ import {GET_PROYECTO} from 'graphql/proyectos/queries';
 import {EDITAR_PROYECTO} from 'graphql/proyectos/mutations';
 import {useParams} from 'react-router-dom';
 import { Enum_FaseProyecto , Enum_EstadoProyecto } from 'utils/enum';
-import Input from 'components/Input';
 import DropDown from 'components/Dropdown';
 import {useQuery, useMutation} from '@apollo/client';
 
@@ -111,17 +110,17 @@ const EditarProyecto=()=> {
                     <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaInicio} </span>
                     <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaFin}</span>
                     <label className='col-start-1 font-bold'>Fase:</label> 
-                    <DropDown
-                        defaultValue={queryData.Proyecto.fase}
-                        required={false}
-                        options={Enum_FaseProyecto}
-                      />
+                    <select  ref={fase=>proyecto.fase = fase}>
+                      <option value="NULA">Nula</option>
+                      <option value="INICIADO">Iniciado</option>
+                      <option value="DESARROLLO">Desarrollo</option>
+                      <option value="TERMINADO">Terminado</option>
+                    </select>
                     <label className='col-start-1 font-bold'>Estado:</label> 
-                    <DropDown
-                        defaultValue={queryData.Proyecto.estado}
-                        required={false}
-                        options={Enum_EstadoProyecto}
-                      />
+                    <select  ref={estado=>proyecto.estado = estado}>
+                      <option value="ACTIVO">Activo</option>
+                      <option value="INACTIVO">Inactivo</option>
+                    </select>
               </div>
             <button type="submit" className="border-black border-2">Modificar Todo</button>
             </section>
