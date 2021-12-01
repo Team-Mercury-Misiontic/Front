@@ -55,8 +55,6 @@ mutation editarProyecto(
         fase
         lider{
             _id
-            nombre
-            apellido
         }
     }
 }

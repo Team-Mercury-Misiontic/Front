@@ -1,5 +1,4 @@
 import Usuario from '../../usuario.json';
-// import {useEffect} from 'react';
 import {useQuery} from "@apollo/client";
 import {GET_PROYECTOS} from '../../graphql/proyectos/queries';
 import {Link} from 'react-router-dom';
@@ -7,50 +6,52 @@ import {Link} from 'react-router-dom';
 const Proyectos = ()=> { 
     const {data, error, loading}=useQuery(GET_PROYECTOS);
     
-    if (error) return `Error! ${error}`;  
+    console.log(data)
+
     if (loading) return 'Loading...';
+    if (error) return `Error! ${error}`;  
+    
     if (data) {
-        console.log(data.Proyectos);
-    if (Usuario.rol === 'ADMINISTRADOR'){
-        return(
-            <div className ="w-full">
-                <div className="my-6 ml-3 font-sans text-4xl font-bold uppercase">
-                    <h1>Todos los proyectos</h1>
+        if (Usuario.rol === 'ADMINISTRADOR'){
+            return(
+                <div className ="w-full">
+                    <div className="my-6 ml-3 font-sans text-4xl font-bold uppercase">
+                        <h1>Todos los proyectos</h1>
+                    </div>
+                    <Administrador data={data.Proyectos}/>
                 </div>
-                <Administrador data={data}/>
-            </div>
-        )
-    } else if (Usuario.rol === 'LIDER') {
-        return(
-            <div className ="w-full">
-                <div className="mb-6 ml-3 font-sans text-4xl font-bold uppercase">
-                    <h1>Proyectos liderados</h1>
+            )
+        } else if (Usuario.rol === 'LIDER') {
+            console.log(data)
+            return(
+                <div className ="w-full">
+                    <div className="mb-6 ml-3 font-sans text-4xl font-bold uppercase">
+                        <h1>Proyectos liderados</h1>
+                    </div>
+                    <div >
+                        <Link to="/Proyectos/NuevoProyecto" className="bg-gray-300" >Crear Proyecto</Link>
+                    </div>              
+                    <Lider data={data.Proyectos}/>
                 </div>
-                <div >
-                    <Link to="/Proyectos/NuevoProyecto" className="bg-gray-300" >Crear Proyecto</Link>
-                </div>              
-                <Lider data={data.Proyectos}/>
-            </div>
-        )        
-    } else {
-        return(
-            <div className ="w-full">
-                <div className="py-6 ml-3 font-sans text-4xl font-bold uppercase">
-                    <h1>Proyectos vinculados</h1>
-                </div>               
-                <Estudiante data={data.Proyectos} registrado={true}/>
-                <div className="py-6 ml-3 font-sans text-4xl font-bold uppercase">
-                    <h1>Proyectos Disponibles</h1>
-                </div> 
-                <Estudiante data={data.Proyectos} registrado={false}/>
-            </div>
-        ) 
-    }
+            )        
+        } else {
+            return(
+                <div className ="w-full">
+                    <div className="py-6 ml-3 font-sans text-4xl font-bold uppercase">
+                        <h1>Proyectos vinculados</h1>
+                    </div>               
+                    <Estudiante data={data.Proyectos} registrado={true}/>
+                    <div className="py-6 ml-3 font-sans text-4xl font-bold uppercase">
+                        <h1>Proyectos Disponibles</h1>
+                    </div> 
+                    <Estudiante data={data.Proyectos} registrado={false}/>
+                </div>
+            ) 
+        }
 }} 
 
 const Administrador = ({data}) => {
-    const datos = data.Proyectos.map((item) => {
-    console.log(item.registros);
+    const datos = data.map((item) => {
         const objetivos = item.objetivos.map((objetivo) => {
             return (
                 <>
@@ -117,7 +118,7 @@ const Lider = ({data}) => {
                     </td>
                 </tr>
                 </>
-        )} else return null
+        )} 
     })    
         return (
             <>
