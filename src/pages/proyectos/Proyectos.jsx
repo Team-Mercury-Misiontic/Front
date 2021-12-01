@@ -1,5 +1,5 @@
 import Usuario from '../../usuario.json';
-import {useEffect} from 'react';
+// import {useEffect} from 'react';
 import {useQuery} from "@apollo/client";
 import {GET_PROYECTOS} from '../../graphql/proyectos/queries';
 import {Link} from 'react-router-dom';
@@ -117,7 +117,7 @@ const Lider = ({data}) => {
                     </td>
                 </tr>
                 </>
-        )} 
+        )} else return null
     })    
         return (
             <>

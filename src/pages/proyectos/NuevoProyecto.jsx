@@ -3,25 +3,23 @@ import {useMutation} from '@apollo/client';
 import {useState} from 'react';
 import Usuario from '../../usuario.json';
 import {Link} from 'react-router-dom';
-import {NUEVO_PROYECTO, NUEVO_OBJETIVO} from '../../graphql/proyectos/mutations';
+import {NUEVO_PROYECTO} from '../../graphql/proyectos/mutations';
 
 const NuevoProyecto = () =>{
     const [crearProyecto] = useMutation(NUEVO_PROYECTO);
     const [proyecto, setProyecto]=useState({
-        nombreProyecto:"",
+        nombreProyecto: "",
         lider: "",
-        identificacion:"",
-        presupuesto:0,
-        fechaInicio:"",
-        fechaFin:""
+        identificacion: "",
+        presupuesto: 0,
+        fechaInicio: "",
+        fechaFin: ""
     });
-
-    setProyecto(proyecto.lider = Usuario._id)
     
     return(
         <>
         <section className="pt-11 text-center h-32 ">
-            <h1 className="font-sans text-4xl font-bold uppercase">
+            <h1 className="font-sans text-4xl font-bold">
                 CREAR NUEVO PROYECTO
             </h1>
         </section>
@@ -33,18 +31,20 @@ const NuevoProyecto = () =>{
                     presupuesto: parseInt(proyecto.presupuesto.value),
                     fechaInicio: proyecto.fechaInicio.value,
                     fechaFin: proyecto.fechaFin.value,
+                    lider: proyecto.lider
                 }})
                 }} >
                 <label htmlFor="nombre">Nombre</label>
                 <input ref={nombre=>setProyecto(proyecto.nombreProyecto=nombre)} placeholder="Nombre del proyecto" id="nombre" className="m-auto text-center rounded-md text-black text-lg"/>
                 <label htmlFor="lider">Lider</label>
-                <input value = {Usuario._id} placeholder="Lider" id="lider" className="m-auto text-center rounded-md text-black text-lg"/>
+                <input value = {Usuario.nombre + " " + Usuario.apellido} id="lider" className="m-auto text-center rounded-md text-black text-lg"/>
+                <input ref={lider=>setProyecto(proyecto.lider=Usuario._id)} className="hidden"/>
                 <label htmlFor="presupuesto">Presupuesto</label>
                 <input ref={presupuesto=>setProyecto(proyecto.presupuesto=presupuesto)} placeholder="Presupuesto"id="presupuesto" className="m-auto text-center rounded-md text-black text-lg"/>
                 <label htmlFor="inicio">Fecha de Inicio</label>
                 <input ref={fechaInicio=>setProyecto(proyecto.fechaInicio=fechaInicio)} type="date" id="inicio" className="m-auto text-center rounded-md text-black text-lg"/>
                 <label htmlFor="fin">Fecha de Finalizacion</label>
-                <input ref={fechaFin=>setProyecto(proyecto.fechaFin=fechaFin)} type="date" id="fin" className="m-auto text-center rounded-md text-black text-lg pb-3"/>
+                <input ref={fechaFin=>setProyecto(proyecto.fechaFin=fechaFin)} type="date" id="fin" className="m-auto text-center rounded-md text-black text-lg mb-3"/>
                 <button type="submit" className="border-black border-2">Crear Nuevo Proyecto</button>
             </form>
         </section>

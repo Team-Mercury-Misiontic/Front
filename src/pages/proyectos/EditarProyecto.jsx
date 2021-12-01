@@ -11,57 +11,80 @@ import DropDown from 'components/Dropdown';
 import {useQuery, useMutation} from '@apollo/client';
 
 const EditarProyecto=()=> {
+    const { form, formData, updateFormData } = useFormData(null);
     const {_id} = useParams();
     
     const {data: queryData, error: queryError, loading: queryLoading} = useQuery(GET_PROYECTO, {variables: {_id}});
     const [editarProyecto, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(EDITAR_PROYECTO);
 
-    const [proyecto,setProyecto] = useState({
-      _id: queryData.Proyecto._id,
-      nombre: queryData.Proyecto.nombre,
-      presupuesto: queryData.Proyecto.presupuesto,
-      fechaInicio: queryData.Proyecto.fechaInicio,
-      fechaFin: queryData.Proyecto.fechaFin,
-      estado: queryData.Proyecto.estado,
-      fase: queryData.Proyecto.fase,
-      lider: queryData.Proyecto.lider,
-    })
-
     if (queryLoading) return 'Loading...';
+    console.log(queryData.Proyecto)
+
+    const submitForm = (e) => {
+      e.preventDefault();
+      console.log('fd', formData);
+      editarProyecto({
+        variables: { 
+          _id,
+          fase: queryData.Proyecto.fase,
+          estado: queryData.Proyecto.estado,
+          lider: Usuario._id,
+          ...formData },
+      });
+    };
+    
     if (queryError) return `Error! ${queryError.message}`;
     if (mutationLoading) return 'Submitting...';
     if (mutationError) return `Submission error! ${mutationError.message}`;
 
-    console.log(proyecto);
     return (
       <div className='w-full'>
         <div className='mx-4 grid grid-cols-2 gap-4'>
         <form className="bg-blue-50 border-blue-500 border-solid border-2 col-span-2 grid grid-cols-4"
-          onSubmit={e => {
-          e.preventDefault();
-          editarProyecto({variables:{
-            _id: proyecto._id,
-            nombre: proyecto.nombre,
-            presupuesto: proyecto.presupuesto,
-            fechaInicio: proyecto.fechaInicio,
-            fechaFin: proyecto.fechaFin,
-            estado: proyecto.estado,
-            fase: proyecto.fase,
-            lider: proyecto.lider,
-          }})}}
+          onSubmit={submitForm}
+          onChange={updateFormData}
+          ref={form}
           >
           <h2 className='text-center col-span-4'> INFORMACION DEL PROYECTO</h2>
           <label htmlFor="nombre">Nombre</label>
-                <input ref={nombre=>setProyecto(proyecto.nombreProyecto=nombre)} placeholder="Nombre del proyecto" id="nombre" className="m-auto text-center rounded-md text-black text-lg"/>
-                <label htmlFor="lider">Lider</label>
-                <input value = {Usuario._id} placeholder="Lider" id="lider" className="m-auto text-center rounded-md text-black text-lg"/>
-                <label htmlFor="presupuesto">Presupuesto</label>
-                <input ref={presupuesto=>setProyecto(proyecto.presupuesto=presupuesto)} placeholder="Presupuesto"id="presupuesto" className="m-auto text-center rounded-md text-black text-lg"/>
-                <label htmlFor="inicio">Fecha de Inicio</label>
-                <input ref={fechaInicio=>setProyecto(proyecto.fechaInicio=fechaInicio)} type="date" id="inicio" className="m-auto text-center rounded-md text-black text-lg"/>
-                <label htmlFor="fin">Fecha de Finalizacion</label>
-                <input ref={fechaFin=>setProyecto(proyecto.fechaFin=fechaFin)} type="date" id="fin" className="m-auto text-center rounded-md text-black text-lg pb-3"/>
-                <button type="submit" className="border-black border-2">Crear Nuevo Proyecto</button>
+            <Input
+            label=''
+            type='text'
+            name='nombre'
+            defaultValue={queryData.Proyecto.nombre}
+            required={true}
+            />
+          <label htmlFor="lider">Lider</label>
+            <input value = {Usuario._id} id="lider" className="m-auto text-center rounded-md text-black text-lg"/>
+          <label htmlFor="presupuesto">Presupuesto</label>
+            <Input
+            label=''
+            type='number'
+            name='presupuesto'
+            defaultValue={queryData.Proyecto.presupuesto}
+            required={true}
+            />
+          <label htmlFor="inicio">Fecha de Inicio</label>
+            <Input
+              label=''
+              type='date'
+              name='inicio'
+              defaultValue={queryData.Proyecto.fechaInicio}
+              required={true}
+            />
+          <label htmlFor="fin">Fecha de Finalizacion</label>
+            <Input
+              label=''
+              type='date'
+              name='fin'
+              defaultValue={queryData.Proyecto.fechaFin}
+              required={true}
+            />
+         <ButtonLoading
+          disabled={Object.keys(formData).length === 0}
+          loading={mutationLoading}
+          text='Confirmar'
+        />
         </form>
         <div className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2'>
           <h2 className='text-center'> OBJETIVOS</h2>

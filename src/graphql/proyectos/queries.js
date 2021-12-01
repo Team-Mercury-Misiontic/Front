@@ -21,11 +21,11 @@ export const GET_PROYECTOS = gql`
         tipo
       }
       registros{
-          estudiante{
-            _id
-            nombre
-            apellido
-          }
+        estudiante{
+          _id
+          nombre
+          apellido
+        }
       }
     }
   }

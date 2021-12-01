@@ -21,8 +21,6 @@ export const NUEVO_PROYECTO = gql`
             fechaFin
             lider{
                 _id
-                nombre
-                apellido
             }
         }
     }
