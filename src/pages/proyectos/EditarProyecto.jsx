@@ -3,8 +3,6 @@ import Usuario from 'usuario.json'
 import {GET_PROYECTO} from 'graphql/proyectos/queries';
 import {EDITAR_PROYECTO} from 'graphql/proyectos/mutations';
 import {useParams} from 'react-router-dom';
-import { Enum_FaseProyecto , Enum_EstadoProyecto } from 'utils/enum';
-import DropDown from 'components/Dropdown';
 import {useQuery, useMutation} from '@apollo/client';
 
 const EditarProyecto=()=> {
@@ -111,7 +109,7 @@ const EditarProyecto=()=> {
                     <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaFin}</span>
                     <label className='col-start-1 font-bold'>Fase:</label> 
                     <select  ref={fase=>proyecto.fase = fase}>
-                      <option value="NULA">Nula</option>
+                      <option disabled value="NULA">Nula</option>
                       <option value="INICIADO">Iniciado</option>
                       <option value="DESARROLLO">Desarrollo</option>
                       <option value="TERMINADO">Terminado</option>

@@ -8,7 +8,7 @@ const Proyectos = ()=> {
     
     console.log(data)
 
-    if (loading) return 'Loading...';
+    if (loading) return "Loading..." ;
     if (error) return `Error! ${error}`;  
     
     if (data) {
