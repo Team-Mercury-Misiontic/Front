@@ -9,6 +9,7 @@ import PrivateComponent from "components/PrivateComponent";
 import ReactLoading from "react-loading";
 import { Dialog, Tooltip } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
+import Swal from 'sweetalert2';
 
 const Usuarios = () => {
   const { _id } = useParams();
@@ -28,32 +29,91 @@ const Usuarios = () => {
   }, [error]);
 
   const [busqueda, setBusqueda] = useState("");
-  //const [openDialog, setOpenDialog] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
   const bChange = (e) => {
     setBusqueda(e.target.value);
   };
 
-  const [eliminarUsuario, { data: mutationData, error: mutationError }] =
-      useMutation(ELIMINAR_USUARIO);
+  const [eliminarUsuario] = useMutation(ELIMINAR_USUARIO)
+  //   {
+  //   update(cache)
+  //   {
+  //     const {obtenerUsuarios}= cache.readQuery({GET_USUARIOS});
+
+  //     cache.writeQuery({
+  //       query:GET_USUARIOS,
+  //       data:{
+  //         obtenerUsuarios:obtenerUsuarios.filter(usuarioActual=>usuarioActual.id!==_id)
+  //       }
+  //     })
 
 
-  useEffect(() => {
-    if (mutationData) {
-      toast.success("Usuario eliminado correctamente");
-    }
-  }, [mutationData]);
+  //   }
+  // });
 
-  useEffect(() => {
-    if (mutationError) {
-      toast.error("Error eliminando el usuario");
-    }
-  }, [mutationError]);
+  //eliminar usuario
+  const confirmarEliminarUser =_id=>{
+    Swal.fire({
+      title: '¿Deseas eliminar a este usuario?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Eliminar',
+      cancelButtonText: 'No, Cancelar'
+    }).then( async (result) => {
+      if (result.value) {
+
+          try {
+              
+              //console.log("Eliminado",id)
+              const { data } = await eliminarUsuario({
+                  variables: {
+                      _id
+                  }
+              });
+              // console.log(data);
+
+              // Mostrar una alerta
+              Swal.fire(
+                  'Eliminado!',
+                  data.eliminarUsuario,
+                  'success'
+              )
+          } catch (error) {
+              console.log(error);
+          }
+      }
+    })
+  }
+
+  // const eliminarUsuario1= _id => {
+  //   eliminarUsuario(_id)
+  //   setOpenDialog(false)
+  // }
+  // const [eliminarUsuario, { data: mutationData, error: mutationError }] =
+  //     useMutation(ELIMINAR_USUARIO,{
+  //       variables: { _id },
+  //     });
+
+
+  // useEffect(() => {
+  //   if (mutationData) {
+  //     toast.success("Usuario eliminado correctamente");
+  //   }
+  // }, [mutationData]);
+
+  // useEffect(() => {
+  //   if (mutationError) {
+  //     toast.error("Error eliminando el usuario");
+  //   }
+  // }, [mutationError]);
 
   if (loading)
     return (
-      <ReactLoading type="cylon" color="#4c2882" height={667} width={365} />
+      <ReactLoading className="mx-96" type="spin" color="#4c2882" height={667} width={365} />
     );
 
   return (
@@ -114,31 +174,25 @@ const Usuarios = () => {
                     <Link to={`/usuarios/EditarUsuario/${item._id}`}>
                       <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
                         Editar
-                      </button>{" "}
+                      </button>
                     </Link>
-                    {"   "}
                     <button
                       className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
-                      onClick={() => setOpenDialog(true)}
+                     // onClick={() => setOpenDialog(true)}
+                      onClick={() => confirmarEliminarUser(item._id)}
                     >
                       Eliminar
                     </button>
-                    <div className="flex w-full justify-around">
-                      <Tooltip title="Eliminar Usuario" arrow>
-                        <i
-                          onClick={() => setOpenDialog(true)}
-                          className="fas fa-trash text-red-700 hover:text-red-500"
-                        />
-                      </Tooltip>
-                    </div>
-                    <Dialog open={openDialog}>
+                    
+                    {/* <Dialog open={openDialog}>
                       <div className="p-8 flex flex-col">
                         <h1 className="text-gray-900 text-2xl font-bold">
                           ¿Está seguro de querer eliminar el usuario?
                         </h1>
                         <div className="flex w-full items-center justify-center my-4">
                           <button
-                            onClick={() => eliminarUsuario()}
+                            onClick={() => eliminarUsuario1(item._id)}
+                           
                             className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
                           >
                             Sí
@@ -151,53 +205,15 @@ const Usuarios = () => {
                           </button>
                         </div>
                       </div>
-                    </Dialog>
+                    </Dialog> */}
                   </td>
                 </tr>
               );
             })}
-          ) : (<div>No autorizado</div>
+          {/* ) : (<div>No autorizado</div> */}
         </tbody>
       </table>
 
-      <Dialog open={openDialog}>
-        <div className="p-8 flex flex-col">
-          <h1 className="text-gray-900 text-2xl font-bold">
-            ¿Está seguro de querer eliminar el usuario?
-          </h1>
-          <div className="flex w-full items-center justify-center my-4">
-            <button
-                onClick={() => eliminarUsuario()
-                    .then(r => setOpenDialog(false))
-                }
-                className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
-            >
-              Sí
-            </button>
-            <button
-                onClick={() => setOpenDialog(false)}
-                className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
-            >
-              No
-            </button>
-          </div>
-        </div>
-      </Dialog>
-
-      <PrivateComponent roleList={["admin"]}>
-        <td>
-          <div className="flex w-full justify-around">
-            <Tooltip title="Eliminar Usuario" arrow>
-              <i
-                onClick={() => setOpenDialog(true)}
-                className="fas fa-trash text-red-700 hover:text-red-500"
-              />
-            </Tooltip>
-          </div>
-          ;
-        </td>
-      </PrivateComponent>
-      ;
     </Fragment>
     //</PrivateRoute>
   );
