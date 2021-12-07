@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client';
+/* import {gql} from '@apollo/client';
 
 const NUEVO_AVANCE = gql`
     mutation crearAvance(
@@ -48,4 +48,4 @@ const ACTUALIZAR_AVANCE = gql`
     }
 `;
 
-export { NUEVO_AVANCE, ACTUALIZAR_AVANCE};
+export { NUEVO_AVANCE, ACTUALIZAR_AVANCE}; */
