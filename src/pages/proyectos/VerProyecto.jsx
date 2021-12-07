@@ -1,7 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {GET_PROYECTO} from '../../graphql/proyectos/queries';
 import {useParams} from 'react-router-dom'
-import {useQuery} from '@apollo/client'
+import {useMutation, useQuery} from '@apollo/client'
+import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
+//import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+import ButtonLoading from 'components/ButtonLoading';
+
 
 const VerProyecto=()=> {
     const { _id } = useParams();
@@ -50,6 +55,11 @@ const VerProyecto=()=> {
                     <Avances item={data.Proyecto}/>
                 </div>
             </div>
+            <InscripcionProyecto 
+            idProyecto={data.Proyecto._id} 
+            estado={data.Proyecto.estado}
+            inscripciones={data.Proyectoinscripciones}
+            />
         </div>
     )
 }
@@ -72,7 +82,7 @@ const Estudiantes = ({item}) => {
     if (estudiante.estado==="ACEPTADA") {
         return (
             <ul className="pl-10">
-                <li className="list-disc">{estudiante.estudiante.nombre} {estudiante.estudiante.nombre}</li>
+                <li className="list-disc">{estudiante.estudiante.nombre} {estudiante.estudiante.apellido}</li>
             </ul>
         )
     } else return null
@@ -114,6 +124,56 @@ const Avances = ({item}) => {
             </table>
         )
     } else return <p className="text-center">NO HAY AVANCES EN EL PROYECTO </p>
+}
+
+const InscripcionProyecto = ({idProyecto, estado, inscripciones})=>{
+    const [estadoInscripcion, setEstadoInscripcion] = useState('');
+    const [crearRegistro, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
+    //const {userData}= useUser();
+    
+    useEffect(() => {
+        // if (userData && inscripciones) {
+        if (inscripciones) {    
+          const flt = inscripciones.filter((el) => el.estudiante._id === '61af74d5ba5adc3b57f4b11f');
+          if (flt.length > 0) {
+            setEstadoInscripcion(flt[0].estado);
+          }
+        }
+      }, [inscripciones]);
+    
+    useEffect(()=>{
+        if (data){
+            console.log('datos de la inscripcion',data);
+            // Swal({
+            //     title: "Gestión de Proyectos",
+            //     text: "Inscripción Exitosa",
+            //     icon: "success",
+            //     timer: "1000"
+            // });
+            toast.success("Registro Exitoso");
+        }
+    },[data]);
+
+    const confirmarInscripcion = () => {
+        crearRegistro({ variables: { proyecto: idProyecto, estudiante: '61af74d5ba5adc3b57f4b11f' } });
+        //crearInscripcion({ variables: { proyecto: idProyecto, estudiante: userData._id } });
+      };
+
+      return (
+        <>
+          {estadoInscripcion !== '' ? (
+            <span>Ya estas inscrito en este proyecto y el estado es {estadoInscripcion}</span>
+          ) : (
+            
+            <ButtonLoading
+              onClick={() => confirmarInscripcion()}
+              disabled={estado === 'INACTIVO'}
+              loading={loading}
+              text='Inscribirme en este proyecto'
+            />
+          )}
+        </>
+      );
 }
 
 export default VerProyecto

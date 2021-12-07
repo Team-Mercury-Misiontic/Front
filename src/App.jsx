@@ -11,7 +11,7 @@ import VerProyecto from "pages/proyectos/VerProyecto"
 import Usuarios from "pages/usuarios/Usuarios";
 import EditarUsuario from "pages/usuarios/EditarUsuario";
 import Perfil from "pages/Perfil";
-import Inscripciones from "pages/Inscripciones";
+import Inscripciones from "pages/inscripciones/Inscripciones";
 import "styles/globals.css";
 import "styles/tabla.css";
 
@@ -20,7 +20,8 @@ import "styles/tabla.css";
 
 //Reemplazar link de despliegue back
 const httpLink = createHttpLink({
-  uri: "https://backen-mercury.herokuapp.com/graphql"
+  //uri: "https://backen-mercury.herokuapp.com/graphql"
+  uri: "http://localhost:4000/graphql"
 });
 
 const client = new ApolloClient({
@@ -44,7 +45,8 @@ function App() {
                 <Route path="Proyectos/EditarProyecto/:_id" element={<EditarProyecto />} />
                 <Route path="Usuarios" element={<Usuarios />} />
                 <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />
-                <Route path="Inscripciones" element={<Inscripciones />} />
+                <Route path='Inscripciones' element={<Inscripciones />} />
+                <Route path='/inscripciones/Inscripciones' element={<Inscripciones />} />
                 <Route path="Perfil" element={<Perfil />} />
               </Route>
             </Routes>

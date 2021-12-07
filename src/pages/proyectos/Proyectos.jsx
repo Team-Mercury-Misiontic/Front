@@ -6,11 +6,11 @@ import {Link} from 'react-router-dom';
 
 const Proyectos = ()=> { 
     const {data, error, loading}=useQuery(GET_PROYECTOS);
-    
+    console.log("carga de proyecto",data);
     if (error) return `Error! ${error}`;  
     if (loading) return 'Loading...';
     if (data) {
-        console.log(data.Proyectos);
+        console.log("carga de proyecto",data.Proyectos);
     if (Usuario.rol === 'ADMINISTRADOR'){
         return(
             <div className ="w-full">
