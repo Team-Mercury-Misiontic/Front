@@ -35,22 +35,22 @@ const Usuarios = () => {
     setBusqueda(e.target.value);
   };
 
-  const [eliminarUsuario] = useMutation(ELIMINAR_USUARIO)
-  //   {
-  //   update(cache)
-  //   {
-  //     const {obtenerUsuarios}= cache.readQuery({GET_USUARIOS});
+  const [eliminarUsuario] = useMutation(ELIMINAR_USUARIO,
+    {
+    update(cache)
+    {
+      const {Usuarios}= cache.readQuery({GET_USUARIOS});
 
-  //     cache.writeQuery({
-  //       query:GET_USUARIOS,
-  //       data:{
-  //         obtenerUsuarios:obtenerUsuarios.filter(usuarioActual=>usuarioActual.id!==_id)
-  //       }
-  //     })
+      cache.writeQuery({
+        query:GET_USUARIOS,
+        data:{
+          obtenerUsuarios:Usuarios.filter(usuarioActual=>usuarioActual.id!==_id)
+        }
+      })
 
 
-  //   }
-  // });
+    }
+  });
 
   //eliminar usuario
   const confirmarEliminarUser =_id=>{
