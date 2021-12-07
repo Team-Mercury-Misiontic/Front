@@ -44,6 +44,7 @@ const Usuarios = () => {
   useEffect(() => {
     if (mutationData) {
       toast.success("Usuario eliminado correctamente");
+      refetch();
     }
   }, [mutationData, loadingMutation]);
 
@@ -143,7 +144,6 @@ const Usuarios = () => {
                 onClick={() => eliminarUsuario({
                   variables : {_id: currentUser._id, correo: currentUser.correo}
                 })
-                    .then(refetch())
                     .then(r => setOpenDialog(false))
                 }
                 className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
