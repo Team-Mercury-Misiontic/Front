@@ -15,26 +15,48 @@ import Perfil from "pages/Perfil";
 import Inscripciones from "pages/Inscripciones";
 import "styles/globals.css";
 import "styles/tabla.css";
+import { setContext } from '@apollo/client/link/context';
 
 
 // import PrivateRoute from 'components/PrivateRoute';
 
 //Reemplazar link de despliegue back
 const httpLink = createHttpLink({
-  uri: "https://backen-mercury.herokuapp.com/graphql"
+  uri: "http://localhost:8080/graphql"
+});
+
+const authLink = setContext((_, { headers }) => {
+	// get the authentication token from local storage if it exists
+	const token = JSON.parse(localStorage.getItem('token'));
+	// return the headers to the context so httpLink can read them
+	return {
+		headers: {
+			...headers,
+			authorization: token ? `Bearer ${token}` : '',
+		},
+	};
 });
 
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 });
 
 function App() {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState('');
+
+  const setToken = (token) => {
+    setUserData(token);
+    if (token) {
+      localStorage.setItem('token', JSON.stringify(token))
+    } else {
+      localStorage.removeItem('token')
+    }
+  }
 
   return (
     <ApolloProvider client={client}>
-        <UserContext.Provider value={{ userData, setUserData }}>
+        <UserContext.Provider value={{ userData, setUserData, setToken }}>
           <BrowserRouter>
             <Routes>
               <Route path="/Registro" element={<NuevoUsuario/>}/>
