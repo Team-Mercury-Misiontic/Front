@@ -6,10 +6,15 @@ import Objetivos from 'components/Objetivos'
 import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import { toast } from 'react-toastify';
 import ButtonLoading from 'components/ButtonLoading';
+import { Link } from "react-router-dom";
+
 
 const VerProyecto=()=> {
     const { _id } = useParams();
     const {data, error, loading} = useQuery(GET_PROYECTO, {variables:{ _id }});
+    useEffect(() => {
+        console.log("data servidor", data);
+      }, [data]);
     useEffect(() => {
         if (error) {
           console.log(error);
@@ -45,15 +50,15 @@ const VerProyecto=()=> {
                         <Objetivos item={data.Proyecto} tipo="ESPECIFICO" className="list-disc"/>
                     </ul>
                 </section>
-                <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-1 py-4'>
+                <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-1 py-4 text-center'>
                     <h2 className='text-center font-bold text-l'>ESTUDIANTES INSCRITOS</h2>
                     <Estudiantes item={data.Proyecto}/>
-                    <button>Inscribirse</button>
+                    <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >
+                        Inscribirse</button>
                 </section>
-                <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4'>
+                <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center'>
                     <h2 className='text-center font-bold text-l'>AVANCES</h2>
-                    <Avances item={data.Proyecto}/>
-                    <button>Añadir Avance</button>
+                    <Avances item={data.Proyecto}/>                  
                 </section>
             </div>
             <InscripcionProyecto 
@@ -87,36 +92,24 @@ const Estudiantes = ({item}) => {
 }
 
 const Avances = ({item}) => {
-    const Avances = item.avances.map((avance) => {
-    return (
-        <>
-        <tr>
-            <td>{avance.descripcion}</td>
-            <td>{avance.creadoPor.nombre}{avance.creadoPor.apellido}</td>
-            <td>{avance.fecha}</td>
-            <td>{avance.objetivos}</td>
-        </tr>
-        </>
-    )})
+    const Avances = item.avances;
     console.log(Avances);
     if (Avances.length !== 0) {
         return (
-            <table className="tabla">
-                <thead>
-                    <tr>
-                        <td>Descripcion</td>
-                        <td>Estudiante</td>
-                        <td>Fecha</td>
-                        <td>Comentarios</td>
-                    </tr>
-                </thead>
-                <tbody>
-                
-                    {Avances}
-                </tbody>    
-            </table>
+            <>
+              <Link to={`/VerAvance/${item._id}`}>
+                <p className="text-center">Hay {Avances.length} {Avances.length == 1 ? " avance": " avances"} en el proyecto </p>
+                <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >Ver Avances</button>
+                </Link>
+            </>
         )
-    } else return <p className="text-center">NO HAY AVANCES EN EL PROYECTO </p>
+    } else return (<> <p className="text-center">No hay avances en el proyecto </p>
+                     <Link to={`/Avances/${item._id}`}>
+                         <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >
+                         Añadir Avance
+                         </button>
+                    </Link>
+                     </> )
 }
 
 const InscripcionProyecto = ({idProyecto, estado, inscripciones})=>{

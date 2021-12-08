@@ -68,7 +68,7 @@ const EditarUsuario = () => {
         className='flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl'
       >
         <Input
-          label='Identificación de la persona:'
+          label='Identificación:'
           type='text'
           name='identificacion'
           defaultValue={queryData.Usuario.identificacion}

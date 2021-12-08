@@ -11,28 +11,36 @@ import { toast } from "react-toastify";
 const Avances = () => {
   const { form, formData, updateFormData } = useFormData();
   const {
-    dataAvances,
-    errorAvances,
-    loadingAvances,
+    data,
+    error,
+    loading
   } = useQuery(GET_AVANCES);
 
   useEffect(() => {
-      console.log(`Los datos son: ${dataAvances}`);
-  }, [dataAvances]);
+    console.log("data servidor", data);
+  }, [data]);
 
   useEffect(() => {
-    if (errorAvances) {
-      console.error(`error obteniendo los usuarios ${errorAvances}`);
-      toast.error("Error consultando los usuarios");
+    if (error) {
+      console.error(`error obteniendo los datos ${error}`);
+      toast.error("Error consultando los datos");
     }
-  }, [errorAvances]);
+  }, [error]);
 
   const submitForm = (e) => {
     e.preventDefault();
     console.log(formData);
   };
 
-  if (loadingAvances) return <ReactLoading type='cylon' color='#4c2882' height={667} width={365} />;
+  const fechaActual = () => {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    return dd+"/"+mm+"/"+yyyy;
+  }
+
+  if (loading) return <ReactLoading type='cylon' color='#4c2882' height={667} width={365} />;
 
   return (
     <div className="p-10 flex flex-col items-center">
@@ -54,6 +62,7 @@ const Avances = () => {
           label="Fecha de actualización"
           required={true}
           type="date"
+          defaultValue = {fechaActual()}
         />
         <Input
           name="descripcion"
