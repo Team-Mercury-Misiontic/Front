@@ -66,7 +66,7 @@ const Usuarios = () => {
         USUARIOS DEL SISTEMA
       </h1>
       <br />
-      <div className="rounded-md shadow-sm -space-y-px">
+      <div className="rounded-md shadow-sm -space-y-px p-3">
         <label>
           <b>Buscar:</b>
         </label>
@@ -77,7 +77,7 @@ const Usuarios = () => {
           onChange={bChange}
         />
       </div>
-      <table className="tabla">
+      <div className="p-3"><table className="tabla w-full">
         <thead>
           <tr>
             <th scope="col">Identificación</th>
@@ -133,6 +133,7 @@ const Usuarios = () => {
           {/* ) : (<div>No autorizado</div> */}
         </tbody>
       </table>
+      </div>
 
       <Dialog open={openDialog}>
         <div className="p-8 flex flex-col">

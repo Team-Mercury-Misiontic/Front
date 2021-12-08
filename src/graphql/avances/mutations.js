@@ -13,13 +13,13 @@ const CREAR_AVANCE = gql`
       descripcion: $descripcion
       creadoPor: $creadoPor
     ) {
-      proyecto
+      proyecto {
+          _id
+      }
       fecha
       descripcion
       creadoPor {
         _id
-        nombre
-        apellido
       }
     }
   }
@@ -28,13 +28,8 @@ const CREAR_AVANCE = gql`
 const ACTUALIZAR_AVANCE = gql`
   mutation actualizarAvance(
     $_id: ID!
-    $descripcion: String!
     $observaciones: String!
-  ) {
-    editarAvance(_id: $_id, descripcion: $descripcion) {
-      _id
-      descripcion
-    }
+  ) {  
     createAvance(_id: $_id, observaciones: $observaciones) {
       _id
       observaciones
