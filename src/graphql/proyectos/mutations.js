@@ -7,6 +7,7 @@ export const NUEVO_PROYECTO = gql`
         $fechaInicio: Date!
         $fechaFin: Date!
         $lider: String!
+        $objetivos: [crearObjetivo]
     ){
         crearProyecto(
 			nombre: $nombre,
@@ -14,6 +15,7 @@ export const NUEVO_PROYECTO = gql`
 			fechaInicio: $fechaInicio,
 			fechaFin: $fechaFin,
 			lider: $lider
+            objetivos:$objetivos
 		){
             nombre
             presupuesto
@@ -21,12 +23,16 @@ export const NUEVO_PROYECTO = gql`
             fechaFin
             lider{
                 _id
-                nombre
-                apellido
+            }
+            objetivos{
+                descripcion
+                tipo
             }
         }
     }
 `;
+
+
 
 export const EDITAR_PROYECTO = gql`
 mutation editarProyecto(
@@ -38,6 +44,7 @@ mutation editarProyecto(
     $estado: Enum_EstadoProyecto!
     $fase: Enum_FaseProyecto!
     $lider: String!
+    $objetivos: [crearObjetivo]
 ){
     editarProyecto(
         _id: $_id,
@@ -48,6 +55,7 @@ mutation editarProyecto(
         estado: $estado,
         fase: $fase,
         lider: $lider
+        objetivos: $objetivos
     ){ _id
         nombre
         presupuesto
@@ -57,8 +65,10 @@ mutation editarProyecto(
         fase
         lider{
             _id
-            nombre
-            apellido
+        }
+        objetivos{
+            descripcion
+            tipo
         }
     }
 }

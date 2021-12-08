@@ -9,6 +9,7 @@ import NuevoProyecto from "pages/proyectos/NuevoProyecto";
 import EditarProyecto from "pages/proyectos/EditarProyecto"
 import VerProyecto from "pages/proyectos/VerProyecto"
 import Usuarios from "pages/usuarios/Usuarios";
+import NuevoUsuario from "pages/NuevoUsuario"
 import EditarUsuario from "pages/usuarios/EditarUsuario";
 import Perfil from "pages/Perfil";
 import Inscripciones from "pages/Inscripciones";
@@ -38,6 +39,7 @@ function App() {
         <UserContext.Provider value={{ userData, setUserData }}>
           <BrowserRouter>
             <Routes>
+              <Route path="/Registro" element={<NuevoUsuario/>}/>
               <Route path="/" element={<PrivateLayout />}>
                 <Route path="" element={<Index />} />
                 <Route path="Proyectos" element={<Proyectos />} />
