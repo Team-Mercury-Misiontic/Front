@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {GET_PROYECTO} from '../../graphql/proyectos/queries';
 import {useParams} from 'react-router-dom'
-import {useQuery} from '@apollo/client'
+import {useMutation, useQuery} from '@apollo/client'
 import Objetivos from 'components/Objetivos'
+import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
+import { toast } from 'react-toastify';
+import ButtonLoading from 'components/ButtonLoading';
 
 const VerProyecto=()=> {
     const { _id } = useParams();
@@ -65,10 +68,11 @@ const VerProyecto=()=> {
 
 
 const Estudiantes = ({item}) => {
-    console.log(item)
+    console.log('listado de estudiantes inscriptos',item)
     const Estudiantes = item.registros.map((estudiante) => {
+    console.log('Verificando si esta autorizado',estudiante.estado)    
     if (estudiante.estado==="AUTORIZADO") {
-        console.log(estudiante.estado)
+        console.log('Verificando si esta autorizado',estudiante.estado)
         return (
             <ul className="pl-10">
                 <li className="list-disc">{estudiante.estudiante.nombre} {estudiante.estudiante.apellido}</li>
