@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { from, useMutation } from '@apollo/client';
 import { useState } from 'react';
-import { CREAR_USUARIO } from '../graphql/usuarios/mutations';
+import { CREAR_USUARIO } from '../../graphql/usuarios/mutations';
 import DropDown from 'components/Dropdown';
 import { Enum_Rol } from 'utils/enum';
 import ButtonLoading from 'components/ButtonLoading';
 import useFormData from 'hooks/useFormData';
 import { REGISTRO } from 'graphql/auth/mutation';
-import { useUser } from 'context/userContext';
 import { useNavigate } from 'react-router';
+import { useAuth } from 'context/AuthContext';
 
 const NuevoUsuario = () => {
 	const navigate = useNavigate();
-	const { setToken } = useUser();
+	const { setToken } = useAuth();
 	const { form, formData, updateFormData } = useFormData();
 	const [
 		registro,
