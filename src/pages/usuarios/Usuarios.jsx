@@ -1,21 +1,17 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useQuery, useMutation } from "@apollo/client";
-import { useParams, Link } from "react-router-dom";
-import { GET_USUARIOS, GET_USUARIO } from "graphql/usuarios/queries";
+import { Link } from "react-router-dom";
+import { GET_USUARIOS } from "graphql/usuarios/queries";
 import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
-import PrivateComponent from "components/PrivateComponent";
 //import PrivateRoute from "components/PrivateRoute";
 import ReactLoading from "react-loading";
-import { Dialog, Tooltip } from "@material-ui/core";
+import { Dialog } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
 import Swal from 'sweetalert2';
 
 const Usuarios = () => {
-  const { _id } = useParams();
-  const { data, error, loading } = useQuery(GET_USUARIOS, GET_USUARIO, {
-    variables: { _id },
-  });
+  const { data, error, loading, refetch } = useQuery(GET_USUARIOS);
 
   //useEffect para datos traido del back
   useEffect(() => {
@@ -24,22 +20,34 @@ const Usuarios = () => {
 
   useEffect(() => {
     if (error) {
+      console.error(`error obteniendo los usuarios ${error}`)
       toast.error("Error consultando los usuarios");
     }
   }, [error]);
 
   const [busqueda, setBusqueda] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
   const bChange = (e) => {
     setBusqueda(e.target.value);
   };
 
+<<<<<<< HEAD
   const [eliminarUsuario] = useMutation(ELIMINAR_USUARIO,
     {
     update(cache)
     {
       const {Usuarios}= cache.readQuery({GET_USUARIOS});
+=======
+  const handleDeleteUser = (user) => {
+    setCurrentUser(user);
+    setOpenDialog(true);
+  };
+
+  const [eliminarUsuario, { data: mutationData, loading: loadingMutation, error: mutationError }] =
+      useMutation(ELIMINAR_USUARIO);
+>>>>>>> development
 
       cache.writeQuery({
         query:GET_USUARIOS,
@@ -48,6 +56,15 @@ const Usuarios = () => {
         }
       })
 
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    if (mutationData) {
+      toast.success("Usuario eliminado correctamente");
+      refetch();
+    }
+  }, [mutationData, loadingMutation]);
+>>>>>>> development
 
     }
   });
@@ -111,7 +128,7 @@ const Usuarios = () => {
   //   }
   // }, [mutationError]);
 
-  if (loading)
+  if (loading || loadingMutation)
     return (
       <ReactLoading className="mx-96" type="spin" color="#4c2882" height={667} width={365} />
     );
@@ -159,7 +176,7 @@ const Usuarios = () => {
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
               ) {
-                return user;
+                return user
               }
             }).map((item) => {
               return (
@@ -178,6 +195,7 @@ const Usuarios = () => {
                     </Link>
                     <button
                       className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
+<<<<<<< HEAD
                      // onClick={() => setOpenDialog(true)}
                       onClick={() => confirmarEliminarUser(item._id)}
                     >
@@ -206,6 +224,12 @@ const Usuarios = () => {
                         </div>
                       </div>
                     </Dialog> */}
+=======
+                      onClick={() => handleDeleteUser(item)}
+                    >
+                      Eliminar
+                    </button>
+>>>>>>> development
                   </td>
                 </tr>
               );
@@ -214,6 +238,34 @@ const Usuarios = () => {
         </tbody>
       </table>
 
+<<<<<<< HEAD
+=======
+      <Dialog open={openDialog}>
+        <div className="p-8 flex flex-col">
+          <h1 className="text-gray-900 text-2xl font-bold">
+            ¿Está seguro de querer eliminar el usuario?
+          </h1>
+          <div className="flex w-full items-center justify-center my-4">
+            <button
+                onClick={() => eliminarUsuario({
+                  variables : {_id: currentUser._id, correo: currentUser.correo}
+                })
+                    .then(r => setOpenDialog(false))
+                }
+                className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
+            >
+              Sí
+            </button>
+            <button
+                onClick={() => setOpenDialog(false)}
+                className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Dialog>
+>>>>>>> development
     </Fragment>
     //</PrivateRoute>
   );

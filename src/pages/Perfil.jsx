@@ -1,20 +1,20 @@
 import { useState } from 'react';
+import { GET_USUARIO } from 'graphql/usuarios/queries';
 import usuario from "../usuario.json";
 
 const Perfil = () =>{
     const[editar,setEditar]=useState(false)
-    console.log(usuario.nombre);
     if (editar === true) {
         return(
             <div className="h-full">
-                <Datos editar={editar} data={usuario.nombre}/>
+                <Datos editar={editar} />
                 <button className="bg-green-300 w-20 h-10 rounded-xl hover:bg-green-400 relative left-96 mt-3" >Aceptar </button>
                 <button className="bg-red-300 w-20 h-10 rounded-xl hover:bg-red-400 absolute right-96 mt-3" onClick={()=>{setEditar(false)}}>Cancelar</button>
             </div>)
     } else {
         return(
             <div className="h-full">
-                <Datos editar={editar} data={usuario.nombre}/>
+                <Datos editar={editar} />
                 <button className="bg-blue-300 w-20 h-10 rounded-xl hover:bg-blue-400 relative inset-x-2/4 mt-3"  onClick={()=>{setEditar(true)}}>Editar</button>
             </div>)        
     }              
@@ -48,6 +48,5 @@ const Datos = ({editar}) =>{
 
     )
 }
-
 
 export default Perfil;
