@@ -14,6 +14,7 @@ const Proyectos = ()=> {
     if (error) return `Error! ${error}`;  
     
     if (data) {
+        console.log("carga de proyecto",data.Proyectos);
         if (Usuario.rol === 'ADMINISTRADOR'){
             return(
                 <div className ="w-full">
