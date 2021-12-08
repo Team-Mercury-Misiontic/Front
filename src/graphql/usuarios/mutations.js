@@ -1,30 +1,24 @@
 import { gql } from '@apollo/client';
 
-const CREAR_USUARIO = gql`
-mutation CrearUsuario(
+const REGISTRAR_USUARIO = gql`
+mutation register(
   $nombre: String!
   $apellido: String!
   $identificacion: String!
   $correo: String!
   $rol: Enum_Rol!
-  $estado: Enum_EstadoUsuario!
   $password: String!
 ){
-  crearUsuario(
+  register(
     nombre: $nombre
     apellido: $apellido
     identificacion: $identificacion
     correo: $correo
     rol: $rol
-    estado: $estado
     password: $password
   ) {
-    nombre
-    apellido
-    correo
-    estado
-    identificacion
-    rol
+    token
+    error
   }
 }
 `;
@@ -73,4 +67,4 @@ const ELIMINAR_USUARIO = gql`
   }
 `;
 
-export { EDITAR_USUARIO, ELIMINAR_USUARIO, CREAR_USUARIO };
+export { EDITAR_USUARIO, ELIMINAR_USUARIO, REGISTRAR_USUARIO };

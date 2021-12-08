@@ -1,16 +1,15 @@
 import React from 'react';
 import {useMutation} from '@apollo/client';
 import {useState} from 'react';
-import {CREAR_USUARIO} from '../graphql/usuarios/mutations';
+import {REGISTRAR_USUARIO} from '../graphql/usuarios/mutations';
 
 const NuevoUsuario = () =>{
-    const [crearUsuario] = useMutation(CREAR_USUARIO);
+    const [register] = useMutation(REGISTRAR_USUARIO);
     const [usuario, setUsuario]=useState({
         nombre: "",
         apellido: "",
         identificacion: "",
         correo: "",
-        estado: "",
         rol: "",
         password: "",
     });
@@ -25,12 +24,11 @@ const NuevoUsuario = () =>{
         <section className="h-3/4 ">
             <form className="flex flex-col min-w-min w-1/3 mx-auto bg-gray-100 py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl" onSubmit={e=>{
                 e.preventDefault();
-                crearUsuario({variables:{
+                register({variables:{
                     nombre: usuario.nombre.value,
                     apellido: usuario.apellido.value,
                     identificacion: usuario.identificacion.value,
                     correo: usuario.correo.value,
-                    estado: usuario.estado.value,
                     rol: usuario.rol.value,
                     password: usuario.password.value,
                 }})
@@ -52,13 +50,6 @@ const NuevoUsuario = () =>{
                 </select>
                 <label htmlFor="password">Contraseña</label>
                 <input ref={password=>setUsuario(usuario.password=password)} type="password" id="password" placeholder="Contraseña" className="m-auto text-center rounded-md text-black text-lg mb-3"/>
-                <label htmlFor="estado">Estado</label>
-                <select ref={estado=>setUsuario(usuario.estado=estado)} id="estado" className="m-auto text-center rounded-md text-black text-lg mb-3">
-                    <option disabled selected>ELIJA SU ESTADO</option>
-                    <option value="PENDIENTE">Pendiente</option>
-                    <option disabled value="AUTORIZADO">Autorizado</option>
-                    <option disabled value="NO_AUTORIZADO">No Autorizado</option>
-                </select>
                 <button type="submit"  className="border-black border-2">Registrate!</button>
             </form>
         </section>
@@ -67,4 +58,4 @@ const NuevoUsuario = () =>{
     )
 }
 
-export default NuevoUsuario
+export default NuevoUsuario;
