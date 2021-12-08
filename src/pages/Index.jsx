@@ -2,11 +2,9 @@ import React from 'react';
 
 const Index = () => {
   return (
-    <div>
-      <div className='bg-green-300 h-96'>Index page</div>
-      <div className='bg-green-300 h-96'>Index page</div>
-      <div className='bg-green-300 h-96'>Index page</div>
-      <div className='bg-green-300 h-96'>Index page</div>
+    <div className='container bg-violet-500 h-full bg-opacity-50'>  
+        <img src='main-background.jpg' alt='Logo' className='w-full h-full opacity-60' />
+        <div static  bg-white-500>Welcome</div>
     </div>
   );
 };
