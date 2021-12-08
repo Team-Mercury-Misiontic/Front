@@ -15,6 +15,8 @@ import Perfil from "pages/Perfil";
 import Inscripciones from "pages/Inscripciones";
 import "styles/globals.css";
 import "styles/tabla.css";
+import ActualizarAvances from "pages/avances/ActualizarAvances";
+import Avances from "pages/avances/Avances";
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -44,6 +46,8 @@ function App() {
                 <Route path="Proyectos/:_id" element={<VerProyecto />} />   
                 <Route path="Proyectos/NuevoProyecto" element={<NuevoProyecto />} />
                 <Route path="Proyectos/EditarProyecto/:_id" element={<EditarProyecto />} />
+                <Route path="Avances" element={<Avances />} />
+                <Route path="Avances/ActualizarAvance" element={<ActualizarAvances />} />
                 <Route path="Usuarios" element={<Usuarios />} />
                 <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />
                 <Route path="Inscripciones" element={<Inscripciones />} />

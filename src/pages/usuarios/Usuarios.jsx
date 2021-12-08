@@ -1,20 +1,16 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useQuery, useMutation } from "@apollo/client";
-import { useParams, Link } from "react-router-dom";
-import { GET_USUARIOS, GET_USUARIO } from "graphql/usuarios/queries";
+import { Link } from "react-router-dom";
+import { GET_USUARIOS } from "graphql/usuarios/queries";
 import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
-import PrivateComponent from "components/PrivateComponent";
-import PrivateRoute from "components/PrivateRoute";
+//import PrivateRoute from "components/PrivateRoute";
 import ReactLoading from "react-loading";
-import { Dialog, Tooltip } from "@material-ui/core";
+import { Dialog } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
 
 const Usuarios = () => {
-  const { _id } = useParams();
-  const { data, error, loading } = useQuery(GET_USUARIOS, GET_USUARIO, {
-    variables: { _id },
-  });
+  const { data, error, loading, refetch } = useQuery(GET_USUARIOS);
 
   //useEffect para datos traido del back
   useEffect(() => {
@@ -23,27 +19,34 @@ const Usuarios = () => {
 
   useEffect(() => {
     if (error) {
+      console.error(`error obteniendo los usuarios ${error}`)
       toast.error("Error consultando los usuarios");
     }
   }, [error]);
 
   const [busqueda, setBusqueda] = useState("");
-  //const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
   const bChange = (e) => {
     setBusqueda(e.target.value);
   };
 
-  const [eliminarUsuario, { data: mutationData, error: mutationError }] =
-    useMutation(ELIMINAR_USUARIO);
-  const [openDialog, setOpenDialog] = useState(false);
-  //setOpenDialog(false);
+  const handleDeleteUser = (user) => {
+    setCurrentUser(user);
+    setOpenDialog(true);
+  };
+
+  const [eliminarUsuario, { data: mutationData, loading: loadingMutation, error: mutationError }] =
+      useMutation(ELIMINAR_USUARIO);
+
 
   useEffect(() => {
     if (mutationData) {
       toast.success("Usuario eliminado correctamente");
+      refetch();
     }
-  }, [mutationData]);
+  }, [mutationData, loadingMutation]);
 
   useEffect(() => {
     if (mutationError) {
@@ -51,13 +54,14 @@ const Usuarios = () => {
     }
   }, [mutationError]);
 
-  if (loading)
+  if (loading || loadingMutation)
     return (
       <ReactLoading type="cylon" color="#4c2882" height={667} width={365} />
     );
 
   return (
-    <PrivateRoute roleList={["ADMINISTRADOR"]}>
+    //<PrivateRoute roleList={["ADMINISTRADOR"]}>
+    <Fragment>
       <h1 className="text-3xl font-extrabold text-gray-900 my-3 text-center">
         USUARIOS DEL SISTEMA
       </h1>
@@ -98,7 +102,7 @@ const Usuarios = () => {
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
               ) {
-                return user;
+                return user
               }
             }).map((item) => {
               return (
@@ -116,46 +120,47 @@ const Usuarios = () => {
                       </button>{" "}
                     </Link>
                     {"   "}
-                    <button className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white">
+                    <button
+                      className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
+                      onClick={() => handleDeleteUser(item)}
+                    >
                       Eliminar
                     </button>
-                    <div className="flex w-full justify-around">
-                      <Tooltip title="Eliminar Usuario" arrow>
-                        <i
-                          onClick={() => setOpenDialog(true)}
-                          className="fas fa-trash text-red-700 hover:text-red-500"
-                        />
-                      </Tooltip>
-                    </div>
-                    <Dialog open={openDialog}>
-                      <div className="p-8 flex flex-col">
-                        <h1 className="text-gray-900 text-2xl font-bold">
-                          ¿Está seguro de querer eliminar el usuario?
-                        </h1>
-                        <div className="flex w-full items-center justify-center my-4">
-                          <button
-                            onClick={() => eliminarUsuario()}
-                            className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
-                          >
-                            Sí
-                          </button>
-                          <button
-                            onClick={() => setOpenDialog(false)}
-                            className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
-                          >
-                            No
-                          </button>
-                        </div>
-                      </div>
-                    </Dialog>
                   </td>
                 </tr>
               );
             })}
-          ) : (<div>No autorizado</div>
+          {/* ) : (<div>No autorizado</div> */}
         </tbody>
       </table>
-    </PrivateRoute>
+
+      <Dialog open={openDialog}>
+        <div className="p-8 flex flex-col">
+          <h1 className="text-gray-900 text-2xl font-bold">
+            ¿Está seguro de querer eliminar el usuario?
+          </h1>
+          <div className="flex w-full items-center justify-center my-4">
+            <button
+                onClick={() => eliminarUsuario({
+                  variables : {_id: currentUser._id, correo: currentUser.correo}
+                })
+                    .then(r => setOpenDialog(false))
+                }
+                className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
+            >
+              Sí
+            </button>
+            <button
+                onClick={() => setOpenDialog(false)}
+                className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </Dialog>
+    </Fragment>
+    //</PrivateRoute>
   );
 };
 
