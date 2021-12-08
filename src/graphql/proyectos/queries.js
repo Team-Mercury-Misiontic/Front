@@ -51,10 +51,7 @@ export const GET_PROYECTO = gql`
       avances{
         descripcion
         fecha
-        creadoPor{
-          nombre
-          apellido
-        }
+        observaciones      
       }
       registros{
         estado
