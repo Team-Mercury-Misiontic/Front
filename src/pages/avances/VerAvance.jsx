@@ -17,7 +17,7 @@ const VerAvance = () => {
     variables: { _id },
   });
 
-  const [actualizarAvance, { data: mutationData, loading: mutationLoading, error: mutationError }] =
+  const [createAvance, { data: mutationData, loading: mutationLoading, error: mutationError }] =
     useMutation(ACTUALIZAR_AVANCE);
 
 
@@ -53,15 +53,14 @@ const VerAvance = () => {
     );
 
     const addObservacion = (avanceId)  => {
-      const observacion = document.getElementsByName("obs"+avanceId)[0].value;  
       
+      const observacion = document.getElementsByName("obs"+avanceId._id)[0].value;  
       if (observacion) {
         
-        console.log("añadiendo "+observacion);
-        
-        actualizarAvance({
+        console.log("añadiendo ",observacion);
+        createAvance({
           variables: {
-            _id: avanceId,
+            createAvanceId: avanceId._id,
             observaciones: observacion
           },
         });
@@ -100,7 +99,7 @@ const VerAvance = () => {
                   })}</ul></td>                 
                   <td>
                     <input className="rounded-md	mb-2	border-2	border-blue-300	" type="text" name={`obs${item._id}`} /> <br/>
-                    <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" onClick={() => addObservacion(item._id)}>
+                    <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" onClick={() => addObservacion(item)}>
                       Agregar Observacion</button>
                   </td>
                 </tr>            

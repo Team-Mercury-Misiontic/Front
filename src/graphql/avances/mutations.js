@@ -26,15 +26,11 @@ const CREAR_AVANCE = gql`
 `;
 
 const ACTUALIZAR_AVANCE = gql`
-  mutation actualizarAvance(
-    $_id: ID!
-    $observaciones: String!
-  ) {  
-    createAvance(_id: $_id, observaciones: $observaciones) {
-      _id
-      observaciones
-    }
+mutation CreateAvance($createAvanceId: String!, $observaciones: String!) {
+  createAvance(id: $createAvanceId, observaciones: $observaciones) {
+  _id
   }
+}
 `;
 
 export { CREAR_AVANCE, ACTUALIZAR_AVANCE };
