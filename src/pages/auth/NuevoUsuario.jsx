@@ -9,6 +9,7 @@ import useFormData from 'hooks/useFormData';
 import { REGISTRO } from 'graphql/auth/mutation';
 import { useNavigate } from 'react-router';
 import { useAuth } from 'context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const NuevoUsuario = () => {
 	const navigate = useNavigate();
@@ -125,6 +126,12 @@ const NuevoUsuario = () => {
 						loading={false}
 						text="Registrarme"
 					/>
+					<div className="flex flex-col items-center justify-center m-5">
+						<span>Ya tienes una cuenta?</span>
+						<Link to="/Login">
+							<span className="text-blue-700">Inicia sesión</span>
+						</Link>
+					</div>
 				</form>
 			</section>
 		</>

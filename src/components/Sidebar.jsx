@@ -1,3 +1,4 @@
+import { useAuth } from 'context/AuthContext';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -9,9 +10,30 @@ const SidebarLinks = () => {
       <SidebarRoute to='/Usuarios' title='Gestión Usuarios' icon='fas fa-users' />
       <SidebarRoute to='/Inscripciones' title='Gestión Inscripciones' icon='far fa-edit' />
       <SidebarRoute to='/Perfil' title='Editar Perfil' icon='fas fa-user-cog' />
+      <Logout />
     </ul>
   );
 };
+
+const Logout = () => {
+  const {setToken} = useAuth()
+
+  const deleteToken = () => {
+    setToken(null)
+  }
+
+  return (
+    <li onClick={() => deleteToken()}>
+			<NavLink to="/auth/login" className="sidebar-route text-red-700">
+				<div className="flex items-center">
+					<i className="fas fa-sign-out-alt" />
+					<span className="text-sm  ml-2">Cerrar Sesión</span>
+				</div>
+			</NavLink>
+		</li>
+  )
+}
+
 
 const Logo = () => {
   return (

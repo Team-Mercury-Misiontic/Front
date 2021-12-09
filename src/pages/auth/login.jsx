@@ -57,7 +57,7 @@ const Login = () => {
 					/>
 				</form>
 				<span>¿No tienes una cuenta?</span>
-				<Link to="/auth/register">
+				<Link to="/Registro">
 					<span className="text-blue-700">Regístrate</span>
 				</Link>
 			</div>
