@@ -1,13 +1,18 @@
 import React, {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom'
 import Usuario from 'usuario.json'
 import {GET_PROYECTO} from 'graphql/proyectos/queries';
 import {EDITAR_PROYECTO} from 'graphql/proyectos/mutations';
 import {useParams} from 'react-router-dom';
 import {useQuery, useMutation} from '@apollo/client';
 import Objetivos from 'components/Objetivos'
+import ReactLoading from "react-loading";
+import { toast } from "react-toastify";
+import Proyectos from './Proyectos';
 
 const EditarProyecto=()=> {
     const {_id} = useParams();
+    const fechaHoy = new Date().toUTCString()
     const [objetivos,setObjetivos] = useState([]);
     const {data: queryData, error: queryError, loading: queryLoading} = useQuery(GET_PROYECTO, {variables: {_id}});
     let proyecto={
@@ -24,17 +29,10 @@ const EditarProyecto=()=> {
     };
     
     const [editarProyecto, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(EDITAR_PROYECTO)
-    
     useEffect(() => {
-      if (queryData) {
-        queryData.Proyecto.objetivos.map((item)=>{
-          /* console.log(item);
-          console.log(item.descripcion);
-          console.log(item.tipo); */
-          setObjetivos([]);
-        })
-      }
-    }, [queryData]);
+      if (mutationData) {
+        toast.success('Proyecto modificado correctamente');
+      }}, [mutationData]);
 
     const handleClick = () => {
       setObjetivos([...objetivos, {descripcion: objetivo.descripcion.value, tipo: objetivo.tipo.value}])
@@ -43,12 +41,23 @@ const EditarProyecto=()=> {
     const handleReset = () => {
       setObjetivos([]);
     }
+    const handleActivar = () =>{
+      if (queryData.Proyecto.fase==="NULA") {
+          proyecto.fase = "INICIADO"
+          proyecto.fechaInicio = `${fechaHoy}`
+          proyecto.estado = "ACTIVO"
+      }else{
+        if (queryData.Proyecto.estado === "ACTIVO"){
+          proyecto.estado = "INACTIVO"
+        }else {
+          proyecto.estado = "ACTIVO"
+        }
+      };
+      console.log(Proyectos.estado);
+    }
     
-
-    if (queryError) return `Error ${queryError}`
-    if (queryLoading) return "Loading..."
-
-    console.log(objetivos);
+    if (queryError) return toast.success('Error al consultar los datos del proyecto');
+    if (queryLoading) return <ReactLoading type="cylon" color="#4c2882" height={667} width={365}/>;
 
     proyecto={
         _id: queryData.Proyecto._id,
@@ -60,18 +69,18 @@ const EditarProyecto=()=> {
         estado: queryData.Proyecto.estado,
         fase: queryData.Proyecto.fase
     };
-
-    if (mutationLoading) return 'Submitting...';
-    if (mutationError) return `Submission error! ${mutationError.message}`;
+    if (mutationError) return toast.success('Error al modificar los datos del proyecto');
 
     if (Usuario.rol === "LIDER") {
       return (
         <div className='w-full'>
-          
-        <header className="py-3">
-          <h1 className="text-center uppercase font-extrabold text-3xl"> Editar Proyecto {queryData.Proyecto.nombre}</h1>
-        </header>
-      <form className='mx-4 grid grid-cols-2 gap-4'
+          <header className="items-center justify-center p-3">
+            <Link to='/Proyectos'>
+                <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
+            </Link>
+            <h1 className='m-1 text-3xl text-gray-800 font-bold text-center'>Editar proyecto {queryData.Proyecto._id}</h1>
+          </header>
+        <form className='mx-4 grid grid-cols-2 gap-4'
             onSubmit={e => {
             e.preventDefault();
             editarProyecto({ 
@@ -90,7 +99,7 @@ const EditarProyecto=()=> {
             <section className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2'>
               <h2 className='text-center font-bold text-2xl col-span-4'> INFORMACION DEL PROYECTO</h2>
                 <div className='pl-3 grid grid-cols-4'>
-                    <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3  uppercase'>{queryData.Proyecto._id}</div>
+                    <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3'>{queryData.Proyecto._id}</div>
                     <span className='col-start-1 font-bold'>Lider:</span> <span className='col-start-2 col-span-3 uppercase'>{queryData.Proyecto.lider.nombre} {queryData.Proyecto.lider.apellido}</span>
                     <label htmlFor="nombre" className='col-start-1 font-bold'>Nombre:</label> 
                     <input className='col-start-2' type='text' id='nombre' defaultValue={queryData.Proyecto.nombre} ref={nombre=>proyecto.nombre = nombre}/>
@@ -122,7 +131,7 @@ const EditarProyecto=()=> {
                             <ul>
                                 <li className="list-disc list-inside text-left">{item.tipo}: {item.descripcion}</li>
                             </ul>
-                    )})}
+                    )})} 
                 </div>
                 <label className="text-lg" htmlFor="descripcion">Descripcion</label>
                 <input className="border h-8" placeholder="Descripcion del objetivo" type="text-area" id="descripcion" ref={descripcion=>objetivo.descripcion=descripcion} />
@@ -131,21 +140,26 @@ const EditarProyecto=()=> {
                     <option value="GENERAL">General</option>
                     <option value="ESPECIFICO">Especifico</option>
                 </select>
-                <button type="button" onClick={handleClick} className="m-auto col-span-2 border-black border-2">Añadir Objetivo</button>
-                <button type="button" onClick={handleReset} className="m-auto col-span-2 border-black border-2">Borrar Todo</button>
+                <div>
+                    <button type="button" onClick={handleClick} className="m-auto col-span-2 bg-green-400 rounded-full px-2 py-1 my-2 shadow-md hover:bg-green-600 text-white">Añadir Objetivo</button>
+                    <button type="button" onClick={handleReset} className="m-auto col-span-2 bg-red-400 rounded-full px-2 py-1 shadow-md hover:bg-red-600 text-white">Borrar Todo</button>
+                </div>
               </div>
             </section>
-            <button type="submit" className="border-black border-2">Modificar Todo</button>
+            <button type="submit" className="bg-indigo-700 text-white font-bold text-lg py-1 px-6 rounded-xl hover:bg-indigo-500 shadow-md mx-4 disabled:opacity-50 disabled:bg-gray-700">Modificar Todo</button>
         </form>
         </div>
       )
     } else if( Usuario.rol === "ADMINISTRADOR"){
       return (
-        <div className='w-full'>
-        <header className="py-3">
-          <h1 className="text-center uppercase font-extrabold text-3xl"> Editar Proyecto {queryData.Proyecto.nombre}</h1>
+      <div className='w-full'>
+        <header className="items-center justify-center p-3">
+            <Link to='/Proyectos'>
+                <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
+            </Link>
+            <h1 className='m-1 text-3xl text-gray-800 font-bold text-center'>Editar proyecto {queryData.Proyecto._id}</h1>
         </header>
-      <form className='mx-4 grid grid-cols-2 gap-4'
+        <form className='mx-4 grid grid-cols-2 gap-4'
             onSubmit={e => {
             e.preventDefault();
             editarProyecto({ 
@@ -156,33 +170,25 @@ const EditarProyecto=()=> {
                 presupuesto: parseInt(proyecto.presupuesto),
                 fechaInicio: proyecto.fechaInicio,
                 fechaFin: proyecto.fechaFin,
-                estado: proyecto.estado.value,
-                fase: proyecto.fase.value
+                estado: proyecto.estado,
+                fase: proyecto.fase
                }})
             }}>
             <section className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2'>
               <h2 className='text-center font-bold text-2xl col-span-4'> INFORMACION DEL PROYECTO</h2>
                 <div className='pl-3 grid grid-cols-4'>
-                    <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3 uppercase'>{queryData.Proyecto._id}</div>
+                    <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3'>{queryData.Proyecto._id}</div>
                     <span className='col-start-1 font-bold'>Lider:</span> <span className='col-start-2 col-span-3 uppercase'>{queryData.Proyecto.lider.nombre} {queryData.Proyecto.lider.apellido}</span>
-                    <span className='col-start-1 font-bold'>Nombre:</span> 
+                    <span className='col-start-1 font-bold'>Nombre del proyecto:</span> 
                     <span className='col-start-2'>{queryData.Proyecto.nombre}</span>
                     <span className='col-start-1 font-bold'>Presupuesto:</span> 
                     <span className='col-start-2'>{queryData.Proyecto.presupuesto}</span>
                     <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaInicio} </span>
                     <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaFin}</span>
-                    <label className='col-start-1 font-bold'>Fase:</label> 
-                    <select  ref={fase=>proyecto.fase = fase}>
-                      <option disabled value="NULA">Nula</option>
-                      <option value="INICIADO">Iniciado</option>
-                      <option value="DESARROLLO">Desarrollo</option>
-                      <option value="TERMINADO">Terminado</option>
-                    </select>
-                    <label className='col-start-1 font-bold'>Estado:</label> 
-                    <select  ref={estado=>proyecto.estado = estado}>
-                      <option value="ACTIVO">Activo</option>
-                      <option value="INACTIVO">Inactivo</option>
-                    </select>
+                    <span className='col-start-1 font-bold'>Fase:</span> <span className='col-start-2'>{queryData.Proyecto.fase}</span> 
+                    <label className='col-start-1 font-bold'>Estado:</label> <span className='col-start-2'>{queryData.Proyecto.estado}</span> 
+                    <button type="submit" onClick={handleActivar} className="col-start-3 bg-blue-700 text-white font-bold text-lg px-6 rounded-xl hover:bg-blue-500 shadow-md mx-4 mb-3 disabled:opacity-50 disabled:bg-gray-700">
+                      {queryData.Proyecto.estado==="ACTIVO"?"Desactivar":"Activar"}</button>
               </div>
             </section>
             <section className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2 py-4 grid grid-cols-2'>
@@ -198,12 +204,11 @@ const EditarProyecto=()=> {
                 </ul>
               </div>
             </section>
-            <button type="submit" className="border-black border-2">Modificar Todo</button>
+            <button type="submit" className="bg-red-700 text-white font-bold text-lg py-1 px-6 rounded-xl hover:bg-red-500 shadow-md mx-4 disabled:opacity-50 disabled:bg-gray-700  " onClick={e=>{proyecto.estado = "INACTIVO"; proyecto.fase = "TERMINADO"; proyecto.fechaFin = `${fechaHoy}`; }}> Terminar Proyecto </button>
         </form>
-        </div>
+      </div>
       )
     } else return "No tiene permisos para gestionar Proyectos"
 }
-
 
 export default EditarProyecto

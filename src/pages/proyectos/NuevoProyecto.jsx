@@ -1,18 +1,19 @@
 import React from 'react';
 import {useMutation} from '@apollo/client';
 import {useState} from 'react';
+import { Link } from 'react-router-dom';
 import Usuario from '../../usuario.json';
 import {NUEVO_PROYECTO} from '../../graphql/proyectos/mutations';
+import ReactLoading from "react-loading";
+import { toast } from 'react-toastify';
 
 const NuevoProyecto = () =>{
-    const [crearProyecto] = useMutation(NUEVO_PROYECTO);
+    const [crearProyecto,error] = useMutation(NUEVO_PROYECTO);
     const [objetivos,setObjetivos] = useState([]);
-
     const objetivo = {
         descripcion: "",
         tipo: ""
     };
-
     const handleClick = () => {
         setObjetivos([... objetivos, {descripcion: objetivo.descripcion.value, tipo: objetivo.tipo.value}])
     };
@@ -27,14 +28,17 @@ const NuevoProyecto = () =>{
         fechaInicio: "",
         fechaFin: "",
     });
+    if (error) return toast.success('Error al crear un nuevo proyecto proyecto');
+    
     
     return(
         <>
-        <section className="pt-11 text-center h-32 ">
-            <h1 className="font-sans text-4xl font-bold">
-                CREAR NUEVO PROYECTO
-            </h1>
-        </section>
+        <header className="items-center justify-center p-3">
+            <Link to='/Proyectos'>
+                <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
+            </Link>
+            <h1 className='m-1 text-3xl text-gray-800 font-bold text-center'>Crear Nuevo Proyecto</h1>
+        </header>
         <section className="h-2/4 ">
             <form className="grid grid-cols-2 min-w-min w-10/12 mx-auto bg-gray-100 py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl " onSubmit={e=>{
                 e.preventDefault();
@@ -77,10 +81,10 @@ const NuevoProyecto = () =>{
                         <option value="GENERAL">General</option>
                         <option value="ESPECIFICO">Especifico</option>
                     </select>
-                    <button type="button" onClick={handleClick} className="m-auto col-span-2 border-black border-2">Añadir Objetivo</button>
-                    <button type="button" onClick={handleReset} className="m-auto col-span-2 border-black border-2">Borrar Todo</button>
+                    <button type="button" onClick={handleClick} className="m-auto col-span-2 block bg-green-400 hover:bg-green-600 rounded-full px-2 py-1 text-white">Añadir Objetivo</button>
+                    <button type="button" onClick={handleReset} className="m-auto col-span-2 block bg-red-400 hover:bg-red-600 rounded-full px-2 py-1 text-white">Borrar Todo</button>
                 </fieldset>
-                <button type="submit"  className="border-black border-2 h-8 col-span-full m-auto">Crear Nuevo Proyecto</button>
+                <button type="submit"  className="m-auto col-span-2 block bg-indigo-400 hover:bg-indigo-600 rounded-full px-12 py-1 text-white">Crear Nuevo Proyecto</button>
             </form>
         </section>
         </>

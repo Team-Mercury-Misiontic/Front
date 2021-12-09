@@ -11,17 +11,12 @@ import { Enum_EstadoUsuario } from 'utils/enum';
 import { GET_USUARIO } from 'graphql/usuarios/queries';
 import ReactLoading from 'react-loading';
 
+
 const EditarUsuario = () => {
   const { form, formData, updateFormData } = useFormData(null);
   const { _id } = useParams();
 
-  const {
-    data: queryData,
-    error: queryError,
-    loading: queryLoading,
-  } = useQuery(GET_USUARIO, {
-    variables: { _id },
-  });
+  const {data: queryData, error: queryError, loading: queryLoading} = useQuery(GET_USUARIO, {variables: { _id },});
 
   console.log(queryData);
 

@@ -7,6 +7,8 @@ import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import { toast } from 'react-toastify';
 import ButtonLoading from 'components/ButtonLoading';
 import { Link } from "react-router-dom";
+import Usuarios from 'pages/usuarios/Usuarios';
+import ReactLoading from "react-loading";
 
 
 const VerProyecto=()=> {
@@ -20,17 +22,20 @@ const VerProyecto=()=> {
           console.log(error);
         }
       }, [error]);
-    if (loading) return <div>Cargando....</div>;
+    if (loading) return <ReactLoading type="cylon" color="#4c2882" height={667} width={365} /> ;
     return (
         <div className='w-full'>
-            <header className="py-3">
-                <h1 className="text-center uppercase font-extrabold text-3xl ">{data.Proyecto.nombre}</h1>
-            </header>
+          <header className="items-center justify-center p-3">
+            <Link to='/Proyectos'>
+                <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
+            </Link>
+            <h1 className='mx-2 text-3xl text-gray-800 font-bold text-center'>{data.Proyecto.nombre}</h1>
+          </header>
             <div className='mx-4 grid grid-cols-2 gap-4'>
                 <section className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2 py-2'>
                     <h2 className='text-center font-bold text-2xl col-span-4 mb-2'> INFORMACION DEL PROYECTO</h2>
                     <div className='pl-3 grid grid-cols-4'>
-                        <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3 uppercase'>{data.Proyecto._id}</div>
+                        <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3'>{data.Proyecto._id}</div>
                         <div className='col-start-1 font-bold'>Lider:</div> <div className='col-start-2 col-span-3 uppercase'>{data.Proyecto.lider.nombre} {data.Proyecto.lider.apellido}</div>
                         <span className='col-start-1 font-bold'>Presupuesto:</span> <span className='col-start-2 uppercase'>{data.Proyecto.presupuesto}</span>
                         <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{data.Proyecto.fechaInicio}</span>
@@ -50,11 +55,10 @@ const VerProyecto=()=> {
                         <Objetivos item={data.Proyecto} tipo="ESPECIFICO" className="list-disc"/>
                     </ul>
                 </section>
-                <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-1 py-4 text-center'>
+                <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-1 py-4'>
                     <h2 className='text-center font-bold text-l'>ESTUDIANTES INSCRITOS</h2>
                     <Estudiantes item={data.Proyecto}/>
-                    <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >
-                        Inscribirse</button>
+                    
                 </section>
                 <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center'>
                     <h2 className='text-center font-bold text-l'>AVANCES</h2>
@@ -73,27 +77,24 @@ const VerProyecto=()=> {
 
 
 const Estudiantes = ({item}) => {
-    console.log('listado de estudiantes inscriptos',item)
     const Estudiantes = item.registros.map((estudiante) => {
-    console.log('Verificando si esta autorizado',estudiante.estado)    
-    if (estudiante.estado==="AUTORIZADO") {
-        console.log('Verificando si esta autorizado',estudiante.estado)
+    console.log(estudiante.estudiante)    
+    if (estudiante.estado==="ACEPTADA") {
         return (
-            <ul className="pl-10">
-                <li className="list-disc">{estudiante.estudiante.nombre} {estudiante.estudiante.apellido}</li>
+            <ul className="pl-2">
+                <li className="list-disc list-inside">{estudiante.estudiante._id}</li>
             </ul>
         )
     } else return null
     })
-    console.log(Estudiantes);
-    if (Estudiantes.length !== 0) {
+    const filtro = Estudiantes.filter(estudiante => estudiante!==null)
+    if (filtro.length !== 0) {
         return Estudiantes
     } else return <p className="text-center">NO HAY ESTUDIANTES REGISTRADOS AL PROYECTO </p>
 }
 
 const Avances = ({item}) => {
     const Avances = item.avances;
-    console.log(Avances);
     if (Avances.length !== 0) {
         return (
             <>

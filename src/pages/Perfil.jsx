@@ -1,52 +1,96 @@
-import { useState } from 'react';
-import { GET_USUARIO } from 'graphql/usuarios/queries';
-import usuario from "../usuario.json";
+import Usuario from '../usuario.json'
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/client';
+import Input from 'components/Input';
+import ButtonLoading from 'components/ButtonLoading';
+import useFormData from 'hooks/useFormData';
+import { toast } from 'react-toastify';
+import { EDITAR_USUARIO } from 'graphql/usuarios/mutations';
 
-const Perfil = () =>{
-    const[editar,setEditar]=useState(false)
-    if (editar === true) {
-        return(
-            <div className="h-full">
-                <Datos editar={editar} />
-                <button className="bg-green-300 w-20 h-10 rounded-xl hover:bg-green-400 relative left-96 mt-3" >Aceptar </button>
-                <button className="bg-red-300 w-20 h-10 rounded-xl hover:bg-red-400 absolute right-96 mt-3" onClick={()=>{setEditar(false)}}>Cancelar</button>
-            </div>)
-    } else {
-        return(
-            <div className="h-full">
-                <Datos editar={editar} />
-                <button className="bg-blue-300 w-20 h-10 rounded-xl hover:bg-blue-400 relative inset-x-2/4 mt-3"  onClick={()=>{setEditar(true)}}>Editar</button>
-            </div>)        
-    }              
-}
 
-const Datos = ({editar}) =>{
-    return(
-        <>
-        <section className="pt-11 text-center h-32 ">
-            <h1 className="font-sans text-4xl font-bold uppercase">
-                {usuario.nombre + " " + usuario.apellido}
-            </h1>
-        </section>
-        <section className="h-2/3 ">
-            <form className="flex flex-col min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold  h-full rounded-3xl">
-                <label htmlFor="nombre">Nombre</label>
-                <input type="text" id="nombre" className="m-auto text-center rounded-md text-black text-lg" value={editar?null:usuario.nombre} />
-                <label htmlFor="apellido">Apellido</label>
-                <input  type="text" id="apellido" className="m-auto text-center rounded-md text-black text-lg" value={editar?null:usuario.apellido}/>
-                <label htmlFor="identificacion">Identificacion</label>
-                <input  type="text" id="identificacion" className="m-auto text-center rounded-md text-black text-lg" value={editar?null:usuario.identificacion}/>
-                <label htmlFor="correo">Correo</label>
-                <input  type="text" id="correo" className="m-auto text-center rounded-md text-black text-lg" value={usuario.correo}/>
-                <label htmlFor="rol">Rol de Usuario</label>
-                <input  type="text" id="rol" className="m-auto text-center rounded-md text-black text-lg" value={usuario.rol}/>
-                <label htmlFor="contraseña">Contraseña</label>
-                <input  type="password" id="contraseña" className="m-auto text-center rounded-md text-black text-lg" value={editar?null:usuario.contraseña}/>              
-            </form>
-        </section>
-        </>
+const Perfil = () => {
+  const { form, formData, updateFormData } = useFormData(null);
+  const [editar,setEditar]=useState(false)
 
-    )
-}
+  const [Perfil, { data: mutationData, loading: mutationLoading, error: mutationError }] =
+    useMutation(EDITAR_USUARIO);
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    console.log('fd', formData);
+    delete formData.rol;
+    Perfil({
+      variables: {...formData },
+    });
+  };
+
+  useEffect(() => {
+    if (mutationData) {
+      toast.success('Usuario modificado correctamente');
+    }
+  }, [mutationData]);
+
+  return (
+    <div className='flew flex-col w-full h-full items-center justify-center p-10'>
+      <Link to='/Usuarios'>
+        <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
+      </Link>
+      <h1 className='m-4 text-3xl text-gray-800 font-bold text-center'>{Usuario.nombre} {Usuario.apellido}</h1>
+      <form
+        onSubmit={submitForm}
+        onChange={updateFormData}
+        ref={form}
+        className='flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl'
+      >
+        <span className='m-auto text-center rounded-md text-black text-lg'>{Usuario.rol}</span>
+        <Input
+          label='Identificación:'
+          type='text'
+          name='identificacion'
+          defaultValue={Usuario.identificacion}
+          required={true}
+        />
+        <Input
+          label='Nombre'
+          type='text'
+          name='nombre'
+          defaultValue={Usuario.nombre}
+          required={true}
+        />
+        <Input
+          label='Apellido'
+          type='text'
+          name='apellido'
+          defaultValue={Usuario.apellido}
+          required={true}
+        />
+        <Input
+          label='Correo'
+          type='email'
+          name='correo'
+          defaultValue={Usuario.correo}
+          required={true}
+        />
+        
+        <Input
+          label='Contraseña'
+          type='password'
+          name='contraseña'
+          defaultValue={Usuario.contraseña}
+          required={true}
+        />{
+            editar?
+            <div>
+            <button type='submit' className='inline-block bg-green-700 text-white font-bold text-lg py-2 px-4  rounded-xl hover:bg-green-500 shadow-md my-4 mx-1 disabled:opacity-50 disabled:bg-gray-700' > Confirmar</button>
+            <button type="button" className='inline-block bg-red-700 text-white font-bold text-lg py-2 px-4  rounded-xl hover:bg-red-500 shadow-md my-4 mx-1 disabled:opacity-50 disabled:bg-gray-700'onClick={(e)=>setEditar(!editar)}>Cancelar</button>
+            </div>
+            :<button type="button" className='bg-indigo-700 text-white font-bold text-lg py-2 px-4  rounded-xl hover:bg-indigo-500 shadow-md my-4 mx-4 disabled:opacity-50 disabled:bg-gray-700'onClick={(e)=>setEditar(!editar)}>Editar perfil</button>
+        }
+        
+      </form>
+    </div>
+  );
+};
 
 export default Perfil;

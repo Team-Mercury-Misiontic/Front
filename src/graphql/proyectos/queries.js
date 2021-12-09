@@ -23,6 +23,8 @@ export const GET_PROYECTOS = gql`
       registros{
         estudiante{
           _id
+          nombre
+          apellido
         }
       }
     }
