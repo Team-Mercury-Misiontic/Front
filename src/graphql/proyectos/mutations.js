@@ -4,8 +4,8 @@ export const NUEVO_PROYECTO = gql`
 mutation crearProyecto(
     $nombre: String!
     $presupuesto: Float!
-    $fechaInicio: Date!
-    $fechaFin: Date!
+    $fechaInicio: Date
+    $fechaFin: Date
     $lider: String!
     $objetivos: [crearObjetivo]
 ){
@@ -19,8 +19,6 @@ mutation crearProyecto(
     ){
         nombre
         presupuesto
-        fechaInicio
-        fechaFin
         lider{
             _id
         }

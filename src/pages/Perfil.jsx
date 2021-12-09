@@ -1,9 +1,8 @@
 import Usuario from '../usuario.json'
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
+import { Link } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import Input from 'components/Input';
-import ButtonLoading from 'components/ButtonLoading';
 import useFormData from 'hooks/useFormData';
 import { toast } from 'react-toastify';
 import { EDITAR_USUARIO } from 'graphql/usuarios/mutations';
@@ -32,24 +31,27 @@ const Perfil = () => {
   }, [mutationData]);
 
   return (
-    <div className='flew flex-col w-full h-full items-center justify-center p-10'>
-      <Link to='/Usuarios'>
-        <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
-      </Link>
-      <h1 className='m-4 text-3xl text-gray-800 font-bold text-center'>{Usuario.nombre} {Usuario.apellido}</h1>
+    <div className='flew flex-col w-full h-full items-center justify-center p-4'>
+      <header>
+        <Link to='/Usuarios'>
+          <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
+        </Link>
+      </header>
+      <h1 className='mb-4 text-3xl text-gray-800 font-bold text-center'>{Usuario.nombre} {Usuario.apellido}</h1>
       <form
         onSubmit={submitForm}
         onChange={updateFormData}
         ref={form}
-        className='flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl'
+        className='flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100 text-center text-xl text-gray-500 uppercase font-bold h-10/12 rounded-3xl'
       >
-        <span className='m-auto text-center rounded-md text-black text-lg'>{Usuario.rol}</span>
+        <span className='mx-auto pt-1 text-center rounded-md text-black text-lg'>{Usuario.rol}</span>
         <Input
           label='Identificación:'
           type='text'
           name='identificacion'
           defaultValue={Usuario.identificacion}
           required={true}
+          readOnly={editar?false:true}
         />
         <Input
           label='Nombre'
@@ -57,6 +59,7 @@ const Perfil = () => {
           name='nombre'
           defaultValue={Usuario.nombre}
           required={true}
+          readOnly={editar?false:true}
         />
         <Input
           label='Apellido'
@@ -64,6 +67,7 @@ const Perfil = () => {
           name='apellido'
           defaultValue={Usuario.apellido}
           required={true}
+          readOnly={editar?false:true}
         />
         <Input
           label='Correo'
@@ -71,6 +75,7 @@ const Perfil = () => {
           name='correo'
           defaultValue={Usuario.correo}
           required={true}
+          readOnly={editar?false:true}
         />
         
         <Input
@@ -79,6 +84,7 @@ const Perfil = () => {
           name='contraseña'
           defaultValue={Usuario.contraseña}
           required={true}
+          readOnly={editar?false:true}
         />{
             editar?
             <div>

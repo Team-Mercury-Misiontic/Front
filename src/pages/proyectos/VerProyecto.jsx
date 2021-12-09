@@ -7,7 +7,6 @@ import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import { toast } from 'react-toastify';
 import ButtonLoading from 'components/ButtonLoading';
 import { Link } from "react-router-dom";
-import Usuarios from 'pages/usuarios/Usuarios';
 import ReactLoading from "react-loading";
 
 
@@ -22,6 +21,7 @@ const VerProyecto=()=> {
           console.log(error);
         }
       }, [error]);
+      console.log(data);
     if (loading) return <ReactLoading type="cylon" color="#4c2882" height={667} width={365} /> ;
     return (
         <div className='w-full'>
@@ -38,8 +38,8 @@ const VerProyecto=()=> {
                         <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3'>{data.Proyecto._id}</div>
                         <div className='col-start-1 font-bold'>Lider:</div> <div className='col-start-2 col-span-3 uppercase'>{data.Proyecto.lider.nombre} {data.Proyecto.lider.apellido}</div>
                         <span className='col-start-1 font-bold'>Presupuesto:</span> <span className='col-start-2 uppercase'>{data.Proyecto.presupuesto}</span>
-                        <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{data.Proyecto.fechaInicio}</span>
-                        <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{data.Proyecto.fechaFin}</span>
+                        <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{data.Proyecto.fechaInicio===null?"EL PROYECTO AUN NO HA EMPEZADO":data.Proyecto.fechaInicio}</span>
+                        <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{data.Proyecto.fechaFin===null?"EL PROYECTO AUN NO TERMINADO":data.Proyecto.fechaFin}</span>
                         <span className='col-start-1 font-bold'>Fase:</span> <span className='col-start-2 uppercase'>{data.Proyecto.fase}</span>
                         <span className='col-start-1 font-bold'>Estado:</span> <span className='col-start-2 uppercase'>{data.Proyecto.estado}</span>
                     </div>
@@ -99,7 +99,7 @@ const Avances = ({item}) => {
         return (
             <>
               <Link to={`/VerAvance/${item._id}`}>
-                <p className="text-center">Hay {Avances.length} {Avances.length == 1 ? " avance": " avances"} en el proyecto </p>
+                <p className="text-center">Hay {Avances.length} {Avances.length === 1 ? " avance": " avances"} en el proyecto </p>
                 <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >Ver Avances</button>
                 </Link>
             </>

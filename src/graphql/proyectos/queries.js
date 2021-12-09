@@ -7,8 +7,6 @@ export const GET_PROYECTOS = gql`
     _id
 		nombre
 		presupuesto
-		fechaInicio
-		fechaFin
 		estado
 		fase
 		lider{
