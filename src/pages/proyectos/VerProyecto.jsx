@@ -82,7 +82,7 @@ const Estudiantes = ({item}) => {
     if (estudiante.estado==="ACEPTADA") {
         return (
             <ul className="pl-2">
-                <li className="list-disc list-inside">{estudiante.estudiante._id}</li>
+                <li className="list-disc list-inside">{estudiante.estudiante._id}{estudiante.nombre}</li>
             </ul>
         )
     } else return null

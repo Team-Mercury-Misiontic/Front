@@ -59,6 +59,8 @@ export const GET_PROYECTO = gql`
         estado
         estudiante{
           _id
+          nombre
+          apellido
           }
         }
       }

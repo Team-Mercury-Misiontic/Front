@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useMutation} from '@apollo/client';
 import {useState} from 'react';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import ReactLoading from "react-loading";
 import { toast } from 'react-toastify';
 
 const NuevoProyecto = () =>{
-    const [crearProyecto,error] = useMutation(NUEVO_PROYECTO);
+    const [crearProyecto,data,error] = useMutation(NUEVO_PROYECTO);
     const [objetivos,setObjetivos] = useState([]);
     const objetivo = {
         descripcion: "",
@@ -28,7 +28,9 @@ const NuevoProyecto = () =>{
         fechaInicio: "",
         fechaFin: "",
     });
-    if (error) return toast.success('Error al crear un nuevo proyecto proyecto');
+    if (error) {
+        console.log(error.message);
+    } 
     
     
     return(
