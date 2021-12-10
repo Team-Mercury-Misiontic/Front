@@ -12,9 +12,9 @@ import Proyectos from './Proyectos';
 
 const EditarProyecto=()=> {
     const {_id} = useParams();
-    const fechaHoy = new Date().toUTCString()
+    const fechaHoy = new Date()
     const [objetivos,setObjetivos] = useState([]);
-    const {data: queryData, error: queryError, loading: queryLoading} = useQuery(GET_PROYECTO, {variables: {_id}});
+    const {data: queryData, error: queryError, loading: queryLoading, refetch} = useQuery(GET_PROYECTO, {variables: {_id}});
     let proyecto={
         _id: "",
         nombre: "",
@@ -27,11 +27,13 @@ const EditarProyecto=()=> {
       descripcion: "",
       tipo: ""
     };
+    console.log(fechaHoy)
     
     const [editarProyecto, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(EDITAR_PROYECTO)
     useEffect(() => {
       if (mutationData) {
         toast.success('Proyecto modificado correctamente');
+        refetch();
       }}, [mutationData]);
 
     const handleClick = () => {
@@ -56,7 +58,7 @@ const EditarProyecto=()=> {
       console.log(Proyectos.estado);
     }
     
-    if (queryError) return toast.success('Error al consultar los datos del proyecto');
+    if (queryError) return toast.error('Error al consultar los datos del proyecto');
     if (queryLoading) return <ReactLoading type="cylon" color="#4c2882" height={667} width={365}/>;
 
     proyecto={
@@ -69,7 +71,7 @@ const EditarProyecto=()=> {
         estado: queryData.Proyecto.estado,
         fase: queryData.Proyecto.fase
     };
-    if (mutationError) return toast.success('Error al modificar los datos del proyecto');
+    if (mutationError) return toast.error('Error al modificar los datos del proyecto');
 
     if (Usuario.rol === "LIDER") {
       return (
@@ -186,9 +188,11 @@ const EditarProyecto=()=> {
                     <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaInicio} </span>
                     <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaFin}</span>
                     <span className='col-start-1 font-bold'>Fase:</span> <span className='col-start-2'>{queryData.Proyecto.fase}</span> 
-                    <label className='col-start-1 font-bold'>Estado:</label> <span className='col-start-2'>{queryData.Proyecto.estado}</span> 
-                    <button type="submit" onClick={handleActivar} className="col-start-3 bg-blue-700 text-white font-bold text-lg px-6 rounded-xl hover:bg-blue-500 shadow-md mx-4 mb-3 disabled:opacity-50 disabled:bg-gray-700">
-                      {queryData.Proyecto.estado==="ACTIVO"?"Desactivar":"Activar"}</button>
+                    <label className='col-start-1 font-bold'>Estado:</label> <span className='col-start-2 pb-2'>{queryData.Proyecto.estado}</span> 
+                    {queryData.Proyecto.fase==="TERMINADO"?null:
+                      <button type="submit" onClick={handleActivar} className="col-start-3 bg-blue-700 text-white font-bold text-lg px-5 rounded-xl hover:bg-blue-500 shadow-md mx-4 mb-3 disabled:opacity-50 disabled:bg-gray-700">
+                      {queryData.Proyecto.estado==="ACTIVO"?"Desactivar":"Activar"}</button>}
+                    
               </div>
             </section>
             <section className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2 py-4 grid grid-cols-2'>

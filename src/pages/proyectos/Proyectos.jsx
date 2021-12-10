@@ -16,9 +16,8 @@ const Proyectos = ()=> {
         return `error obteniendo los usuarios ${error}`
         }
     }, [error]);
-    if (loading) return <ReactLoading type="cylon" color="#4c2882" height={667} width={365} /> ;
+    if (loading) return <ReactLoading type="cylon" color="#4c2882" height={667} width={365} />;
     if (data) {
-        console.log("carga de proyecto",data.Proyectos);
         if (Usuario.rol === 'ADMINISTRADOR'){
             return(
                 <div className ="w-full">
@@ -43,11 +42,7 @@ const Proyectos = ()=> {
                     <div className="my-6 font-sans text-4xl text-center font-bold">
                         <h1 className="text-3xl font-extrabold text-gray-900 my-3 text-center">PROYECTOS</h1>
                     </div>               
-                    <Estudiante data={data.Proyectos} registrado={true}/>
-                    <div className="my-6 font-sans text-4xl text-center font-bold">
-                        <h1 className="text-3xl font-extrabold text-gray-900 my-3 text-center"> PROYECTOS DISPONIBLES</h1>
-                    </div> 
-                    <Estudiante data={data.Proyectos} registrado={false}/> 
+                    <Estudiante data={data.Proyectos}/>
                 </div>
             ) 
         }
@@ -134,7 +129,6 @@ const Lider = ({data}) => {
           }
         }).map((item) =>{
         const Gestionar = (item) =>{
-            console.log(item, item.item);
             if (item.item.estado === "ACTIVO") {
                 return(
                     <>
@@ -209,7 +203,7 @@ const Lider = ({data}) => {
         ) 
 }
 
-const Estudiante = ({data , registrado}) => {
+/* const Estudiante = ({data , registrado}) => {
     const [busqueda, setBusqueda] = useState("");
     const bChange = (e) => {
         setBusqueda(e.target.value);
@@ -291,9 +285,9 @@ const Estudiante = ({data , registrado}) => {
         </table>
         </>
     )
-}
+} */
 
-/* const Estudiante = ({data}) => {
+const Estudiante = ({data}) => {
     const [busqueda, setBusqueda] = useState("");
     const [registrado,isRegistrado] = useState(false)
     const bChange = (e) => {
@@ -380,6 +374,6 @@ const Estudiante = ({data , registrado}) => {
         </table>
         </>
     )
-} */
+}
 
 export default Proyectos

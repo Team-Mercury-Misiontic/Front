@@ -1,12 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useMutation} from '@apollo/client';
-import {useState} from 'react';
 import { Link } from 'react-router-dom';
 import Usuario from '../../usuario.json';
+import { toast } from "react-toastify";
 import {NUEVO_PROYECTO} from '../../graphql/proyectos/mutations';
 
 const NuevoProyecto = () =>{
-    const [crearProyecto,error] = useMutation(NUEVO_PROYECTO);
+    const [crearProyecto,{error}] = useMutation(NUEVO_PROYECTO,{
+        onCompleted() {
+            toast.success("Proyecto Creado con exito");
+        }
+      });
     const [objetivos,setObjetivos] = useState([]);
     const objetivo = {
         descripcion: "",
@@ -26,7 +30,9 @@ const NuevoProyecto = () =>{
     });
     if (error) {
         console.log(error.message);
+        toast.error("Problemas creando el proyecto");
     } 
+
     
     
     return(
@@ -40,12 +46,13 @@ const NuevoProyecto = () =>{
         <section className="h-3/4">
             <form className="flex flex-col gap-2 min-w-min w-10/12 mx-auto bg-gray-100 py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl " onSubmit={e=>{
                 e.preventDefault();
-                crearProyecto({variables:{
-                    nombre: proyecto.nombre.value,
-                    presupuesto: parseInt(proyecto.presupuesto.value),
-                    lider: proyecto.lider,
-                    objetivos: objetivos
-                }})
+                crearProyecto({
+                    variables:{
+                        nombre: proyecto.nombre.value,
+                        presupuesto: parseInt(proyecto.presupuesto.value),
+                        lider: proyecto.lider,
+                        objetivos: objetivos                
+                    }})
                 }}>
                     <label htmlFor="nombre" >Nombre</label>
                     <input ref={nombre=>setProyecto(proyecto.nombre = nombre)}  placeholder="Nombre del proyecto" id="nombre" className="m-auto text-center rounded-md text-black text-lg "/>

@@ -19,6 +19,8 @@ mutation crearProyecto(
     ){
         nombre
         presupuesto
+        fechaInicio
+        fechaFin
         lider{
             _id
         }

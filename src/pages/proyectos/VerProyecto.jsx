@@ -8,20 +8,24 @@ import { toast } from 'react-toastify';
 import ButtonLoading from 'components/ButtonLoading';
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading";
+import Usuario from '../../usuario.json';
 
 
 const VerProyecto=()=> {
     const { _id } = useParams();
     const {data, error, loading} = useQuery(GET_PROYECTO, {variables:{ _id }});
+    
     useEffect(() => {
         console.log("data servidor", data);
       }, [data]);
+
     useEffect(() => {
         if (error) {
-          console.log(error);
+          console.log(error.message);
+          toast.error("Error al mostrar los proyectos")
         }
       }, [error]);
-      console.log(data);
+
     if (loading) return <ReactLoading type="cylon" color="#4c2882" height={667} width={365} /> ;
     return (
         <div className='w-full'>
@@ -31,7 +35,7 @@ const VerProyecto=()=> {
             </Link>
             <h1 className='mx-2 text-3xl text-gray-800 font-bold text-center'>{data.Proyecto.nombre}</h1>
           </header>
-            <div className='mx-4 grid grid-cols-2 gap-4'>
+            <div className='mx-4 grid grid-cols-2 gap-4 mb-6 '>
                 <section className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2 py-2'>
                     <h2 className='text-center font-bold text-2xl col-span-4 mb-2'> INFORMACION DEL PROYECTO</h2>
                     <div className='pl-3 grid grid-cols-4'>
@@ -64,12 +68,15 @@ const VerProyecto=()=> {
                     <h2 className='text-center font-bold text-l'>AVANCES</h2>
                     <Avances item={data.Proyecto}/>                  
                 </section>
+            {
+              Usuario.rol==="ESTUDIANTE"?<InscripcionProyecto 
+              idProyecto={data.Proyecto._id} 
+              estado={data.Proyecto.estado}
+              inscripciones={data.Proyectoinscripciones}
+              />:null
+            }
             </div>
-            <InscripcionProyecto 
-            idProyecto={data.Proyecto._id} 
-            estado={data.Proyecto.estado}
-            inscripciones={data.Proyectoinscripciones}
-            />
+            
         </div>
     )
 }
@@ -77,8 +84,7 @@ const VerProyecto=()=> {
 
 
 const Estudiantes = ({item}) => {
-    const Estudiantes = item.registros.map((estudiante) => {
-    console.log(estudiante.estudiante)    
+    const Estudiantes = item.registros.map((estudiante) => {   
     if (estudiante.estado==="ACEPTADA") {
         return (
             <ul className="pl-2">

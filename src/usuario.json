@@ -1,10 +1,10 @@
 {
-    "_id":"61af74d5ba5adc3b57f4b11f",
+    "_id":"619d06d7819330b0b1aad0f2",
     "identificacion":"4681324",
     "correo":"correo167@gmail.com",
     "nombre":"Carlos Mario",
     "apellido":"Gomez",
     "estado":"AUTORIZADO",
-    "rol":"ESTUDIANTE",
+    "rol":"ADMINISTRADOR",
     "contraseña": "ESta es Una Contraseña"
 }
