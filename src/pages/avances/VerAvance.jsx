@@ -2,15 +2,38 @@ import React, { Fragment, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
-import { GET_USUARIOS } from "graphql/usuarios/queries";
-import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
+import { GET_AVANCE_BY_PROJECT } from "graphql/avances/queries";
 //import PrivateRoute from "components/PrivateRoute";
 import ReactLoading from "react-loading";
 import { Dialog } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
+import { useParams } from "react-router";
+import { ACTUALIZAR_AVANCE } from "graphql/avances/mutations";
+
 
 const VerAvance = () => {
-  const { data, error, loading, refetch } = useQuery(GET_USUARIOS);
+  const { _id } = useParams();
+  const { data, error, loading, refetch } = useQuery(GET_AVANCE_BY_PROJECT, {
+    variables: { _id },
+  });
+
+  const [createAvance, { data: mutationData, loading: mutationLoading, error: mutationError }] =
+    useMutation(ACTUALIZAR_AVANCE);
+
+
+    useEffect(() => {
+      if (mutationData) {      
+        refetch();
+      }
+    }, [mutationData]);
+  
+    useEffect(() => {
+      if (mutationError) {
+        console.error(`error realizando creacion ${mutationError}`);
+        toast.error("Error  realizando creacion");
+      }
+    }, [mutationError]);
+  
 
   //useEffect para datos traido del back
   useEffect(() => {
@@ -23,142 +46,69 @@ const VerAvance = () => {
       toast.error("Error consultando los usuarios");
     }
   }, [error]);
-
-  const [busqueda, setBusqueda] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-
-  const bChange = (e) => {
-    setBusqueda(e.target.value);
-  };
-
-  const handleDeleteUser = (user) => {
-    setCurrentUser(user);
-    setOpenDialog(true);
-  };
-
-  const [eliminarUsuario, { data: mutationData, loading: loadingMutation, error: mutationError }] =
-      useMutation(ELIMINAR_USUARIO);
-
-
-  useEffect(() => {
-    if (mutationData) {
-      toast.success("Usuario eliminado correctamente");
-      refetch();
-    }
-  }, [mutationData, loadingMutation]);
-
-  useEffect(() => {
-    if (mutationError) {
-      toast.error("Error eliminando el usuario");
-    }
-  }, [mutationError]);
-
-  if (loading || loadingMutation)
+ 
+  if (loading || mutationLoading)
     return (
       <ReactLoading type="cylon" color="#4c2882" height={667} width={365} />
     );
+
+    const addObservacion = (avanceId)  => {
+      
+      const observacion = document.getElementsByName("obs"+avanceId._id)[0].value;  
+      if (observacion) {
+        
+        console.log("añadiendo ",observacion);
+        createAvance({
+          variables: {
+            createAvanceId: avanceId._id,
+            observaciones: observacion
+          },
+        });
+      }      
+
+    }
 
   return (
     //<PrivateRoute roleList={["ADMINISTRADOR"]}>
     <Fragment>
       <h1 className="text-3xl font-extrabold text-gray-900 my-3 text-center">
-        USUARIOS DEL SISTEMA
+        Avances del proyecto {data.filtrarAvance[0].proyecto.nombre}
       </h1>
       <br />
-      <div className="rounded-md shadow-sm -space-y-px">
-        <label>
-          <b>Buscar:</b>
-        </label>
-        <input
-          className="appearance-none rounded-none relative block w-full px-3 py-2 border-2 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-          value={busqueda}
-          placeholder="Búsqueda por Identificación o Nombre"
-          onChange={bChange}
-        />
-      </div>
+    
+    <div className="p-3">
       <table className="tabla">
         <thead>
-          <tr>
-            <th scope="col">Identificación</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Correo</th>
-            <th scope="col">Rol</th>
-            <th scope="col">Estado</th>
+          <tr>            
+            <th scope="col">Fecha</th>
+            <th scope="col">Descripcion</th>
+            <th scope="col">Creado Por</th>
+            <th scope="col">Observaciones</th>            
             <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {data &&
-            data.Usuarios.filter((user) => {
-              if (
-                user._id
-                  .toString()
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase()) ||
-                user.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-                user.identificacion
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase())
-              ) {
-                return user
-              }
-            }).map((item) => {
-              return (
+          {data.filtrarAvance.map((item) => {
+              return (              
                 <tr key={item._id}>
-                  <td>{item.identificacion}</td>
-                  <td>{item.nombre}</td>
-                  <td>{item.apellido}</td>
-                  <td>{item.correo}</td>
-                  <td>{Enum_Rol[item.rol]}</td>
-                  <td>{Enum_EstadoUsuario[item.estado]}</td>
+                  <td>{item.fecha.split("T")[0]}</td>
+                  <td>{item.descripcion}</td>
+                  <td>{item.creadoPor.nombre}</td>
+                  <td><ul>{item.observaciones.map((obs) => {
+                    return (<li key={obs}>{obs}</li>)
+                  })}</ul></td>                 
                   <td>
-                    <Link to={`/usuarios/EditarUsuario/${item._id}`}>
-                      <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
-                        Editar
-                      </button>{" "}
-                    </Link>
-                    {"   "}
-                    <button
-                      className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
-                      onClick={() => handleDeleteUser(item)}
-                    >
-                      Eliminar
-                    </button>
+                    <input className="rounded-md	mb-2	border-2	border-blue-300	" type="text" name={`obs${item._id}`} /> <br/>
+                    <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" onClick={() => addObservacion(item)}>
+                      Agregar Observacion</button>
                   </td>
-                </tr>
+                </tr>            
               );
             })}
-          {/* ) : (<div>No autorizado</div> */}
         </tbody>
       </table>
-
-      <Dialog open={openDialog}>
-        <div className="p-8 flex flex-col">
-          <h1 className="text-gray-900 text-2xl font-bold">
-            ¿Está seguro de querer eliminar el usuario?
-          </h1>
-          <div className="flex w-full items-center justify-center my-4">
-            <button
-                onClick={() => eliminarUsuario({
-                  variables : {_id: currentUser._id, correo: currentUser.correo}
-                })
-                    .then(r => setOpenDialog(false))
-                }
-                className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
-            >
-              Sí
-            </button>
-            <button
-                onClick={() => setOpenDialog(false)}
-                className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
-            >
-              No
-            </button>
-          </div>
-        </div>
-      </Dialog>
+      </div>
+   
     </Fragment>
     //</PrivateRoute>
   );

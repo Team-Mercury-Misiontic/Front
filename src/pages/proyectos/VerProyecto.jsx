@@ -62,7 +62,11 @@ const VerProyecto=()=> {
                 <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-1 py-4'>
                     <h2 className='text-center font-bold text-l'>ESTUDIANTES INSCRITOS</h2>
                     <Estudiantes item={data.Proyecto}/>
-                    
+                     <InscripcionProyecto 
+                      idProyecto={data.Proyecto._id} 
+                      estado={data.Proyecto.estado}
+                      inscripciones={data.Proyectoinscripciones}
+                      />
                 </section>
                 <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center'>
                     <h2 className='text-center font-bold text-l'>AVANCES</h2>
@@ -76,7 +80,6 @@ const VerProyecto=()=> {
               />:null
             }
             </div>
-            
         </div>
     )
 }
