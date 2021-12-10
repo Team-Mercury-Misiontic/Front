@@ -53,19 +53,17 @@ const VerProyecto=()=> {
                 <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-1 py-4 text-center'>
                     <h2 className='text-center font-bold text-l'>ESTUDIANTES INSCRITOS</h2>
                     <Estudiantes item={data.Proyecto}/>
-                    <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >
-                        Inscribirse</button>
+                     <InscripcionProyecto 
+                      idProyecto={data.Proyecto._id} 
+                      estado={data.Proyecto.estado}
+                      inscripciones={data.Proyectoinscripciones}
+                      />    
                 </section>
                 <section className='bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center'>
                     <h2 className='text-center font-bold text-l'>AVANCES</h2>
                     <Avances item={data.Proyecto}/>                  
                 </section>
             </div>
-            <InscripcionProyecto 
-            idProyecto={data.Proyecto._id} 
-            estado={data.Proyecto.estado}
-            inscripciones={data.Proyectoinscripciones}
-            />
         </div>
     )
 }
@@ -93,13 +91,13 @@ const Estudiantes = ({item}) => {
 
 const Avances = ({item}) => {
     const Avances = item.avances;
-    console.log(Avances);
+    //console.log(Avances);
     if (Avances.length !== 0) {
         return (
             <>
               <Link to={`/VerAvance/${item._id}`}>
                 <p className="text-center">Hay {Avances.length} {Avances.length == 1 ? " avance": " avances"} en el proyecto </p>
-                <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >Ver Avances</button>
+                <button className="col-span-2 bg-indigo-700 p-2 rounded-xl shadow-md hover:bg-indigo-500 text-white  font-bold text-lg " >Ver Avances</button>
                 </Link>
             </>
         )
