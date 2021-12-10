@@ -17,6 +17,9 @@ import "styles/globals.css";
 import "styles/tabla.css";
 import Avances from "pages/avances/Avances";
 import VerAvance from "pages/avances/VerAvance";
+import AuthLayout from "layouts/AuthLayout";
+import Register from "pages/auth/register";
+import Login from "pages/auth/login";
 
 
 // import PrivateRoute from 'components/PrivateRoute';
@@ -54,6 +57,10 @@ function App() {
                 <Route path='Inscripciones' element={<Inscripciones />} />
                 <Route path='/inscripciones/Inscripciones' element={<Inscripciones />} />
                 <Route path="Perfil" element={<Perfil />} />
+              </Route>
+              <Route path='/auth' element={<AuthLayout />}>
+                <Route path='register' element={<Register />} />
+                <Route path='login' element={<Login />} />
               </Route>
             </Routes>
           </BrowserRouter>
