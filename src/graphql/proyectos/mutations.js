@@ -1,32 +1,32 @@
 import {gql} from '@apollo/client';
 
 export const NUEVO_PROYECTO = gql`
-    mutation crearProyecto(
-        $nombre: String!
-        $presupuesto: Float!
-        $fechaInicio: Date!
-        $fechaFin: Date!
-        $lider: String!
-        $objetivos: [crearObjetivo]
+mutation crearProyecto(
+    $nombre: String!
+    $presupuesto: Float!
+    $fechaInicio: Date
+    $fechaFin: Date
+    $lider: String!
+    $objetivos: [crearObjetivo]
+){
+    crearProyecto(
+        nombre: $nombre,
+        presupuesto: $presupuesto,
+        fechaInicio: $fechaInicio,
+        fechaFin: $fechaFin,
+        lider: $lider
+        objetivos:$objetivos
     ){
-        crearProyecto(
-			nombre: $nombre,
-			presupuesto: $presupuesto,
-			fechaInicio: $fechaInicio,
-			fechaFin: $fechaFin,
-			lider: $lider
-            objetivos:$objetivos
-		){
-            nombre
-            presupuesto
-            fechaInicio
-            fechaFin
-            lider{
-                _id
-            }
-            objetivos{
-                descripcion
-                tipo
+        nombre
+        presupuesto
+        fechaInicio
+        fechaFin
+        lider{
+            _id
+        }
+        objetivos{
+            descripcion
+            tipo
             }
         }
     }
@@ -39,8 +39,8 @@ mutation editarProyecto(
     $_id: String!
     $nombre: String!
     $presupuesto: Float!
-    $fechaInicio: Date!
-    $fechaFin: Date!
+    $fechaInicio: Date
+    $fechaFin: Date
     $estado: Enum_EstadoProyecto!
     $fase: Enum_FaseProyecto!
     $lider: String!
@@ -50,17 +50,15 @@ mutation editarProyecto(
         _id: $_id,
         nombre: $nombre,
         presupuesto: $presupuesto,
-        fechaInicio: $fechaInicio,
-        fechaFin: $fechaFin,
         estado: $estado,
+        fechaInicio: $fechaInicio
+        fechaFin: $fechaFin
         fase: $fase,
-        lider: $lider
+        lider: $lider,
         objetivos: $objetivos
     ){ _id
         nombre
         presupuesto
-        fechaInicio
-        fechaFin
         estado
         fase
         lider{

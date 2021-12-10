@@ -7,8 +7,6 @@ export const GET_PROYECTOS = gql`
     _id
 		nombre
 		presupuesto
-		fechaInicio
-		fechaFin
 		estado
 		fase
 		lider{
@@ -23,6 +21,8 @@ export const GET_PROYECTOS = gql`
       registros{
         estudiante{
           _id
+          nombre
+          apellido
         }
       }
     }
@@ -57,6 +57,8 @@ export const GET_PROYECTO = gql`
         estado
         estudiante{
           _id
+          nombre
+          apellido
           }
         }
       }
