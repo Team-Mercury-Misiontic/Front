@@ -24,7 +24,7 @@ const Avances = () => {
 
   useEffect(() => {
     if (error) {
-      console.error(`error obteniendo los datos ${error}`);
+      console.error(`Error obteniendo los datos ${error}`);
       toast.error("Error consultando los datos");
     }
   }, [error]);
@@ -44,16 +44,16 @@ const Avances = () => {
 
   useEffect(() => {
     if (mutationData) {
-      console.log(`Se ha creado con exito`);
-      toast.success("Se ha creado con exito");
+      console.log(`Se ha creado con éxito`);
+      toast.success("Se ha creado con éxito");
       refetch();
     }
   }, [mutationData]);
 
   useEffect(() => {
     if (mutationError) {
-      console.error(`error realizando creacion ${mutationError}`);
-      toast.error("Error  realizando creacion");
+      console.error(`Error realizando creación ${mutationError}`);
+      toast.error("Error  realizando creación");
     }
   }, [mutationError]);
 
@@ -62,7 +62,7 @@ const Avances = () => {
   return (
     <div className="p-10 flex flex-col items-center">
       <div className="self-start">
-        <Link to="/proyectos">
+        <Link to={`/proyectos/${_id}`}>
           <i className="fas fa-arrow-left" />
         </Link>
       </div>
