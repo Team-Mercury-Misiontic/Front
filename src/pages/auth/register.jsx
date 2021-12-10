@@ -11,7 +11,7 @@ import DropDown from 'components/DropDown';
 import { Enum_Rol } from 'utils/enum';
 
 const Register = () => {
-  //const { setToken } = useAuth();
+  const { setToken } = useAuth();
   const navigate = useNavigate();
   const { form, formData, updateFormData } = useFormData();
 
@@ -25,20 +25,11 @@ const Register = () => {
 useEffect(() => {
     if (dataMutation) {
       if (dataMutation.register.token) {
-        
-        localStorage.setItem('token',dataMutation.register.token);
+        setToken(dataMutation.registro.token);
         navigate('/');
       }
     }
-  }, [dataMutation],navigate);
-  // useEffect(() => {
-  //   if (dataMutation) {
-  //     if (dataMutation.registro.token) {
-  //       setToken(dataMutation.registro.token);
-  //       navigate('/');
-  //     }
-  //   }
-  // }, [dataMutation, setToken, navigate]);
+  }, [dataMutation],setToken,navigate);
 
   return (
     <div className='flex flex-col h-full w-full items-center justify-center'>

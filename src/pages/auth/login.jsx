@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
-//  const { setToken } = useAuth();
+  const { setToken } = useAuth();
   const { form, formData, updateFormData } = useFormData();
 
   const [login, { data: dataMutation, loading: mutationLoading, error: mutationError }] =
@@ -27,11 +27,11 @@ const Login = () => {
   useEffect(() => {
     if (dataMutation) {
       if (dataMutation.login.token) {
-        //setToken(dataMutation.login.token);
+        setToken(dataMutation.login.token);
         navigate('/');
       }
     }
-  }, [dataMutation, , navigate]);
+  }, [dataMutation,setToken , navigate]);
 
   return (
     <div className='flex flex-col items-center justify-center w-full h-full p-10'>
