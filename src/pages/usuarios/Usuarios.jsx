@@ -4,10 +4,10 @@ import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { GET_USUARIOS } from "graphql/usuarios/queries";
 import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
-//import PrivateRoute from "components/PrivateRoute";
 import ReactLoading from "react-loading";
 import { Dialog } from "@material-ui/core";
-import { Enum_Rol, Enum_EstadoUsuario } from 'utils/enum';
+import { Enum_Rol, Enum_EstadoUsuario } from "utils/enum";
+import PrivateComponent from "components/PrivateComponent";
 
 const Usuarios = () => {
   const { data, error, loading, refetch } = useQuery(GET_USUARIOS);
@@ -19,7 +19,7 @@ const Usuarios = () => {
 
   useEffect(() => {
     if (error) {
-      console.error(`error obteniendo los usuarios ${error}`)
+      console.error(`error obteniendo los usuarios ${error}`);
       toast.error("Error consultando los usuarios");
     }
   }, [error]);
@@ -37,9 +37,10 @@ const Usuarios = () => {
     setOpenDialog(true);
   };
 
-  const [eliminarUsuario, { data: mutationData, loading: loadingMutation, error: mutationError }] =
-      useMutation(ELIMINAR_USUARIO);
-
+  const [
+    eliminarUsuario,
+    { data: mutationData, loading: loadingMutation, error: mutationError },
+  ] = useMutation(ELIMINAR_USUARIO);
 
   useEffect(() => {
     if (mutationData) {
@@ -60,7 +61,6 @@ const Usuarios = () => {
     );
 
   return (
-    //<PrivateRoute roleList={["ADMINISTRADOR"]}>
     <Fragment>
       <h1 className="text-3xl font-extrabold text-gray-900 my-3 text-center">
         USUARIOS DEL SISTEMA
@@ -77,62 +77,67 @@ const Usuarios = () => {
           onChange={bChange}
         />
       </div>
-      <div className="p-3"><table className="tabla w-full">
-        <thead>
-          <tr>
-            <th scope="col">Identificación</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Correo</th>
-            <th scope="col">Rol</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data &&
-            data.Usuarios.filter((user) => {
-              if (
-                user._id
-                  .toString()
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase()) ||
-                user.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-                user.identificacion
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase())
-              ) {
-                return user
-              }
-            }).map((item) => {
-              return (
-                <tr key={item._id}>
-                  <td>{item.identificacion}</td>
-                  <td>{item.nombre}</td>
-                  <td>{item.apellido}</td>
-                  <td>{item.correo}</td>
-                  <td>{Enum_Rol[item.rol]}</td>
-                  <td>{Enum_EstadoUsuario[item.estado]}</td>
-                  <td>
-                    <Link to={`/usuarios/EditarUsuario/${item._id}`}>
-                      <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
-                        Editar
-                      </button>{" "}
-                    </Link>
-                    {"   "}
-                    <button
-                      className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
-                      onClick={() => handleDeleteUser(item)}
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          {/* ) : (<div>No autorizado</div> */}
-        </tbody>
-      </table>
+      <div className="p-3">
+        <table className="tabla w-full">
+          <thead>
+            <tr>
+              <th scope="col">Identificación</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Correo</th>
+              <th scope="col">Rol</th>
+              <th scope="col">Estado</th>
+              <PrivateComponent roleList={["ADMINISTRADOR"]}>
+                <th scope="col">Acciones</th>
+              </PrivateComponent>
+            </tr>
+          </thead>
+          <tbody>
+            {data &&
+              data.Usuarios.filter((user) => {
+                if (
+                  user._id
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase()) ||
+                  user.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+                  user.identificacion
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                ) {
+                  return user;
+                }
+              }).map((item) => {
+                return (
+                  <tr key={item._id}>
+                    <td>{item.identificacion}</td>
+                    <td>{item.nombre}</td>
+                    <td>{item.apellido}</td>
+                    <td>{item.correo}</td>
+                    <td>{Enum_Rol[item.rol]}</td>
+                    <td>{Enum_EstadoUsuario[item.estado]}</td>
+                    <PrivateComponent roleList={["ADMINISTRADOR"]}>
+                      <td>
+                        <Link to={`/usuarios/EditarUsuario/${item._id}`}>
+                          <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+                            Editar
+                          </button>{" "}
+                        </Link>
+                        {"   "}
+                        <button
+                          className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
+                          onClick={() => handleDeleteUser(item)}
+                        >
+                          Eliminar
+                        </button>
+                      </td>
+                    </PrivateComponent>
+                  </tr>
+                );
+              })}
+            {/* ) : (<div>No autorizado</div> */}
+          </tbody>
+        </table>
       </div>
 
       <Dialog open={openDialog}>
@@ -142,18 +147,21 @@ const Usuarios = () => {
           </h1>
           <div className="flex w-full items-center justify-center my-4">
             <button
-                onClick={() => eliminarUsuario({
-                  variables : {_id: currentUser._id, correo: currentUser.correo}
-                })
-                    .then(r => setOpenDialog(false))
-                }
-                className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
+              onClick={() =>
+                eliminarUsuario({
+                  variables: {
+                    _id: currentUser._id,
+                    correo: currentUser.correo,
+                  },
+                }).then((r) => setOpenDialog(false))
+              }
+              className="mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md"
             >
               Sí
             </button>
             <button
-                onClick={() => setOpenDialog(false)}
-                className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
+              onClick={() => setOpenDialog(false)}
+              className="mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md"
             >
               No
             </button>
@@ -161,7 +169,6 @@ const Usuarios = () => {
         </div>
       </Dialog>
     </Fragment>
-    //</PrivateRoute>
   );
 };
 
