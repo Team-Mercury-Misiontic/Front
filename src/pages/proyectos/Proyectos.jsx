@@ -62,8 +62,11 @@ const Administrador = ({data, Usuario}) => {
         if (
           proyecto._id.toString().toLowerCase().includes(busqueda.toLowerCase()) ||
           proyecto.nombre.toLowerCase().includes(busqueda.toLowerCase())||
+          proyecto.lider._id.toLowerCase().includes(busqueda.toLowerCase())||
           proyecto.lider.nombre.toLowerCase().includes(busqueda.toLowerCase())||
-          proyecto.lider.apellido.toLowerCase().includes(busqueda.toLowerCase())
+          proyecto.lider.apellido.toLowerCase().includes(busqueda.toLowerCase())||
+          proyecto.fase.toLowerCase().includes(busqueda.toLowerCase())||
+          proyecto.estado.toLowerCase().includes(busqueda.toLowerCase())
         ) {
           return proyecto
         } else return null
@@ -89,7 +92,7 @@ const Administrador = ({data, Usuario}) => {
         <div className="pl-4 mb-5">
             <label className="font-bold">BUSCAR: </label>
             <input className="appearance-none rounded-none w-72 px-3 py-2 border-2 border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                value={busqueda} placeholder="Búsqueda por Identificación o Nombre" onChange={bChange}/>
+                value={busqueda} placeholder="Búsqueda por cualquier campo" onChange={bChange}/>
         </div> 
         <table className="tabla">
             <thead>
@@ -121,7 +124,7 @@ const Lider = ({data, Usuario}) => {
             proyecto._id.toString().toLowerCase().includes(busqueda.toLowerCase()) ||
             proyecto.nombre.toLowerCase().includes(busqueda.toLowerCase())||
             proyecto.lider.nombre.toLowerCase().includes(busqueda.toLowerCase())||
-            proyecto.lider.apellido.toLowerCase().includes(busqueda.toLowerCase())
+            proyecto.lider.apellido.toLowerCase().includes(busqueda.toLowerCase())            
           ) {
             return proyecto
           }

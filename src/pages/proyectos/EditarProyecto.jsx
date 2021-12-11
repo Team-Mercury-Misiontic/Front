@@ -226,7 +226,9 @@ const EditarProyecto=()=> {
                 </ul>
               </div>
             </section>
-            <button type="submit" className="bg-red-700 text-white font-bold text-lg py-1 px-6 rounded-xl hover:bg-red-500 shadow-md mx-4 disabled:opacity-50 disabled:bg-gray-700  " onClick={e=>{proyecto.estado = "INACTIVO"; proyecto.fase = "TERMINADO"; proyecto.fechaFin = `${fechaHoy}`; }}> Terminar Proyecto </button>
+            {queryData.Proyecto.fase === "DESARROLLO"? 
+            <button type="submit" className="bg-red-700 text-white font-bold text-lg py-1 px-6 rounded-xl hover:bg-red-500 shadow-md mx-4 disabled:opacity-50 disabled:bg-gray-700  " onClick={e=>{proyecto.estado = "INACTIVO"; proyecto.fase = "TERMINADO"; proyecto.fechaFin = `${fechaHoy}`; }}> Terminar Proyecto </button>:null}
+            
         </form>
       </div>
       )
