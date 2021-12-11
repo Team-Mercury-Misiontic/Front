@@ -8,10 +8,12 @@ import { toast } from "react-toastify";
 import ButtonLoading from "components/ButtonLoading";
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading";
-import Usuario from "../../usuario.json";
+import { useUser } from 'context/userContext';
 
 const VerProyecto = () => {
   const { _id } = useParams();
+  const {userData} = useUser();
+  console.log(userData.rol);
   const { data, error, loading } = useQuery(GET_PROYECTO, {
     variables: { _id },
   });
@@ -104,23 +106,18 @@ const VerProyecto = () => {
             ESTUDIANTES INSCRITOS
           </h2>
           <Estudiantes item={data.Proyecto} />
-          <InscripcionProyecto
-            idProyecto={data.Proyecto._id}
-            estado={data.Proyecto.estado}
-            inscripciones={data.Proyectoinscripciones}
-          />
-        </section>
-        <section className="bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center">
-          <h2 className="text-center font-bold text-l">AVANCES</h2>
-          <Avances item={data.Proyecto} />
-        </section>
-        {Usuario.rol === "ESTUDIANTE" ? (
+          {userData.rol === "ESTUDIANTE" ? (
           <InscripcionProyecto
             idProyecto={data.Proyecto._id}
             estado={data.Proyecto.estado}
             inscripciones={data.Proyectoinscripciones}
           />
         ) : null}
+        </section>
+        <section className="bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center">
+          <h2 className="text-center font-bold text-l">AVANCES</h2>
+          <Avances item={data.Proyecto} />
+        </section>
       </div>
     </div>
   );
