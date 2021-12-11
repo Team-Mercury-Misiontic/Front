@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useQuery, useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { GET_AVANCE_BY_PROJECT } from "graphql/avances/queries";
-//import PrivateRoute from "components/PrivateRoute";
+import PrivateComponent from "components/PrivateComponent";
 import ReactLoading from "react-loading";
 import { useParams } from "react-router";
 import { ACTUALIZAR_AVANCE } from "graphql/avances/mutations";
@@ -64,7 +64,6 @@ const VerAvance = () => {
   };
 
   return (
-    //<PrivateRoute roleList={["ADMINISTRADOR"]}>
     <div>
       <div className="self-start p-10">
         <Link to={`/proyectos/${_id}`}>
@@ -84,7 +83,9 @@ const VerAvance = () => {
               <th scope="col">Descripcion</th>
               <th scope="col">Creado Por</th>
               <th scope="col">Observaciones</th>
-              <th scope="col">Acciones</th>
+              <PrivateComponent roleList={["LIDER"]}>
+                <th scope="col">Acciones</th>
+              </PrivateComponent>
             </tr>
           </thead>
           <tbody>
@@ -101,20 +102,22 @@ const VerAvance = () => {
                       })}
                     </ul>
                   </td>
-                  <td>
-                    <input
-                      className="rounded-md	mb-2	border-2	border-blue-300	"
-                      type="text"
-                      name={`obs${item._id}`}
-                    />{" "}
-                    <br />
-                    <button
-                      className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white"
-                      onClick={() => addObservacion(item)}
-                    >
-                      Agregar Observacion
-                    </button>
-                  </td>
+                  <PrivateComponent roleList={["LIDER"]}>
+                    <td>
+                      <input
+                        className="rounded-md	mb-2	border-2	border-blue-300	"
+                        type="text"
+                        name={`obs${item._id}`}
+                      />{" "}
+                      <br />
+                      <button
+                        className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white"
+                        onClick={() => addObservacion(item)}
+                      >
+                        Agregar Observacion
+                      </button>
+                    </td>
+                  </PrivateComponent>
                 </tr>
               );
             })}
@@ -122,7 +125,6 @@ const VerAvance = () => {
         </table>
       </div>
     </div>
-    //</PrivateRoute>
   );
 };
 

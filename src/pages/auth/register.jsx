@@ -34,7 +34,7 @@ useEffect(() => {
   return (
     <div className='flex flex-col h-full w-full items-center justify-center'>
       <h1 className='text-3xl font-bold my-4'>Regístrate</h1>
-      <form className='flex flex-col' onSubmit={submitForm} onChange={updateFormData} ref={form}>
+      <form className='flex flex-col p-10 bg-gray-100 text-xl text-gray-500 uppercase font-bold rounded-3xl' onSubmit={submitForm} onChange={updateFormData} ref={form}>
         <div className='grid grid-cols-2 gap-5'>
           <Input label='Nombre:' name='nombre' type='text' required />
           <Input label='Apellido:' name='apellido' type='text' required />

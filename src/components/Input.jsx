@@ -8,7 +8,7 @@ const Input = ({ label, name, defaultValue, type, required, readOnly }) => {
         required={required}
         type={type}
         name={name}
-        className='input'
+        className='input rounded-md	mb-2 border-2	border-gray-300'
         defaultValue={defaultValue}
         readOnly={readOnly}
       />

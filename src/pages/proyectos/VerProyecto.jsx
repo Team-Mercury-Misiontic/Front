@@ -9,6 +9,7 @@ import ButtonLoading from "components/ButtonLoading";
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading";
 import Usuario from "../../usuario.json";
+import PrivateComponent from "components/PrivateComponent";
 
 const VerProyecto = () => {
   const { _id } = useParams();
@@ -153,21 +154,25 @@ const Avances = ({ item }) => {
   if (Avances.length !== 0) {
     return (
       <>
-        <Link to={`/VerAvance/${item._id}`}>
-          <p className="text-center">
-            Hay {Avances.length} {Avances.length === 1 ? " avance" : " avances"}{" "}
-            en el proyecto{" "}
-          </p>
-          <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
-            Ver Avances
-          </button>
-        </Link>
+        <PrivateComponent roleList={["LIDER", "ESTUDIANTE"]}>
+          <Link to={`/VerAvance/${item._id}`}>
+            <p className="text-center">
+              Hay {Avances.length}{" "}
+              {Avances.length === 1 ? " avance" : " avances"} en el proyecto{" "}
+            </p>
+            <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+              Ver Avances
+            </button>
+          </Link>
+        </PrivateComponent>
         <br />
+        <PrivateComponent roleList={["ESTUDIANTE"]}>
         <Link to={`/Avances/${item._id}`}>
           <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white  m-3">
             Añadir Avance
           </button>
         </Link>
+        </PrivateComponent>
       </>
     );
   } else
