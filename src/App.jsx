@@ -30,8 +30,8 @@ import { setContext } from '@apollo/client/link/context';
 
 //Reemplazar link de despliegue back
 const httpLink = createHttpLink({
-  //uri: "https://backen-mercury.herokuapp.com/graphql"
-  uri: "http://localhost:4000/graphql"
+  uri: "https://backen-mercury.herokuapp.com/graphql"
+  //uri: "http://localhost:4000/graphql"
 });
 
 const authLink = setContext((_, { headers }) => {
