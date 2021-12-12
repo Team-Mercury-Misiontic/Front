@@ -188,21 +188,17 @@ const Avances = ({ item }) => {
 
 const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
   const [estadoInscripcion, setEstadoInscripcion] = useState("");
-  const [crearRegistro, { data, loading, error }] =
-    useMutation(CREAR_INSCRIPCION);
-  //const {userData}= useUser();
+  const [crearRegistro, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
+  const {userData}= useUser();
 
   useEffect(() => {
-    // if (userData && inscripciones) {
-    if (inscripciones) {
-      const flt = inscripciones.filter(
-        (el) => el.estudiante._id === "61b548fd904ecd0271d60631"
-      );
+    if (userData && inscripciones) {
+      const flt = inscripciones.filter((el) => el.estudiante._id === userData._id);
       if (flt.length > 0) {
         setEstadoInscripcion(flt[0].estado);
       }
     }
-  }, [inscripciones]);
+  }, [userData,inscripciones]);
 
   useEffect(() => {
     if (data) {
@@ -221,7 +217,7 @@ const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
     crearRegistro({
       variables: {
         proyecto: idProyecto,
-        estudiante: "61b548fd904ecd0271d60631",
+        estudiante: userData._id,
       },
     });
     //crearInscripcion({ variables: { proyecto: idProyecto, estudiante: userData._id } });

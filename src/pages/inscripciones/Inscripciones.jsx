@@ -10,6 +10,7 @@ import {
   AccordionSummaryStyled,
   AccordionDetailsStyled,
 } from 'components/Accordion';
+import PrivateRoute from 'components/PrivateRoute';
 
 const IndexInscription = () => {
   const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
@@ -19,7 +20,7 @@ const IndexInscription = () => {
   }, [data]);
   if (loading) return <div>Loading...</div>;
   return (
-    // <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
+    <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
       <div className='p-10'>
         <div>Pagina de inscripciones</div>
         <div className='my-4'>
@@ -38,7 +39,7 @@ const IndexInscription = () => {
           />
         </div>
       </div>
-    // </PrivateRoute>
+    </PrivateRoute>
   );
 };
 
