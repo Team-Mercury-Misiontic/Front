@@ -239,8 +239,7 @@ const Estudiante = ({data, Usuario}) => {
                     </>
                     )
             } else return null
-        } else  if (registrado === false && item.estado === "ACTIVO"){
-            if (filtro.length===0){
+        } else  if (item.estado === "ACTIVO"){
                 return (
                     <>
                     <tr>
@@ -255,7 +254,6 @@ const Estudiante = ({data, Usuario}) => {
                     </tr>
                     </>
                     )
-            } return null
     }})
     return (
         <>
