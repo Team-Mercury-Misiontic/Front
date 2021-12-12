@@ -1,16 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useMutation} from '@apollo/client';
 import { Link } from 'react-router-dom';
-import Usuario from '../../usuario.json';
 import { toast } from "react-toastify";
 import {NUEVO_PROYECTO} from '../../graphql/proyectos/mutations';
+import PrivateRoute from 'components/PrivateRoute';
+import { useUser } from 'context/userContext';
 
 const NuevoProyecto = () =>{
-    const [crearProyecto,{error}] = useMutation(NUEVO_PROYECTO,{
+  
+    const [crearProyecto,{error, reset}] = useMutation(NUEVO_PROYECTO,{
         onCompleted() {
             toast.success("Proyecto Creado con exito");
+            reset()
         }
       });
+    const { userData } = useUser();
+    console.log(userData);
     const [objetivos,setObjetivos] = useState([]);
     const objetivo = {
         descripcion: "",
@@ -33,10 +38,8 @@ const NuevoProyecto = () =>{
         toast.error("Problemas creando el proyecto");
     } 
 
-    
-    
     return(
-        <>
+        <PrivateRoute roleList={"LIDER"}>
         <header className="items-center justify-center p-3">
             <Link to='/Proyectos'>
                 <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
@@ -57,8 +60,8 @@ const NuevoProyecto = () =>{
                     <label htmlFor="nombre" >Nombre</label>
                     <input ref={nombre=>setProyecto(proyecto.nombre = nombre)}  placeholder="Nombre del proyecto" id="nombre" className="m-auto text-center rounded-md text-black text-lg "/>
                     <label htmlFor="lider" >Lider</label>
-                    <input value = {Usuario.nombre + " " + Usuario.apellido} id="lider" className="m-auto text-center rounded-md text-black text-lg"/>
-                    <input ref={lider=>setProyecto(proyecto.lider=Usuario._id)} className="hidden"/>
+                    <input value = {userData.nombre + " " + userData.apellido} id="lider" className="m-auto text-center rounded-md text-black text-lg"/>
+                    <input ref={lider => setProyecto(proyecto.lider = userData._id)} className="hidden"/>
                     <label htmlFor="presupuesto" >Presupuesto</label>
                     <input ref={presupuesto=>setProyecto(proyecto.presupuesto=presupuesto)} placeholder="Presupuesto"id="presupuesto" className="m-auto text-center rounded-md text-black text-lg"/>
                     <placeholder className="grid grid-cols-4 gap-2">
@@ -86,7 +89,7 @@ const NuevoProyecto = () =>{
                 <button type="submit"  className="m-auto col-span-2 block bg-indigo-400 hover:bg-indigo-600 rounded-full px-12 py-1 text-white">Crear Nuevo Proyecto</button>
             </form>
         </section>
-        </>
+        </PrivateRoute>
     )
 }
 export default NuevoProyecto

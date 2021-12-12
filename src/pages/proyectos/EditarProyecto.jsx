@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom'
-import Usuario from 'usuario.json'
+import { useUser } from 'context/userContext';
 import {GET_PROYECTO} from 'graphql/proyectos/queries';
 import {EDITAR_PROYECTO} from 'graphql/proyectos/mutations';
 import {useParams} from 'react-router-dom';
@@ -8,11 +8,11 @@ import {useQuery, useMutation} from '@apollo/client';
 import Objetivos from 'components/Objetivos'
 import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
-import Proyectos from './Proyectos';
 
 const EditarProyecto=()=> {
     const {_id} = useParams();
     const fechaHoy = new Date()
+    const {userData} = useUser();
     const [objetivos,setObjetivos] = useState([]);
     const {data: queryData, error: queryError, loading: queryLoading, refetch} = useQuery(GET_PROYECTO, {variables: {_id}});
     let proyecto={
@@ -27,7 +27,6 @@ const EditarProyecto=()=> {
       descripcion: "",
       tipo: ""
     };
-    console.log(fechaHoy)
     
     const [editarProyecto, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(EDITAR_PROYECTO)
     useEffect(() => {
@@ -55,7 +54,6 @@ const EditarProyecto=()=> {
           proyecto.estado = "ACTIVO"
         }
       };
-      console.log(Proyectos.estado);
     }
     
     if (queryError) return toast.error('Error al consultar los datos del proyecto');
@@ -73,7 +71,7 @@ const EditarProyecto=()=> {
     };
     if (mutationError) return toast.error('Error al modificar los datos del proyecto');
 
-    if (Usuario.rol === "LIDER") {
+    if (userData.rol === "LIDER") {
       return (
         <div className='w-full'>
           <header className="items-center justify-center p-3">
@@ -101,14 +99,24 @@ const EditarProyecto=()=> {
             <section className='bg-blue-50 border-blue-500 border-solid border-2 col-span-2'>
               <h2 className='text-center font-bold text-2xl col-span-4'> INFORMACION DEL PROYECTO</h2>
                 <div className='pl-3 grid grid-cols-4'>
-                    <div className='col-start-1 font-bold'>ID del proyecto:</div> <div className='col-start-2 col-span-3'>{queryData.Proyecto._id}</div>
+                    <span className='col-start-1 font-bold'>ID del proyecto:</span> <span className='col-start-2 col-span-3'>{queryData.Proyecto._id}</span>
                     <span className='col-start-1 font-bold'>Lider:</span> <span className='col-start-2 col-span-3 uppercase'>{queryData.Proyecto.lider.nombre} {queryData.Proyecto.lider.apellido}</span>
                     <label htmlFor="nombre" className='col-start-1 font-bold'>Nombre:</label> 
                     <input className='col-start-2' type='text' id='nombre' defaultValue={queryData.Proyecto.nombre} ref={nombre=>proyecto.nombre = nombre}/>
                     <label htmlFor="presupuesto" className='col-start-1 font-bold'>Presupuesto:</label> 
                     <input className='col-start-2' type='text' id='presupuesto' defaultValue={queryData.Proyecto.presupuesto} ref={presupuesto=>proyecto.presupuesto = presupuesto}/>
-                    <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaInicio} </span>
-                    <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaFin}</span>
+                    <span className='col-start-1 font-bold'>Fecha de Inicio:</span> 
+                    <span className='col-start-2 uppercase'>
+                      {queryData.Proyecto.fechaInicio === null
+                      ? "EL PROYECTO AUN NO TERMINADO"
+                      : queryData.Proyecto.fechaInicio}
+                      </span>
+                    <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> 
+                    <span className='col-start-2 uppercase'>
+                    {queryData.Proyecto.fechaFin === null
+                      ? "EL PROYECTO AUN NO TERMINADO"
+                      : queryData.Proyecto.fechaFin}
+                      </span>
                     <span className='col-start-1 font-bold'>Fase:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fase}</span>
                     <span className='col-start-1 font-bold'>Estado:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.estado}</span>
               </div>
@@ -152,7 +160,7 @@ const EditarProyecto=()=> {
         </form>
         </div>
       )
-    } else if( Usuario.rol === "ADMINISTRADOR"){
+    } else if( userData.rol === "ADMINISTRADOR"){
       return (
       <div className='w-full'>
         <header className="items-center justify-center p-3">
@@ -185,8 +193,18 @@ const EditarProyecto=()=> {
                     <span className='col-start-2'>{queryData.Proyecto.nombre}</span>
                     <span className='col-start-1 font-bold'>Presupuesto:</span> 
                     <span className='col-start-2'>{queryData.Proyecto.presupuesto}</span>
-                    <span className='col-start-1 font-bold'>Fecha de Inicio:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaInicio} </span>
-                    <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> <span className='col-start-2 uppercase'>{queryData.Proyecto.fechaFin}</span>
+                    <span className='col-start-1 font-bold'>Fecha de Inicio:</span> 
+                    <span className='col-start-2 uppercase'>
+                      {queryData.Proyecto.fechaInicio === null
+                      ? "EL PROYECTO AUN NO TERMINADO"
+                      : queryData.Proyecto.fechaInicio}
+                      </span>
+                    <span className='col-start-1 font-bold'>Fecha de Finalizacion:</span> 
+                    <span className='col-start-2 uppercase'>
+                    {queryData.Proyecto.fechaFin === null
+                      ? "EL PROYECTO AUN NO TERMINADO"
+                      : queryData.Proyecto.fechaFin}
+                      </span>
                     <span className='col-start-1 font-bold'>Fase:</span> <span className='col-start-2'>{queryData.Proyecto.fase}</span> 
                     <label className='col-start-1 font-bold'>Estado:</label> <span className='col-start-2 pb-2'>{queryData.Proyecto.estado}</span> 
                     {queryData.Proyecto.fase==="TERMINADO"?null:
@@ -208,7 +226,9 @@ const EditarProyecto=()=> {
                 </ul>
               </div>
             </section>
-            <button type="submit" className="bg-red-700 text-white font-bold text-lg py-1 px-6 rounded-xl hover:bg-red-500 shadow-md mx-4 disabled:opacity-50 disabled:bg-gray-700  " onClick={e=>{proyecto.estado = "INACTIVO"; proyecto.fase = "TERMINADO"; proyecto.fechaFin = `${fechaHoy}`; }}> Terminar Proyecto </button>
+            {queryData.Proyecto.fase === "DESARROLLO"? 
+            <button type="submit" className="bg-red-700 text-white font-bold text-lg py-1 px-6 rounded-xl hover:bg-red-500 shadow-md mx-4 disabled:opacity-50 disabled:bg-gray-700  " onClick={e=>{proyecto.estado = "INACTIVO"; proyecto.fase = "TERMINADO"; proyecto.fechaFin = `${fechaHoy}`; }}> Terminar Proyecto </button>:null}
+            
         </form>
       </div>
       )
