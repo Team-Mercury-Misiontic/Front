@@ -10,11 +10,7 @@ import { Enum_Rol, Enum_EstadoUsuario } from "utils/enum";
 import PrivateComponent from "components/PrivateComponent";
 
 const Estudiantes = () => {
-  const { data, error, loading, refetch } = useQuery(GET_USUARIOS, {
-    variables: {
-      filtro: { rol: "ESTUDIANTE" },
-    },
-  });
+  const { data, error, loading, refetch } = useQuery(GET_USUARIOS);
 
   //useEffect para datos traido del back
   useEffect(() => {
