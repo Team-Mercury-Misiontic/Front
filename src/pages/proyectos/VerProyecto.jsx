@@ -9,6 +9,7 @@ import ButtonLoading from "components/ButtonLoading";
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading";
 import { useUser } from 'context/userContext';
+import PrivateComponent from "components/PrivateComponent";
 
 const VerProyecto = () => {
   const { _id } = useParams();
