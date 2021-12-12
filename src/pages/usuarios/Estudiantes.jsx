@@ -7,7 +7,6 @@ import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
 import ReactLoading from "react-loading";
 import { Dialog } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from "utils/enum";
-import PrivateComponent from "components/PrivateComponent";
 
 const Estudiantes = () => {
   const { data, error, loading, refetch } = useQuery(GET_USUARIOS);

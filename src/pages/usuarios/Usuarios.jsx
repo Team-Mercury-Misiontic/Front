@@ -7,7 +7,7 @@ import { ELIMINAR_USUARIO } from "graphql/usuarios/mutations";
 import ReactLoading from "react-loading";
 import { Dialog } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from "utils/enum";
-import PrivateComponent from "components/PrivateComponent";
+
 
 const Usuarios = () => {
   const { data, error, loading, refetch } = useQuery(GET_USUARIOS);
@@ -87,9 +87,7 @@ const Usuarios = () => {
               <th scope="col">Correo</th>
               <th scope="col">Rol</th>
               <th scope="col">Estado</th>
-              <PrivateComponent roleList={["ADMINISTRADOR"]}>
-                <th scope="col">Acciones</th>
-              </PrivateComponent>
+              <th scope="col">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -116,26 +114,23 @@ const Usuarios = () => {
                     <td>{item.correo}</td>
                     <td>{Enum_Rol[item.rol]}</td>
                     <td>{Enum_EstadoUsuario[item.estado]}</td>
-                    <PrivateComponent roleList={["ADMINISTRADOR"]}>
-                      <td>
-                        <Link to={`/usuarios/EditarUsuario/${item._id}`}>
-                          <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
-                            Editar
-                          </button>{" "}
-                        </Link>
-                        {"   "}
-                        <button
-                          className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
-                          onClick={() => handleDeleteUser(item)}
-                        >
-                          Eliminar
-                        </button>
-                      </td>
-                    </PrivateComponent>
+                    <td>
+                      <Link to={`/usuarios/EditarUsuario/${item._id}`}>
+                        <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+                          Editar
+                        </button>{" "}
+                      </Link>
+                      {"   "}
+                      <button
+                        className="col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white"
+                        onClick={() => handleDeleteUser(item)}
+                      >
+                        Eliminar
+                      </button>
+                    </td>
                   </tr>
                 );
               })}
-            {/* ) : (<div>No autorizado</div> */}
           </tbody>
         </table>
       </div>

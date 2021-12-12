@@ -28,11 +28,13 @@ const SidebarLinks = () => {
         />
       </PrivateComponent>
 
-      <SidebarRoute
-        to="/Inscripciones"
-        title="Gestión Inscripciones"
-        icon="far fa-edit"
-      />
+      <PrivateComponent roleList={["LIDER"]}>
+        <SidebarRoute
+          to="/Inscripciones"
+          title="Gestión Inscripciones"
+          icon="far fa-edit"
+        />
+      </PrivateComponent>
       <PrivateComponent roleList={["ESTUDIANTE"]}>
         <SidebarRoute
           to="/Perfil"
