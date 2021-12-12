@@ -12,7 +12,7 @@ const SidebarLinks = () => {
         title="Gestión Proyectos"
         icon="fas fa-project-diagram"
       />
-      <PrivateComponent roleList={["ADMINISTRADOR", "LIDER"]}>
+      <PrivateComponent roleList={["ADMINISTRADOR"]}>
         <SidebarRoute
           to="/Usuarios"
           title="Gestión Usuarios"
@@ -20,11 +20,21 @@ const SidebarLinks = () => {
         />
       </PrivateComponent>
 
-      <SidebarRoute
-        to="/Inscripciones"
-        title="Gestión Inscripciones"
-        icon="far fa-edit"
-      />
+      <PrivateComponent roleList={["LIDER"]}>
+        <SidebarRoute
+          to="/usuarios/Estudiantes"
+          title="Gestión Usuarios"
+          icon="fas fa-users"
+        />
+      </PrivateComponent>
+
+      <PrivateComponent roleList={["LIDER"]}>
+        <SidebarRoute
+          to="/Inscripciones"
+          title="Gestión Inscripciones"
+          icon="far fa-edit"
+        />
+      </PrivateComponent>
       <PrivateComponent roleList={["ESTUDIANTE"]}>
         <SidebarRoute
           to="/Perfil"

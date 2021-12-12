@@ -11,6 +11,7 @@ import VerProyecto from "pages/proyectos/VerProyecto"
 import Usuarios from "pages/usuarios/Usuarios";
 import NuevoUsuario from "pages/NuevoUsuario"
 import EditarUsuario from "pages/usuarios/EditarUsuario";
+import Estudiantes from "pages/usuarios/Estudiantes";
 import Perfil from "pages/Perfil";
 import Inscripciones from "pages/inscripciones/Inscripciones";
 import "styles/globals.css";
@@ -94,6 +95,7 @@ function App() {
                   <Route path="Avances/:_id" element={<Avances />} />
                   <Route path="VerAvance/:_id" element={<VerAvance />} />
                   <Route path="Usuarios" element={<Usuarios />} />
+                  <Route path='/usuarios/Estudiantes' element={<Estudiantes />} />
                   <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />
                   <Route path='Inscripciones' element={<Inscripciones />} />
                   <Route path='/inscripciones/Inscripciones' element={<Inscripciones />} />

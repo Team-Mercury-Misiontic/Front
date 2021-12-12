@@ -83,9 +83,7 @@ const VerAvance = () => {
               <th scope="col">Descripcion</th>
               <th scope="col">Creado Por</th>
               <th scope="col">Observaciones</th>
-              <PrivateComponent roleList={["LIDER"]}>
-                <th scope="col">Acciones</th>
-              </PrivateComponent>
+              <th scope="col">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -116,6 +114,15 @@ const VerAvance = () => {
                       >
                         Agregar Observacion
                       </button>
+                    </td>
+                  </PrivateComponent>
+                  <PrivateComponent roleList={["ESTUDIANTE"]}>
+                    <td>
+                      <Link to={`/Avances/${item._id}`}>
+                        <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+                          Editar
+                        </button>{" "}
+                      </Link>
                     </td>
                   </PrivateComponent>
                 </tr>

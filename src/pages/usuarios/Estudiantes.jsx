@@ -8,8 +8,7 @@ import ReactLoading from "react-loading";
 import { Dialog } from "@material-ui/core";
 import { Enum_Rol, Enum_EstadoUsuario } from "utils/enum";
 
-
-const Usuarios = () => {
+const Estudiantes = () => {
   const { data, error, loading, refetch } = useQuery(GET_USUARIOS);
 
   //useEffect para datos traido del back
@@ -167,4 +166,4 @@ const Usuarios = () => {
   );
 };
 
-export default Usuarios;
+export default Estudiantes;
