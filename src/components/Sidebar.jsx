@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "context/authContext";
 import PrivateComponent from "./PrivateComponent";
-
+import { useUser } from 'context/userContext';
 const SidebarLinks = () => {
+  const { userData } = useUser();
   return (
     <ul className="mt-12">
       <SidebarRoute to="" title="Home" icon="fas fa-home" />
@@ -42,10 +43,17 @@ const SidebarLinks = () => {
           icon="fas fa-user-cog"
         />
       </PrivateComponent>
-      <Logout />
+      <Logout/>
+      <div className=" border-4">
+        <li className="text-center mx-auto text-blue-500 font-bold text-lg">{userData.nombre}</li> 
+        <li className="text-center mx-auto text-blue-500 font-bold text-lg">{userData.rol}</li>  
+
+      </div>
     </ul>
   );
 };
+
+
 
 const Logout = () => {
   const { setToken } = useAuth();

@@ -106,12 +106,12 @@ const VerProyecto = () => {
           <h2 className="text-center font-bold text-l">
             ESTUDIANTES INSCRITOS
           </h2>
-          <Estudiantes item={data.Proyecto} />
+          <Estudiantes item={data} />
           {userData.rol === "ESTUDIANTE" ? (
           <InscripcionProyecto
             idProyecto={data.Proyecto._id}
             estado={data.Proyecto.estado}
-            inscripciones={data.Proyectoinscripciones}
+            inscripciones={data}
           />
         ) : null}
         </section>
@@ -125,13 +125,14 @@ const VerProyecto = () => {
 };
 
 const Estudiantes = ({ item }) => {
-  const Estudiantes = item.registros.map((estudiante) => {
+  //console.log('Datos de los estudiantes',item.Proyecto.registros)
+  const Estudiantes = item.Proyecto.registros.map((estudiante) => {
     if (estudiante.estado === "ACEPTADA") {
       return (
         <ul className="pl-2">
           <li className="list-disc list-inside">
-            {estudiante.estudiante._id}
-            {estudiante.nombre}
+          
+            {estudiante.estudiante.nombre}
           </li>
         </ul>
       );
@@ -188,31 +189,22 @@ const Avances = ({ item }) => {
 
 const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
   const [estadoInscripcion, setEstadoInscripcion] = useState("");
-  const [crearRegistro, { data, loading, error }] =
-    useMutation(CREAR_INSCRIPCION);
-  //const {userData}= useUser();
+  const [crearRegistro, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
+  const {userData}= useUser();
 
   useEffect(() => {
-    // if (userData && inscripciones) {
-    if (inscripciones) {
-      const flt = inscripciones.filter(
-        (el) => el.estudiante._id === "61b548fd904ecd0271d60631"
-      );
+
+    if (userData && inscripciones) {
+      const flt = inscripciones.Proyecto.registros.filter((el) => el.estudiante._id === userData._id);
       if (flt.length > 0) {
         setEstadoInscripcion(flt[0].estado);
       }
     }
-  }, [inscripciones]);
+  }, [userData,inscripciones]);
 
   useEffect(() => {
     if (data) {
       console.log("datos de la inscripcion", data);
-      // Swal({
-      //     title: "Gestión de Proyectos",
-      //     text: "Inscripción Exitosa",
-      //     icon: "success",
-      //     timer: "1000"
-      // });
       toast.success("Registro Exitoso");
     }
   }, [data]);
@@ -221,7 +213,7 @@ const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
     crearRegistro({
       variables: {
         proyecto: idProyecto,
-        estudiante: "61b548fd904ecd0271d60631",
+        estudiante: userData._id,
       },
     });
     //crearInscripcion({ variables: { proyecto: idProyecto, estudiante: userData._id } });

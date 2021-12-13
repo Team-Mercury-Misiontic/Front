@@ -10,6 +10,8 @@ import {
   AccordionSummaryStyled,
   AccordionDetailsStyled,
 } from 'components/Accordion';
+import PrivateRoute from 'components/PrivateRoute';
+import { RECHAZAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 
 const IndexInscription = () => {
   const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
@@ -19,13 +21,13 @@ const IndexInscription = () => {
   }, [data]);
   if (loading) return <div>Loading...</div>;
   return (
-    // <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
+    <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
       <div className='p-10'>
         <div>Pagina de inscripciones</div>
         <div className='my-4'>
           <AccordionInscripcion
             titulo='Inscripciones aprobadas'
-            data={data.Inscripciones.filter((el) => el.estado === 'ACEPTADO')}
+            data={data.Inscripciones.filter((el) => el.estado === 'ACEPTADA')}
           />
           <AccordionInscripcion
             titulo='Inscripciones pendientes'
@@ -34,11 +36,11 @@ const IndexInscription = () => {
           />
           <AccordionInscripcion
             titulo='Inscripciones rechazadas'
-            data={data.Inscripciones.filter((el) => el.estado === 'RECHAZADO')}
+            data={data.Inscripciones.filter((el) => el.estado === 'RECHAZADA')}
           />
         </div>
       </div>
-    // </PrivateRoute>
+    </PrivateRoute>
   );
 };
 
@@ -62,6 +64,7 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => {
 
 const Inscripcion = ({ inscripcion, refetch }) => {
   const [aprobarInscripcion, { data, loading, error }] = useMutation(APROBAR_INSCRIPCION);
+  const [rechazarInscripcion, { data:dataMutation, loading: loadingMutation, error: errorMutation }] = useMutation(RECHAZAR_INSCRIPCION);
 
   useEffect(() => {
     if (data) {
@@ -76,25 +79,58 @@ const Inscripcion = ({ inscripcion, refetch }) => {
     }
   }, [error]);
 
-  const cambiarEstadoInscripcion = () => {
-    aprobarInscripcion({
-      variables: {
-        aprobarInscripcionId: inscripcion._id,
-      },
-    });
+  useEffect(() => {
+    if (dataMutation) {
+      toast.success('Inscripcion rechazada');
+      refetch();
+    }
+  }, [dataMutation]);
+
+  useEffect(() => {
+    if (errorMutation) {
+      toast.error('Error rechazando la inscripcion');
+    }
+  }, [errorMutation]);
+
+  const cambiarEstadoInscripcion = (variable) => {
+    console.log('valor de la variable',variable)
+    if(variable===0){
+      aprobarInscripcion({
+        variables: {
+          aprobarInscripcionId: inscripcion._id,
+        },
+      });
+  
+    }else{
+      rechazarInscripcion({
+        variables: {
+          rechazarInscripcionId: inscripcion._id,
+        },
+      });
+    }
   };
 
   return (
     <div className='bg-gray-900 text-gray-50 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
-      <span>{inscripcion.proyecto.nombre}</span>
+      <span>{'Proyecto'} {inscripcion.proyecto.nombre}</span>
       <span>{inscripcion.estudiante.nombre}</span>
       <span>{inscripcion.estado}</span>
       {inscripcion.estado === 'PENDIENTE' && (
         <ButtonLoading
           onClick={() => {
-            cambiarEstadoInscripcion();
+            cambiarEstadoInscripcion(0);
           }}
-          text='Aprobar Inscripcion'
+          text='Aprobar Inscripción'
+          loading={loading}
+          disabled={false}
+        />
+      )}
+       {inscripcion.estado === 'PENDIENTE' && (
+        <ButtonLoading
+          onClick={() => {
+            cambiarEstadoInscripcion(1);
+          }}
+          text='Rechazar Inscripción'
           loading={loading}
           disabled={false}
         />
