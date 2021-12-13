@@ -7,13 +7,14 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from 'graphql/auth/mutations';
 import { useAuth } from 'context/authContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
   const { form, formData, updateFormData } = useFormData();
   const [mensaje, guardarMensaje] = useState(null);
-  //const [login, { data: dataMutation, loading: mutationLoading, error: mutationError }] =
+  // const [login, { data: dataMutation, loading: mutationLoading, error: mutationError }] =useMutation(LOGIN);
   const [login,{loading: mutationLoading}] =
     useMutation(LOGIN);
 
@@ -23,21 +24,15 @@ const Login = () => {
       const { data } = await login({
         variables: formData,
       });
-
-
         setToken(data.login.token);
-
- 
-      guardarMensaje(null);
-      navigate('/');
-
+        guardarMensaje(null);
+        navigate('/');
 
     }catch(error){
       guardarMensaje(error.message.replace('GraphQL error: ', ''));
-
       setTimeout(() => {
           guardarMensaje(null);
-      }, 3000);
+      }, 5000);
     }
     
   };
@@ -50,14 +45,28 @@ const Login = () => {
     )
 }
 
-  // useEffect(() => {
-  //   if (dataMutation) {
-  //     if (dataMutation.login.token) {
-  //       setToken(dataMutation.login.token);
-  //       navigate('/');
-  //     }
-  //   }
-  // }, [dataMutation,setToken , navigate]);
+// const submitForm = (e) => {
+//   e.preventDefault();
+//   login({
+//     variables: formData,
+//   });
+// };
+
+//   useEffect(() => {
+//     if (dataMutation) {
+//       if (dataMutation.login.token) {
+//         console.log('antes de setToken',dataMutation)
+//         setToken(dataMutation.login.token);
+//         navigate('/');
+//       }
+//     }
+//   }, [dataMutation,setToken , navigate]);
+
+//   useEffect(()=>{
+//     if(mutationError){
+//       toast.error('Ocurrió un error')
+//     }
+//   },[mutationError]);
 
   return (
     <div className='flex flex-col items-center justify-center w-full h-full p-10'>
