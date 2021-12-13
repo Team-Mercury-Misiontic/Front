@@ -36,7 +36,7 @@ const IndexInscription = () => {
           />
           <AccordionInscripcion
             titulo='Inscripciones rechazadas'
-            data={data.Inscripciones.filter((el) => el.estado === 'RECHAZADO')}
+            data={data.Inscripciones.filter((el) => el.estado === 'RECHAZADA')}
           />
         </div>
       </div>
@@ -79,8 +79,22 @@ const Inscripcion = ({ inscripcion, refetch }) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (dataMutation) {
+      toast.success('Inscripcion rechazada');
+      refetch();
+    }
+  }, [dataMutation]);
+
+  useEffect(() => {
+    if (errorMutation) {
+      toast.error('Error rechazando la inscripcion');
+    }
+  }, [errorMutation]);
+
   const cambiarEstadoInscripcion = (variable) => {
-    if(variable===1){
+    console.log('valor de la variable',variable)
+    if(variable===0){
       aprobarInscripcion({
         variables: {
           aprobarInscripcionId: inscripcion._id,
@@ -88,9 +102,9 @@ const Inscripcion = ({ inscripcion, refetch }) => {
       });
   
     }else{
-      RECHAZAR_INSCRIPCION({
+      rechazarInscripcion({
         variables: {
-          rechazarInscripcion: inscripcion._id,
+          rechazarInscripcionId: inscripcion._id,
         },
       });
     }

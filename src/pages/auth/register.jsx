@@ -32,7 +32,7 @@ const Register = () => {
         'Usuario creado, debes esperar hasta que tu cuenta sea activada por un administrador o Líder',
         'success'
     )
-      navigate('/auth/register');
+      navigate('/auth/login');
 
 
     }catch(error){
