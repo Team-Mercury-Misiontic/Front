@@ -11,6 +11,7 @@ import {
   AccordionDetailsStyled,
 } from 'components/Accordion';
 import PrivateRoute from 'components/PrivateRoute';
+import { RECHAZAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 
 const IndexInscription = () => {
   const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
@@ -26,7 +27,7 @@ const IndexInscription = () => {
         <div className='my-4'>
           <AccordionInscripcion
             titulo='Inscripciones aprobadas'
-            data={data.Inscripciones.filter((el) => el.estado === 'ACEPTADO')}
+            data={data.Inscripciones.filter((el) => el.estado === 'ACEPTADA')}
           />
           <AccordionInscripcion
             titulo='Inscripciones pendientes'
@@ -63,6 +64,7 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => {
 
 const Inscripcion = ({ inscripcion, refetch }) => {
   const [aprobarInscripcion, { data, loading, error }] = useMutation(APROBAR_INSCRIPCION);
+  const [rechazarInscripcion, { data:dataMutation, loading: loadingMutation, error: errorMutation }] = useMutation(RECHAZAR_INSCRIPCION);
 
   useEffect(() => {
     if (data) {
@@ -77,12 +79,21 @@ const Inscripcion = ({ inscripcion, refetch }) => {
     }
   }, [error]);
 
-  const cambiarEstadoInscripcion = () => {
-    aprobarInscripcion({
-      variables: {
-        aprobarInscripcionId: inscripcion._id,
-      },
-    });
+  const cambiarEstadoInscripcion = (variable) => {
+    if(variable===1){
+      aprobarInscripcion({
+        variables: {
+          aprobarInscripcionId: inscripcion._id,
+        },
+      });
+  
+    }else{
+      RECHAZAR_INSCRIPCION({
+        variables: {
+          rechazarInscripcion: inscripcion._id,
+        },
+      });
+    }
   };
 
   return (
@@ -93,9 +104,19 @@ const Inscripcion = ({ inscripcion, refetch }) => {
       {inscripcion.estado === 'PENDIENTE' && (
         <ButtonLoading
           onClick={() => {
-            cambiarEstadoInscripcion();
+            cambiarEstadoInscripcion(0);
           }}
-          text='Aprobar Inscripcion'
+          text='Aprobar Inscripción'
+          loading={loading}
+          disabled={false}
+        />
+      )}
+       {inscripcion.estado === 'PENDIENTE' && (
+        <ButtonLoading
+          onClick={() => {
+            cambiarEstadoInscripcion(1);
+          }}
+          text='Rechazar Inscripción'
           loading={loading}
           disabled={false}
         />

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from 'components/Input';
 import ButtonLoading from 'components/ButtonLoading';
 import { Link } from 'react-router-dom';
@@ -12,29 +12,56 @@ const Login = () => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
   const { form, formData, updateFormData } = useFormData();
-
-  const [login, { data: dataMutation, loading: mutationLoading, error: mutationError }] =
+  const [mensaje, guardarMensaje] = useState(null);
+  //const [login, { data: dataMutation, loading: mutationLoading, error: mutationError }] =
+  const [login,{loading: mutationLoading}] =
     useMutation(LOGIN);
 
-  const submitForm = (e) => {
+  const submitForm = async(e) => {
     e.preventDefault();
+    try{
+      const { data } = await login({
+        variables: formData,
+      });
 
-    login({
-      variables: formData,
-    });
+
+        setToken(data.login.token);
+
+ 
+      guardarMensaje(null);
+      navigate('/');
+
+
+    }catch(error){
+      guardarMensaje(error.message.replace('GraphQL error: ', ''));
+
+      setTimeout(() => {
+          guardarMensaje(null);
+      }, 3000);
+    }
+    
   };
 
-  useEffect(() => {
-    if (dataMutation) {
-      if (dataMutation.login.token) {
-        setToken(dataMutation.login.token);
-        navigate('/');
-      }
-    }
-  }, [dataMutation,setToken , navigate]);
+  const mostrarMensaje = () => {
+    return(
+        <div className="bg-white py-5 px-3 w-full my-3 max-w-sm text-center mx-auto text-indigo-500 font-bold text-xl">
+            <p>{mensaje}</p>
+        </div>
+    )
+}
+
+  // useEffect(() => {
+  //   if (dataMutation) {
+  //     if (dataMutation.login.token) {
+  //       setToken(dataMutation.login.token);
+  //       navigate('/');
+  //     }
+  //   }
+  // }, [dataMutation,setToken , navigate]);
 
   return (
     <div className='flex flex-col items-center justify-center w-full h-full p-10'>
+      {mensaje && mostrarMensaje() }
       <h1 className='text-xl font-bold text-gray-900'>Iniciar sesión</h1>
       <form className='flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold rounded-3xl' onSubmit={submitForm} onChange={updateFormData} ref={form}>
         <Input name='correo' type='email' label='Correo' required={true} />
