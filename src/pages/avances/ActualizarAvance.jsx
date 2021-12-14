@@ -1,111 +1,106 @@
-/* import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
-import Input from 'components/Input';
-import ButtonLoading from 'components/ButtonLoading';
-import useFormData from 'hooks/useFormData';
-import { toast } from 'react-toastify';
-import { EDITAR_USUARIO } from 'graphql/usuarios/mutations';
-import DropDown from 'components/DropDown';
-import { Enum_EstadoUsuario } from 'utils/enum';
-//import { GET_AVANCE_BY_PROJECT } from 
-import ReactLoading from 'react-loading';
-
+import React, { useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useQuery, useMutation } from "@apollo/client";
+import Input from "components/Input";
+import ButtonLoading from "components/ButtonLoading";
+import useFormData from "hooks/useFormData";
+import { toast } from "react-toastify";
+import { GET_AVANCE_BY_PROJECT } from "graphql/avances/queries";
+import ReactLoading from "react-loading";
+import { CREAR_AVANCE } from "graphql/avances/mutations";
 
 const ActualizarAvance = () => {
   const { form, formData, updateFormData } = useFormData(null);
   const { _id } = useParams();
 
-  const {data: queryData, error: queryError, loading: queryLoading} = useQuery(GET_AVANCE_BY_PROJECT, {variables: { _id },});
+  const {
+    data: queryData,
+    error: queryError,
+    loading: queryLoading,
+  } = useQuery(GET_AVANCE_BY_PROJECT, { variables: { _id } });
 
   console.log(queryData);
 
-  const [editarUsuario, { data: mutationData, loading: mutationLoading, error: mutationError }] =
-    useMutation(EDITAR_USUARIO);
+  const [
+    crearAvance,
+    { data: mutationData, loading: mutationLoading, error: mutationError },
+  ] = useMutation(CREAR_AVANCE);
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log('fd', formData);
+    console.log("fd", formData);
     delete formData.rol;
-    editarUsuario({
+    crearAvance({
       variables: { _id, ...formData },
     });
   };
 
   useEffect(() => {
     if (mutationData) {
-      toast.success('Usuario modificado correctamente');
+      toast.success("Avance modificado correctamente");
     }
   }, [mutationData]);
 
   useEffect(() => {
     if (mutationError) {
-      toast.error('Error modificando el usuario');
+      toast.error("Error modificando el avance");
     }
 
     if (queryError) {
-      toast.error('Error consultando el usuario');
+      toast.error("Error consultando el avance");
     }
   }, [queryError, mutationError]);
 
-  if (queryLoading) return <ReactLoading type='cylon' color='#4c2882' height={667} width={365} />;
+  if (queryLoading)
+    return (
+      <ReactLoading type="cylon" color="#4c2882" height={667} width={365} />
+    );
 
   return (
-     <div className='flew flex-col w-full h-full items-center justify-center p-10'>
-      <Link to='/Usuarios'>
-        <i className='fas fa-arrow-left text-gray-600 cursor-pointer font-bold text-xl hover:text-gray-900' />
-      </Link>
-      <h1 className='m-4 text-3xl text-gray-800 font-bold text-center'>Editar Usuario</h1>
+    <div className="p-10 flex flex-col items-center">
+      <div className="self-start">
+        <Link to={`/proyectos/${_id}`}>
+          <i className="fas fa-arrow-left" />
+        </Link>
+      </div>
+      <h1 className="text-2xl font-bold text-gray-900">
+        Modificar Avance en {queryData.filtrarAvance.proyecto.nombre}
+      </h1>
       <form
         onSubmit={submitForm}
         onChange={updateFormData}
         ref={form}
-        className='flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl'
+        className="flex flex-col items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100  py-3 text-center text-xl text-gray-500 uppercase font-bold h-full rounded-3xl"
       >
         <Input
-          label='Identificación:'
-          type='text'
-          name='identificacion'
-          defaultValue={queryData.Usuario.identificacion}
+          name="fecha"
+          label="Fecha de actualización"
           required={true}
+          type="date"
+          defaultValue={queryData.filtrarAvance.fecha}
         />
         <Input
-          label='Nombre de la persona:'
-          type='text'
-          name='nombre'
+          label="Nombre de la persona:"
+          type="text"
+          name="nombre"
           defaultValue={queryData.Usuario.nombre}
           required={true}
         />
         <Input
-          label='Apellido de la persona:'
-          type='text'
-          name='apellido'
-          defaultValue={queryData.Usuario.apellido}
+          name="descripcion"
+          label="Descripción del avance"
           required={true}
+          type="text"
+          defaultValue={queryData.filtrarAvance.descripcion}
         />
-        <Input
-          label='Correo de la persona:'
-          type='email'
-          name='correo'
-          defaultValue={queryData.Usuario.correo}
-          required={true}
-        />
-        <DropDown
-          label='Estado de la persona:'
-          name='estado'
-          defaultValue={queryData.Usuario.estado}
-          required={true}
-          options={Enum_EstadoUsuario}
-        />
-        <span className='m-auto text-center rounded-md text-black text-lg'>Rol del usuario: {queryData.Usuario.rol}</span>
         <ButtonLoading
           disabled={Object.keys(formData).length === 0}
           loading={mutationLoading}
-          text='Confirmar'
+          text="Confirmar"
         />
       </form>
     </div>
   );
 };
 
-export default ActualizarAvance; */
+export default ActualizarAvance;

@@ -8,12 +8,12 @@ import { toast } from "react-toastify";
 import ButtonLoading from "components/ButtonLoading";
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading";
-import { useUser } from 'context/userContext';
+import { useUser } from "context/userContext";
 import PrivateComponent from "components/PrivateComponent";
 
 const VerProyecto = () => {
   const { _id } = useParams();
-  const {userData} = useUser();
+  const { userData } = useUser();
   console.log(userData.rol);
   const { data, error, loading } = useQuery(GET_PROYECTO, {
     variables: { _id },
@@ -108,17 +108,19 @@ const VerProyecto = () => {
           </h2>
           <Estudiantes item={data} />
           {userData.rol === "ESTUDIANTE" ? (
-          <InscripcionProyecto
-            idProyecto={data.Proyecto._id}
-            estado={data.Proyecto.estado}
-            inscripciones={data}
-          />
-        ) : null}
+            <InscripcionProyecto
+              idProyecto={data.Proyecto._id}
+              estado={data.Proyecto.estado}
+              inscripciones={data}
+            />
+          ) : null}
         </section>
-        <section className="bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center">
-          <h2 className="text-center font-bold text-l">AVANCES</h2>
-          <Avances item={data.Proyecto} />
-        </section>
+        <PrivateComponent roleList={["LIDER", "ESTUDIANTE"]}>
+          <section className="bg-blue-50 border-blue-500 border-solid border-2 col-start-2 py-4 text-center">
+            <h2 className="text-center font-bold text-l">AVANCES</h2>
+            <Avances item={data.Proyecto} />
+          </section>
+        </PrivateComponent>
       </div>
     </div>
   );
@@ -131,7 +133,6 @@ const Estudiantes = ({ item }) => {
       return (
         <ul className="pl-2">
           <li className="list-disc list-inside">
-          
             {estudiante.estudiante.nombre}
           </li>
         </ul>
@@ -165,11 +166,11 @@ const Avances = ({ item }) => {
         </PrivateComponent>
         <br />
         <PrivateComponent roleList={["ESTUDIANTE"]}>
-        <Link to={`/Avances/${item._id}`}>
-          <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white  m-3">
-            Añadir Avance
-          </button>
-        </Link>
+          <Link to={`/Avances/${item._id}`}>
+            <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white  m-3">
+              Añadir Avance
+            </button>
+          </Link>
         </PrivateComponent>
       </>
     );
@@ -179,11 +180,11 @@ const Avances = ({ item }) => {
         {" "}
         <p className="text-center">No hay avances en el proyecto </p>
         <PrivateComponent roleList={["ESTUDIANTE"]}>
-        <Link to={`/Avances/${item._id}`}>
-          <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
-            Añadir Avance
-          </button>
-        </Link>
+          <Link to={`/Avances/${item._id}`}>
+            <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+              Añadir Avance
+            </button>
+          </Link>
         </PrivateComponent>
       </>
     );
@@ -191,18 +192,20 @@ const Avances = ({ item }) => {
 
 const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
   const [estadoInscripcion, setEstadoInscripcion] = useState("");
-  const [crearRegistro, { data, loading, error }] = useMutation(CREAR_INSCRIPCION);
-  const {userData}= useUser();
+  const [crearRegistro, { data, loading, error }] =
+    useMutation(CREAR_INSCRIPCION);
+  const { userData } = useUser();
 
   useEffect(() => {
-
     if (userData && inscripciones) {
-      const flt = inscripciones.Proyecto.registros.filter((el) => el.estudiante._id === userData._id);
+      const flt = inscripciones.Proyecto.registros.filter(
+        (el) => el.estudiante._id === userData._id
+      );
       if (flt.length > 0) {
         setEstadoInscripcion(flt[0].estado);
       }
     }
-  }, [userData,inscripciones]);
+  }, [userData, inscripciones]);
 
   useEffect(() => {
     if (data) {
