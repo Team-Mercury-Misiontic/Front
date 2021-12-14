@@ -14,7 +14,7 @@ const CREAR_AVANCE = gql`
       creadoPor: $creadoPor
     ) {
       proyecto {
-          _id
+        _id
       }
       fecha
       descripcion
@@ -26,11 +26,27 @@ const CREAR_AVANCE = gql`
 `;
 
 const ACTUALIZAR_AVANCE = gql`
-mutation CreateAvance($createAvanceId: String!, $observaciones: String!) {
-  createAvance(id: $createAvanceId, observaciones: $observaciones) {
-  _id
+  mutation CreateAvance($createAvanceId: String!, $observaciones: String!) {
+    createAvance(id: $createAvanceId, observaciones: $observaciones) {
+      _id
+    }
   }
-}
 `;
 
-export { CREAR_AVANCE, ACTUALIZAR_AVANCE };
+const EDITAR_AVANCE = gql`
+  mutation EditarAvance(
+    $editarAvanceId: String!
+    $descripcion: String!
+    $fecha: Date
+  ) {
+    editarAvance(
+      id: $editarAvanceId
+      descripcion: $descripcion
+      fecha: $fecha
+    ) {
+      _id
+    }
+  }
+`;
+
+export { CREAR_AVANCE, ACTUALIZAR_AVANCE, EDITAR_AVANCE };
