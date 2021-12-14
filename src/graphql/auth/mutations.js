@@ -23,6 +23,13 @@ const REGISTRO = gql`
   }
 `;
 
+
+const CAMBIAR_CLAVE = gql`
+mutation CambiarClave($correo: String, $password: String, $clave: String) {
+  cambiarClave(correo: $correo, password: $password, clave: $clave)
+}
+`;
+
 const LOGIN = gql`
   mutation Login($correo: String!, $password: String!) {
     login(correo: $correo, password: $password) {
@@ -41,4 +48,4 @@ const REFRESH_TOKEN = gql`
   }
 `;
 
-export { REGISTRO, LOGIN, REFRESH_TOKEN };
+export { REGISTRO, LOGIN, REFRESH_TOKEN, CAMBIAR_CLAVE };
