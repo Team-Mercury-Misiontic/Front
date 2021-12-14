@@ -178,11 +178,13 @@ const Avances = ({ item }) => {
       <>
         {" "}
         <p className="text-center">No hay avances en el proyecto </p>
+        <PrivateComponent roleList={["ESTUDIANTE"]}>
         <Link to={`/Avances/${item._id}`}>
           <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
             Añadir Avance
           </button>
         </Link>
+        </PrivateComponent>
       </>
     );
 };
