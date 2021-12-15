@@ -9,9 +9,12 @@ import ReactLoading from 'react-loading';
 import ButtonLoading from 'components/ButtonLoading';
 import { toast } from "react-toastify";
 import { useParams } from "react-router";
+import { useUser } from "context/userContext";
+
 
 const Avances = () => {
   const { _id } = useParams();
+  const { userData } = useUser();
   const {data: project, error, loading, refetch} = useQuery(GET_PROYECTO, {variables:{ _id }});
   const { form, formData, updateFormData } = useFormData();
 
@@ -32,7 +35,7 @@ const Avances = () => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    formData.creadoPor = project.Proyecto.registros.estudiante.nombre;
+    formData.creadoPor =userData._id;
     formData.proyecto = project.Proyecto._id;
 
     console.log('fd', formData);
