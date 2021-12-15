@@ -113,7 +113,7 @@ const Perfil = () => {
       </div>
       <TextField onChange={anteriorClave} label='Contraseña anterior' className={styles.TextField} type='password'/>
       <br />
-      <TextField onChange={nuevaClave} label='Nueva contraseña' className={styles.TextField} type='password' ref={password=>datos.password = password}/>
+      <TextField onChange={nuevaClave} label='Nueva contraseña' className={styles.TextField} type='password' />
       <br />   <br />
       <div align= 'center'>
         <Button onClick={()=>invocarFuncion()}  color='primary'>Enviar</Button>

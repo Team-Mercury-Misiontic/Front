@@ -35,6 +35,7 @@ const VerAvance = () => {
   //useEffect para datos traido del back
   useEffect(() => {
     console.log("data servidor", data);
+    refetch()
   }, [data]);
 
   useEffect(() => {
