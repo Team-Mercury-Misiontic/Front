@@ -76,14 +76,14 @@ const ActualizarAvance = () => {
           label="Fecha de actualización"
           required={true}
           type="date"
-          defaultValue={queryData.avanceFiltrado.fecha}
+          defaultValue={queryData.avanceFiltrado[0].fecha}
         />
         <Input
           name="descripcion"
           label="Descripción del avance"
           required={true}
           type="text"
-          defaultValue={queryData.avanceFiltrado.descripcion}
+          defaultValue={queryData.avanceFiltrado[0].descripcion}
         />
         <ButtonLoading
           disabled={Object.keys(formData).length === 0}
