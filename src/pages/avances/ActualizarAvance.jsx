@@ -63,7 +63,7 @@ const ActualizarAvance = () => {
         </Link>
       </div>
       <h1 className="text-2xl font-bold text-gray-900">
-        Modificar Avance en {queryData.avanceFiltrado.proyecto.nombre}
+        Modificar Avance en {queryData.avanceFiltrado[0].proyecto.nombre}
       </h1>
       <form
         onSubmit={submitForm}
