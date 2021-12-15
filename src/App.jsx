@@ -18,6 +18,7 @@ import "styles/globals.css";
 import "styles/tabla.css";
 import Avances from "pages/avances/Avances";
 import VerAvance from "pages/avances/VerAvance";
+import ActualizarAvance from "pages/avances/ActualizarAvance";
 import AuthLayout from "layouts/AuthLayout";
 import Register from "pages/auth/register";
 import Login from "pages/auth/login";
@@ -31,8 +32,8 @@ import { setContext } from '@apollo/client/link/context';
 
 //Reemplazar link de despliegue back
 const httpLink = createHttpLink({
-  //uri: "https://backen-mercury.herokuapp.com/graphql"
-  uri: "http://localhost:4000/graphql"
+  uri: "https://backen-mercury.herokuapp.com/graphql"
+  //uri: "http://localhost:4000/graphql"
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -94,6 +95,7 @@ function App() {
                   <Route path="Proyectos/EditarProyecto/:_id" element={<EditarProyecto />} />
                   <Route path="Avances/:_id" element={<Avances />} />
                   <Route path="VerAvance/:_id" element={<VerAvance />} />
+                  <Route path="VerAvance/ActualizarAvance/:_id" element={<ActualizarAvance />} />
                   <Route path="Usuarios" element={<Usuarios />} />
                   <Route path='/usuarios/Estudiantes' element={<Estudiantes />} />
                   <Route path='/usuarios/EditarUsuario/:_id' element={<EditarUsuario />} />

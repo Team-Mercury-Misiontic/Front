@@ -32,7 +32,7 @@ const Avances = () => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    formData.creadoPor = "61aed58d53d88c942ac9fda0";
+    formData.creadoPor = project.Proyecto.registros.estudiante.nombre;
     formData.proyecto = project.Proyecto._id;
 
     console.log('fd', formData);

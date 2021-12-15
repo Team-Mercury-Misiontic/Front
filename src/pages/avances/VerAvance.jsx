@@ -118,7 +118,7 @@ const VerAvance = () => {
                   </PrivateComponent>
                   <PrivateComponent roleList={["ESTUDIANTE"]}>
                     <td>
-                      <Link to={`/Avances/${item._id}`}>
+                      <Link to={`/VerAvance/ActualizarAvance/${item._id}`}>
                         <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
                           Editar
                         </button>{" "}
