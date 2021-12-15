@@ -8,10 +8,12 @@ import { toast } from "react-toastify";
 import { GET_AVANCE_BY_PROJECT } from "graphql/avances/queries";
 import ReactLoading from "react-loading";
 import { CREAR_AVANCE } from "graphql/avances/mutations";
+import { useUser } from "context/userContext";
 
 const ActualizarAvance = () => {
   const { form, formData, updateFormData } = useFormData(null);
   const { _id } = useParams();
+  const { userData } = useUser();
 
   const {
     data: queryData,
@@ -59,12 +61,12 @@ const ActualizarAvance = () => {
   return (
     <div className="p-10 flex flex-col items-center">
       <div className="self-start">
-        <Link to={`/proyectos/${_id}`}>
+        <Link to={`/VerAvance/${_id}`}>
           <i className="fas fa-arrow-left" />
         </Link>
       </div>
       <h1 className="text-2xl font-bold text-gray-900">
-        Modificar Avance en {queryData.filtrarAvance.proyecto.nombre}
+        Modificar Avance en {queryData.filtrarAvance._id}
       </h1>
       <form
         onSubmit={submitForm}
@@ -78,13 +80,6 @@ const ActualizarAvance = () => {
           required={true}
           type="date"
           defaultValue={queryData.filtrarAvance.fecha}
-        />
-        <Input
-          label="Nombre de la persona:"
-          type="text"
-          name="nombre"
-          defaultValue={queryData.Usuario.nombre}
-          required={true}
         />
         <Input
           name="descripcion"
