@@ -41,23 +41,29 @@ const GET_AVANCES = gql`
 `;
 
 const GET_AVANCE_ID = gql`
-    query avanceFiltrado($_id: String!) {
-        avanceFiltrado(_id: $_id) {
-            _id
-            proyecto {
-                _id
-                nombre
-            }
-            fecha
-            descripcion
-            observaciones
-            creadoPor {
-                identificacion
-                nombre
-                apellido
-            }
-        }
-    } 
+query avanceFiltrado($id: String!) {
+  avanceFiltrado(_id: $id) {
+    fecha
+    descripcion
+  }
+}
+    # query avanceFiltrado($_id: String!) {
+    #     avanceFiltrado(_id: $_id) {
+    #         _id
+    #         proyecto {
+    #             _id
+    #             nombre
+    #         }
+    #         fecha
+    #         descripcion
+    #         observaciones
+    #         creadoPor {
+    #             identificacion
+    #             nombre
+    #             apellido
+    #         }
+    #     }
+    # } 
 `;
 
 
