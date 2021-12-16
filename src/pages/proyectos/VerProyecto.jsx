@@ -134,7 +134,7 @@ const Estudiantes = ({ item }) => {
       return (
         <ul className="pl-2">
           <li className="list-disc list-inside">
-            {estudiante.estudiante.nombre}
+            {estudiante.estudiante.nombre} {estudiante.estudiante.apellido}
           </li>
         </ul>
       );
