@@ -19,6 +19,7 @@ export const GET_PROYECTOS = gql`
         tipo
       }
       registros{
+        estado
         estudiante{
           _id
           nombre

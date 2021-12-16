@@ -14,7 +14,6 @@ import PrivateComponent from "components/PrivateComponent";
 const VerProyecto = () => {
   const { _id } = useParams();
   const { userData } = useUser();
-  console.log(userData.rol);
   const { data, error, loading } = useQuery(GET_PROYECTO, {
     variables: { _id },
   });
@@ -133,7 +132,7 @@ const Estudiantes = ({ item }) => {
       return (
         <ul className="pl-2">
           <li className="list-disc list-inside">
-            {estudiante.estudiante.nombre}
+            {estudiante.estudiante.nombre} {estudiante.estudiante.apellido}
           </li>
         </ul>
       );

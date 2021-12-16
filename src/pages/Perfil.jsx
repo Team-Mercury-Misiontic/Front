@@ -39,6 +39,7 @@ const Perfil = () => {
     useMutation(EDITAR_USUARIO,{
       onCompleted() {
           toast.success("Usuario actualizado con exito");
+          setEditar(false)
       }});
   
 
@@ -125,7 +126,7 @@ const Perfil = () => {
 
 
       
-   const datos ={clave:'',password:'' }
+  const datos ={clave:'',password:'' }
 
   const usuario={
       _id: userData._id,
@@ -137,11 +138,11 @@ const Perfil = () => {
       correo: userData.correo,
   };
  console.log(usuario);
-  useEffect(() => {
+  /* useEffect(() => {
     if (mutationData) {
       toast.success('Usuario modificado correctamente');
     }
-  }, [mutationData]);
+  }, [mutationData]); */
 
   return (
     
@@ -155,7 +156,7 @@ const Perfil = () => {
       
 
       <h1 className='mb-4 text-3xl text-gray-800 font-bold text-center'>{userData.nombre} {userData.apellido}</h1>
-      <form className='flex flex-col gap-3 items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100 text-center text-xl text-gray-500 uppercase font-bold h-3/4 rounded-3xl'
+      <form className='flex flex-col gap-3 items-center justify-center min-w-min w-1/3 mx-auto bg-gray-100 text-center text-xl text-gray-500 uppercase font-bold h-11/12 rounded-3xl'
             onSubmit={e => {
             e.preventDefault();
             editarUsuario({ 
@@ -166,8 +167,7 @@ const Perfil = () => {
                 nombre: usuario.nombre.value,
                 apellido: usuario.apellido.value,
                 identificacion: usuario.identificacion.value,
-                correo: usuario.correo.value,
-                password: usuario.password.value
+                correo: usuario.correo.value
                }})
             }}>
         <span className=' m-auto text-center rounded-md text-black text-lg mt-8x'>{userData.rol}</span>

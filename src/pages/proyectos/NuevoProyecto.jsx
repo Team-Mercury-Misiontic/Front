@@ -58,12 +58,12 @@ const NuevoProyecto = () =>{
                     }})
                 }}>
                     <label htmlFor="nombre" >Nombre</label>
-                    <input ref={nombre=>setProyecto(proyecto.nombre = nombre)}  placeholder="Nombre del proyecto" id="nombre" className="m-auto text-center rounded-md text-black text-lg "/>
+                    <input ref={nombre=>setProyecto(proyecto.nombre = nombre)}  required placeholder="Nombre del proyecto" id="nombre" className="m-auto text-center rounded-md text-black text-lg "/>
                     <label htmlFor="lider" >Lider</label>
-                    <input value = {userData.nombre + " " + userData.apellido} id="lider" className="m-auto text-center rounded-md text-black text-lg"/>
+                    <input value = {userData.nombre + " " + userData.apellido} id="lider" required className="m-auto text-center rounded-md text-black text-lg"/>
                     <input ref={lider => setProyecto(proyecto.lider = userData._id)} className="hidden"/>
                     <label htmlFor="presupuesto" >Presupuesto</label>
-                    <input ref={presupuesto=>setProyecto(proyecto.presupuesto=presupuesto)} placeholder="Presupuesto"id="presupuesto" className="m-auto text-center rounded-md text-black text-lg"/>
+                    <input ref={presupuesto=>setProyecto(proyecto.presupuesto=presupuesto)} required placeholder="Presupuesto"id="presupuesto" className="m-auto text-center rounded-md text-black text-lg"/>
                     <placeholder className="grid grid-cols-4 gap-2">
                         <legend className="col-span-4">OBJETIVOS</legend>
                         <div className="m-auto col-start-1 h-36 text-center overflow-y-scroll rounded-md border-solid border-2 border-black w-11/12 text-gray-800 text-base col-span-2 row-span-5 bg-white overflow-hidden">
@@ -76,7 +76,7 @@ const NuevoProyecto = () =>{
                         </div>
                         
                         <label className="text-lg text-left col-start-3" htmlFor="descripcion">Descripcion</label>
-                        <input className="h-8 col-start-3 mx-3 col-span-2" placeholder="Descripcion del objetivo" type="text-area" id="descripcion" ref={descripcion=>objetivo.descripcion=descripcion} />
+                        <input className="h-8 col-start-3 mx-3 col-span-2" required placeholder="Descripcion del objetivo" type="text-area" id="descripcion" ref={descripcion=>objetivo.descripcion=descripcion} />
                         <label className="text-lg text-left col-start-3" htmlFor="tipo">Tipo</label>
                         <select className="border h-8 col-start-3 mx-3 col-span-2" type="text" id="tipo" ref={tipo=>objetivo.tipo=tipo} >
                             <option value="GENERAL">General</option>
