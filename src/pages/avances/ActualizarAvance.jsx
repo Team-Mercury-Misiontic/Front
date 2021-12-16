@@ -5,35 +5,34 @@ import Input from "components/Input";
 import ButtonLoading from "components/ButtonLoading";
 import useFormData from "hooks/useFormData";
 import { toast } from "react-toastify";
-import { GET_AVANCE_BY_PROJECT } from "graphql/avances/queries";
 import ReactLoading from "react-loading";
-import { CREAR_AVANCE } from "graphql/avances/mutations";
-import { useUser } from "context/userContext";
+import { EDITAR_AVANCE } from "graphql/avances/mutations";
+import { GET_AVANCE_ID } from "graphql/avances/queries";
 
 const ActualizarAvance = () => {
   const { form, formData, updateFormData } = useFormData(null);
   const { _id } = useParams();
-  const { userData } = useUser();
-
+  let moment = require('moment');
   const {
     data: queryData,
     error: queryError,
     loading: queryLoading,
-  } = useQuery(GET_AVANCE_BY_PROJECT, { variables: { _id } });
+  } = useQuery(GET_AVANCE_ID, { variables: { id:_id } });
 
-  console.log(queryData);
 
+  // console.log('Datos de la query',queryData);
+  // console.log('Descripcion',queryData.avanceFiltrado[0].descripcion);
   const [
-    crearAvance,
+    editarAvance,
     { data: mutationData, loading: mutationLoading, error: mutationError },
-  ] = useMutation(CREAR_AVANCE);
+  ] = useMutation(EDITAR_AVANCE);
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log("fd", formData);
-    delete formData.rol;
-    crearAvance({
-      variables: { _id, ...formData },
+    console.log("datos fomulario", formData);
+    console.log('id a modificar',_id)
+    editarAvance({
+      variables: {editarAvanceId:_id,...formData },
     });
   };
 
@@ -61,14 +60,15 @@ const ActualizarAvance = () => {
   return (
     <div className="p-10 flex flex-col items-center">
       <div className="self-start">
-        <Link to={`/VerAvance/${_id}`}>
+        <Link to={`/VerAvance/${queryData.avanceFiltrado[0].proyecto._id}`}>
           <i className="fas fa-arrow-left" />
         </Link>
       </div>
       <h1 className="text-2xl font-bold text-gray-900">
-        Modificar Avance en {queryData.filtrarAvance._id}
+        Modificar Avance en {queryData.avanceFiltrado[0].proyecto.nombre}
       </h1>
       <form
+        
         onSubmit={submitForm}
         onChange={updateFormData}
         ref={form}
@@ -78,15 +78,15 @@ const ActualizarAvance = () => {
           name="fecha"
           label="Fecha de actualización"
           required={true}
-          type="date"
-          defaultValue={queryData.filtrarAvance.fecha}
+          type="text"
+          defaultValue={moment(queryData.avanceFiltrado[0].fecha).format('DD-MM-YYYY')}
         />
         <Input
           name="descripcion"
           label="Descripción del avance"
           required={true}
           type="text"
-          defaultValue={queryData.filtrarAvance.descripcion}
+          defaultValue={queryData.avanceFiltrado[0].descripcion}
         />
         <ButtonLoading
           disabled={Object.keys(formData).length === 0}

@@ -32,21 +32,12 @@ const ACTUALIZAR_AVANCE = gql`
     }
   }
 `;
-
 const EDITAR_AVANCE = gql`
-  mutation EditarAvance(
-    $editarAvanceId: String!
-    $descripcion: String!
-    $fecha: Date
-  ) {
-    editarAvance(
-      id: $editarAvanceId
-      descripcion: $descripcion
-      fecha: $fecha
-    ) {
-      _id
-    }
+mutation EditarAvance($editarAvanceId: String!, $descripcion: String) {
+  editarAvance(id: $editarAvanceId, descripcion: $descripcion) {
+    _id
   }
+}
 `;
 
 export { CREAR_AVANCE, ACTUALIZAR_AVANCE, EDITAR_AVANCE };

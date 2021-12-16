@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = ({ label, name, defaultValue, type, required, readOnly }) => {
+const Input = ({ label, name, defaultValue, type, required, readOnly,value }) => {
   return (
     <label htmlFor={name} className='flex flex-col my-3 m-auto text-center rounded-md text-black text-lg'>
       <span>{label}</span>
@@ -11,6 +11,7 @@ const Input = ({ label, name, defaultValue, type, required, readOnly }) => {
         className='input rounded-md	mb-2 border-2	border-gray-300'
         defaultValue={defaultValue}
         readOnly={readOnly}
+        value={value}
       />
     </label>
   );
