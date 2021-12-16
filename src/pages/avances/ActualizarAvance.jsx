@@ -60,13 +60,12 @@ const ActualizarAvance = () => {
   return (
     <div className="p-10 flex flex-col items-center">
       <div className="self-start">
-        <Link to={`/VerAvance/${_id}`}>
+        <Link to={`/VerAvance/${queryData.avanceFiltrado[0].proyecto._id}`}>
           <i className="fas fa-arrow-left" />
         </Link>
       </div>
       <h1 className="text-2xl font-bold text-gray-900">
-        {/* Modificar Avance en {queryData.avanceFiltrado.nombre} */}
-        Modificar Avance
+        Modificar Avance en {queryData.avanceFiltrado[0].proyecto.nombre}
       </h1>
       <form
         
