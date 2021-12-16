@@ -221,7 +221,8 @@ const Estudiante = ({data, Usuario}) => {
           return proyecto
         }
       }).map((item)=>{
-        const filtro = item.registros.filter((registro) => registro.estudiante._id === Usuario._id)
+        const filtro = item.registros.filter((registro) => registro.estudiante._id === Usuario._id && registro.estado === "ACEPTADA")
+        console.log(item.registros);
         if (registrado && item.estado === "ACTIVO"){
             if (filtro.length!==0){
                 return (
