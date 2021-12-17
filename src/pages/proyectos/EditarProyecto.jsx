@@ -8,6 +8,7 @@ import {useQuery, useMutation} from '@apollo/client';
 import Objetivos from 'components/Objetivos'
 import ReactLoading from "react-loading";
 import { toast } from "react-toastify";
+import { FECHA_FINAL } from 'graphql/inscripciones/mutaciones';
 
 const EditarProyecto=()=> {
     const {_id} = useParams();
@@ -28,6 +29,8 @@ const EditarProyecto=()=> {
       tipo: ""
     };
     
+    const [finalizarInscripcion, { data: dataMutation, loading: loadingMutation, error: errorMutation }] = useMutation(FECHA_FINAL)
+
     const [editarProyecto, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(EDITAR_PROYECTO)
     useEffect(() => {
       if (mutationData) {
@@ -50,6 +53,10 @@ const EditarProyecto=()=> {
       }else{
         if (queryData.Proyecto.estado === "ACTIVO"){
           proyecto.estado = "INACTIVO"
+          finalizarInscripcion({
+            variables:{
+            finalizarInscripcionId:_id
+          }})
         }else {
           proyecto.estado = "ACTIVO"
         }
