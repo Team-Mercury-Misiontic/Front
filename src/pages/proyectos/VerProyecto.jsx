@@ -144,19 +144,18 @@ const Estudiantes = ({ item }) => {
   const filtro = Estudiantes.filter((estudiante) => estudiante !== null);
   if (filtro.length !== 0) {
     return Estudiantes;
-  } else{
-  
-          return (
-            <p className="text-center">NO HAY ESTUDIANTES REGISTRADOS AL PROYECTO </p>
-          );     
-         }   
-      
+  } else {
+    return (
+      <p className="text-center">NO HAY ESTUDIANTES REGISTRADOS AL PROYECTO </p>
+    );
+  }
 };
 
 const Avances = ({ item }) => {
   const Avances = item.avances;
   if(item.registros.length !== 0){
     if(item.registros[0].estado==='ACEPTADA'){
+    if (item.fase === "INICIADO" || item.fase === "DESARROLLO") {
       if (Avances.length !== 0) {
         return (
           <>
@@ -210,11 +209,13 @@ const Avances = ({ item }) => {
         </>
       );
     } 
-  }else{
+  }}else{
     return (
       <>
         {" "}
-        <p className="text-center">No puedes registrar avances, si no estas inscrito en el proyecto. </p>
+        <p className="text-center">
+          No puedes registrar avances, si no estas inscrito en el proyecto.{" "}
+        </p>
         <PrivateComponent roleList={["ESTUDIANTE"]}>
     
             <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >
@@ -264,9 +265,7 @@ const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
   return (
     <>
       {estadoInscripcion !== "" ? (
-        <span>
-          El estado de su solicitud es: {estadoInscripcion}
-        </span>
+        <span>El estado de su solicitud es: {estadoInscripcion}</span>
       ) : (
         <ButtonLoading
           onClick={() => confirmarInscripcion()}
