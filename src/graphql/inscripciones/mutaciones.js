@@ -16,6 +16,14 @@ const APROBAR_INSCRIPCION = gql`
   }
 `;
 
+const FECHA_FINAL = gql`
+mutation FinalizarInscripcion($finalizarInscripcionId: String!) {
+  finalizarInscripcion(id: $finalizarInscripcionId) {
+   _id
+  }
+}
+`;
+
 const RECHAZAR_INSCRIPCION = gql`
 mutation RechazarInscripcion($rechazarInscripcionId: String!) {
   rechazarInscripcion(id: $rechazarInscripcionId) {
@@ -24,4 +32,4 @@ mutation RechazarInscripcion($rechazarInscripcionId: String!) {
 }
 `;
 
-export { CREAR_INSCRIPCION, APROBAR_INSCRIPCION, RECHAZAR_INSCRIPCION};
+export { CREAR_INSCRIPCION, APROBAR_INSCRIPCION, RECHAZAR_INSCRIPCION,FECHA_FINAL};
