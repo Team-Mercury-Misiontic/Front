@@ -153,9 +153,10 @@ const Estudiantes = ({ item }) => {
 
 const Avances = ({ item }) => {
   const Avances = item.avances;
+
   if(item.registros.length !== 0){
     if(item.registros[0].estado==='ACEPTADA'){
-      // if (item.Proyecto.fase === "INICIADO" || item.Proyecto.fase === "DESARROLLO") {
+      if (item.fase === 'INICIADO' || item.fase === "DESARROLLO") {
         if (Avances.length !== 0) {
           return (
             <>
@@ -194,7 +195,21 @@ const Avances = ({ item }) => {
               </PrivateComponent>
             </>
           );
-      // }    
+      }else{
+        return (
+          <>
+            {" "}
+            <p className="text-center">No se pueden registrar avances en un proyecto Terminado o Inactivo </p>
+            <PrivateComponent roleList={["ESTUDIANTE"]}>
+              <Link to={`/Avances/${item._id}`}>
+                <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+                  Añadir Avance
+                </button>
+              </Link>
+            </PrivateComponent>
+          </>
+        );
+      }    
     }else{
       return (
         <>
