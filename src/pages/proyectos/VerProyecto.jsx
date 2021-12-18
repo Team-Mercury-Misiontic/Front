@@ -153,9 +153,9 @@ const Estudiantes = ({ item }) => {
 
 const Avances = ({ item }) => {
   const Avances = item.avances;
-  if (item.registros.length !== 0) {
-    if (item.fase === "INICIADO" || item.fase === "DESARROLLO") {
-      if (item.registros[0].estado === "ACEPTADA") {
+  if(item.registros.length !== 0){
+    if(item.registros[0].estado==='ACEPTADA'){
+      if (item.fase === 'INICIADO' || item.fase === "DESARROLLO") {
         if (Avances.length !== 0) {
           return (
             <>
@@ -163,8 +163,7 @@ const Avances = ({ item }) => {
                 <Link to={`/VerAvance/${item._id}`}>
                   <p className="text-center">
                     Hay {Avances.length}{" "}
-                    {Avances.length === 1 ? " avance" : " avances"} en el
-                    proyecto{" "}
+                    {Avances.length === 1 ? " avance" : " avances"} en el proyecto{" "}
                   </p>
                   <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
                     Ver Avances
@@ -173,7 +172,7 @@ const Avances = ({ item }) => {
               </PrivateComponent>
               <br />
               <PrivateComponent roleList={["ESTUDIANTE"]}>
-                <Link to={`/Avances/${item._id}`}>
+                <Link to={`/Avances/${item._id}`}>   
                   <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white  m-3">
                     Añadir Avance
                   </button>
@@ -181,7 +180,7 @@ const Avances = ({ item }) => {
               </PrivateComponent>
             </>
           );
-        } else {
+        } else
           return (
             <>
               {" "}
@@ -195,14 +194,11 @@ const Avances = ({ item }) => {
               </PrivateComponent>
             </>
           );
-        }
-      } else {
+      }else{
         return (
           <>
             {" "}
-            <p className="text-center">
-              No puedes registrar avances, si no estas inscrito en el proyecto.{" "}
-            </p>
+            <p className="text-center">No se pueden registrar avances en un proyecto Terminado o Inactivo </p>
             <PrivateComponent roleList={["ESTUDIANTE"]}>
               <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
                 Añadir Avance
@@ -210,8 +206,8 @@ const Avances = ({ item }) => {
             </PrivateComponent>
           </>
         );
-      }
-    } else {
+      }    
+    }else{
       return (
         <>
           {" "}
@@ -220,8 +216,8 @@ const Avances = ({ item }) => {
           </p>
         </>
       );
-    }
-  } else {
+    } 
+  }else{
     return (
       <>
         {" "}
