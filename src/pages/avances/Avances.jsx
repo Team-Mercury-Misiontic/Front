@@ -101,13 +101,13 @@ const Avances = () => {
         <Input
           name='fecha'
           label='Fecha de actualización'
-          required={true}
+          required
           type='date'
         />
         <Input
           name='descripcion'
           label='Descripción del avance'
-          required={true}
+          required
           type='text'
         />
 

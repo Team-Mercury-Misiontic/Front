@@ -30,7 +30,7 @@
     "no-underscore-dangle": "off",
     "react/jsx-props-no-spreading": "off",
     "import/prefer-default-export": "off",
-    "arrow-body-style": "warn",
+    "arrow-body-style": "off",
     "no-nested-ternary": "warn",
     "prettier/prettier": [
       "error",

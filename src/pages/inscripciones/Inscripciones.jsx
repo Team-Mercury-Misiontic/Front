@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 // import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
-import { APROBAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
+import {
+  APROBAR_INSCRIPCION,
+  RECHAZAR_INSCRIPCION,
+} from 'graphql/inscripciones/mutaciones';
 import ButtonLoading from 'components/ButtonLoading';
 import { toast } from 'react-toastify';
 import {
@@ -11,7 +14,6 @@ import {
   AccordionDetailsStyled,
 } from 'components/Accordion';
 import PrivateRoute from 'components/PrivateRoute';
-import { RECHAZAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 
 const IndexInscription = () => {
   const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
@@ -54,7 +56,9 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => {
         <div className='flex'>
           {data &&
             data.map((inscripcion) => {
-              return <Inscripcion inscripcion={inscripcion} refetch={refetch} />;
+              return (
+                <Inscripcion inscripcion={inscripcion} refetch={refetch} />
+              );
             })}
         </div>
       </AccordionDetailsStyled>
@@ -63,8 +67,12 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => {
 };
 
 const Inscripcion = ({ inscripcion, refetch }) => {
-  const [aprobarInscripcion, { data, loading, error }] = useMutation(APROBAR_INSCRIPCION);
-  const [rechazarInscripcion, { data:dataMutation, loading: loadingMutation, error: errorMutation }] = useMutation(RECHAZAR_INSCRIPCION);
+  const [aprobarInscripcion, { data, loading, error }] =
+    useMutation(APROBAR_INSCRIPCION);
+  const [
+    rechazarInscripcion,
+    { data: dataMutation, loading: loadingMutation, error: errorMutation },
+  ] = useMutation(RECHAZAR_INSCRIPCION);
 
   useEffect(() => {
     if (data) {
@@ -93,15 +101,14 @@ const Inscripcion = ({ inscripcion, refetch }) => {
   }, [errorMutation]);
 
   const cambiarEstadoInscripcion = (variable) => {
-    console.log('valor de la variable',variable)
-    if(variable===0){
+    console.log('valor de la variable', variable);
+    if (variable === 0) {
       aprobarInscripcion({
         variables: {
           aprobarInscripcionId: inscripcion._id,
         },
       });
-  
-    }else{
+    } else {
       rechazarInscripcion({
         variables: {
           rechazarInscripcionId: inscripcion._id,
@@ -112,7 +119,7 @@ const Inscripcion = ({ inscripcion, refetch }) => {
 
   return (
     <div className='bg-gray-900 text-gray-50 flex flex-col p-6 m-2 rounded-lg shadow-xl'>
-      <span>{'Proyecto'} {inscripcion.proyecto.nombre}</span>
+      <span>Proyecto {inscripcion.proyecto.nombre}</span>
       <span>{inscripcion.estudiante.nombre}</span>
       <span>{inscripcion.estado}</span>
       {inscripcion.estado === 'PENDIENTE' && (
@@ -125,7 +132,7 @@ const Inscripcion = ({ inscripcion, refetch }) => {
           disabled={false}
         />
       )}
-       {inscripcion.estado === 'PENDIENTE' && (
+      {inscripcion.estado === 'PENDIENTE' && (
         <ButtonLoading
           onClick={() => {
             cambiarEstadoInscripcion(1);

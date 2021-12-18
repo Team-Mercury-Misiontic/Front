@@ -8,7 +8,7 @@ const PrivateComponent = ({ roleList, children }) => {
     return children;
   }
 
-  return <div data-testid="not-authorized"></div>;
+  return <div data-testid='not-authorized' />;
 };
 
 export default PrivateComponent;
