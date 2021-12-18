@@ -153,7 +153,6 @@ const Estudiantes = ({ item }) => {
 
 const Avances = ({ item }) => {
   const Avances = item.avances;
-
   if(item.registros.length !== 0){
     if(item.registros[0].estado==='ACEPTADA'){
       if (item.fase === 'INICIADO' || item.fase === "DESARROLLO") {
@@ -201,11 +200,9 @@ const Avances = ({ item }) => {
             {" "}
             <p className="text-center">No se pueden registrar avances en un proyecto Terminado o Inactivo </p>
             <PrivateComponent roleList={["ESTUDIANTE"]}>
-              <Link to={`/Avances/${item._id}`}>
-                <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
-                  Añadir Avance
-                </button>
-              </Link>
+              <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+                Añadir Avance
+              </button>
             </PrivateComponent>
           </>
         );
@@ -214,14 +211,9 @@ const Avances = ({ item }) => {
       return (
         <>
           {" "}
-          <p className="text-center">No puedes registrar avances, si no estas inscrito en el proyecto. </p>
-          <PrivateComponent roleList={["ESTUDIANTE"]}>
-      
-              <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >
-                Añadir Avance
-              </button>
-        
-          </PrivateComponent>
+          <p className="text-center">
+            No puedes registrar avances, si no está iniciado o en desarrollo{" "}
+          </p>
         </>
       );
     } 
@@ -233,15 +225,13 @@ const Avances = ({ item }) => {
           No puedes registrar avances, si no estas inscrito en el proyecto.{" "}
         </p>
         <PrivateComponent roleList={["ESTUDIANTE"]}>
-    
-            <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white" >
-              Añadir Avance
-            </button>
-      
+          <button className="col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white">
+            Añadir Avance
+          </button>
         </PrivateComponent>
       </>
     );
-  }   
+  }
 };
 
 const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
