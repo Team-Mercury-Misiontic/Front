@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PrivateLayout from 'layouts/PrivateLayout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserContext } from 'context/userContext';
@@ -28,16 +28,15 @@ import AuthLayout from 'layouts/AuthLayout';
 import Register from 'pages/auth/register';
 import Login from 'pages/auth/login';
 import { AuthContext } from 'context/authContext';
-import { useEffect } from 'react';
 import jwt_decode from 'jwt-decode';
 import { setContext } from '@apollo/client/link/context';
 
 // import PrivateRoute from 'components/PrivateRoute';
 
-//Reemplazar link de despliegue back
+// Reemplazar link de despliegue back
 const httpLink = createHttpLink({
   uri: 'https://backen-mercury.herokuapp.com/graphql',
-  //uri: "http://localhost:4000/graphql"
+  // uri: "http://localhost:4000/graphql"
 });
 
 const authLink = setContext((_, { headers }) => {
