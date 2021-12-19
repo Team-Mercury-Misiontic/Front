@@ -6,14 +6,13 @@ import Objetivos from 'components/Objetivos';
 import ReactLoading from 'react-loading';
 import { useUser } from 'context/userContext';
 import PrivateComponent from 'components/PrivateComponent';
-import { GET_PROYECTOS } from '../../graphql/proyectos/queries';
+import { GET_PROYECTOS } from 'graphql/proyectos/queries';
 
 const Proyectos = () => {
   const { data, error, loading, refetch } = useQuery(GET_PROYECTOS);
   const { userData } = useUser();
   useEffect(() => {
     if (error) {
-      console.error(`error obteniendo los Proyectos ${error}`);
       toast.error('Error consultando los Proyectos');
       return `Error obteniendo los Proyectos ${error}`;
     }
@@ -64,7 +63,7 @@ const Proyectos = () => {
   return 'REVISAR BACKEND O BASE DE DATOS';
 };
 
-const Administrador = ({ data, Usuario }) => {
+const Administrador = ({ data }) => {
   const [busqueda, setBusqueda] = useState('');
   const bChange = (e) => {
     setBusqueda(e.target.value);
@@ -176,12 +175,12 @@ const Lider = ({ data, Usuario }) => {
       }
     })
     .map((item) => {
-      const Gestionar = (item) => {
-        if (item.item.estado === 'ACTIVO') {
+      const Gestionar = () => {
+        if (item.estado === 'ACTIVO') {
           return (
             <>
               <Link
-                to={`/Proyectos/EditarProyecto/${item.item._id}`}
+                to={`/Proyectos/EditarProyecto/${item._id}`}
                 className='block px-2 bg-green-400 hover:bg-green-600 rounded-full text-white h-6'
               >
                 Gestionar
@@ -278,7 +277,7 @@ const Lider = ({ data, Usuario }) => {
             type='checkbox'
             className='mx-2'
             id='active'
-            onClick={(e) => isActivo(!activo)}
+            onClick={() => isActivo(!activo)}
           />
           <label htmlFor='active' className='text-base'>
             Solo proyectos activos
@@ -305,7 +304,6 @@ const Lider = ({ data, Usuario }) => {
 const Estudiante = ({ data, Usuario }) => {
   const [busqueda, setBusqueda] = useState('');
   const [registrado, isRegistrado] = useState(false);
-  console.log('Usuario', Usuario);
   const bChange = (e) => {
     setBusqueda(e.target.value);
   };
@@ -329,7 +327,6 @@ const Estudiante = ({ data, Usuario }) => {
           registro.estudiante._id === Usuario._id &&
           registro.estado === 'ACEPTADA'
       );
-      console.log(item.registros);
       if (registrado && item.estado === 'ACTIVO') {
         if (filtro.length !== 0) {
           return (
@@ -399,7 +396,7 @@ const Estudiante = ({ data, Usuario }) => {
             type='checkbox'
             className='mx-2'
             id='active'
-            onClick={(e) => isRegistrado(!registrado)}
+            onClick={() => isRegistrado(!registrado)}
           />
           <label htmlFor='active' className='text-base'>
             Proyectos en curso{' '}

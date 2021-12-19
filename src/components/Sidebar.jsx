@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from 'context/authContext';
 import { useUser } from 'context/userContext';
-import PrivateComponent from './PrivateComponent';
+import PrivateComponent from 'components/PrivateComponent';
 
 const SidebarLinks = () => {
   const { userData } = useUser();
@@ -60,17 +60,18 @@ const SidebarLinks = () => {
 const Logout = () => {
   const { setToken } = useAuth();
   const deleteToken = () => {
-    console.log('eliminar token');
     setToken(null);
   };
   return (
-    <li onClick={() => deleteToken()}>
-      <NavLink to='/auth/login' className='sidebar-route text-blue-500'>
-        <div className='flex items-center'>
-          <i className='fas fa-sign-out-alt' />
-          <span className='text-sm  ml-2'>Cerrar Sesión</span>
-        </div>
-      </NavLink>
+    <li>
+      <button type='button' onClick={() => deleteToken()}>
+        <NavLink to='/auth/login' className='sidebar-route text-blue-500'>
+          <div className='flex items-center'>
+            <i className='fas fa-sign-out-alt' />
+            <span className='text-sm  ml-2'>Cerrar Sesión</span>
+          </div>
+        </NavLink>
+      </button>
     </li>
   );
 };
@@ -96,10 +97,9 @@ const Sidebar = () => {
         </div>
       </div>
       <div className='flex md:hidden w-full justify-between bg-gray-800 p-2 text-white'>
-        <i
-          className={`fas fa-${open ? 'times' : 'bars'}`}
-          onClick={() => setOpen(!open)}
-        />
+        <button type='button' onClick={() => setOpen(!open)}>
+          <i className={`fas fa-${open ? 'times' : 'bars'}`} />
+        </button>
         <i className='fas fa-home' />
       </div>
       {open && <ResponsiveSidebar />}

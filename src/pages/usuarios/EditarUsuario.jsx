@@ -21,8 +21,6 @@ const EditarUsuario = () => {
     loading: queryLoading,
   } = useQuery(GET_USUARIO, { variables: { _id } });
 
-  console.log(queryData);
-
   const [
     editarUsuario,
     { data: mutationData, loading: mutationLoading, error: mutationError },
@@ -30,7 +28,6 @@ const EditarUsuario = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log('fd', formData);
     delete formData.rol;
     editarUsuario({
       variables: { _id, ...formData },

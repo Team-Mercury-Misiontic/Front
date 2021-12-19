@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import PrivateRoute from 'components/PrivateRoute';
 import { useUser } from 'context/userContext';
-import { NUEVO_PROYECTO } from '../../graphql/proyectos/mutations';
+import { NUEVO_PROYECTO } from 'graphql/proyectos/mutations';
 
 const NuevoProyecto = () => {
   const [crearProyecto, { error, reset }] = useMutation(NUEVO_PROYECTO, {
@@ -14,7 +14,6 @@ const NuevoProyecto = () => {
     },
   });
   const { userData } = useUser();
-  console.log(userData);
   const [objetivos, setObjetivos] = useState([]);
   const objetivo = {
     descripcion: '',
@@ -35,8 +34,8 @@ const NuevoProyecto = () => {
     lider: '',
     presupuesto: 0,
   });
+
   if (error) {
-    console.log(error.message);
     toast.error('Problemas creando el proyecto');
   }
 
@@ -81,7 +80,7 @@ const NuevoProyecto = () => {
             className='m-auto text-center rounded-md text-black text-lg'
           />
           <input
-            ref={(lider) => setProyecto((proyecto.lider = userData._id))}
+            ref={() => setProyecto((proyecto.lider = userData._id))}
             className='hidden'
           />
           <label htmlFor='presupuesto'>Presupuesto</label>

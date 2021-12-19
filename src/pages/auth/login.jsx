@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Input from 'components/Input';
 import ButtonLoading from 'components/ButtonLoading';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,14 +7,11 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from 'graphql/auth/mutations';
 import { useAuth } from 'context/authContext';
 
-import { toast } from 'react-toastify';
-
 const Login = () => {
   const navigate = useNavigate();
   const { setToken } = useAuth();
   const { form, formData, updateFormData } = useFormData();
   const [mensaje, guardarMensaje] = useState(null);
-  // const [login, { data: dataMutation, loading: mutationLoading, error: mutationError }] =useMutation(LOGIN);
   const [login, { loading: mutationLoading }] = useMutation(LOGIN);
 
   const submitForm = async (e) => {
@@ -52,7 +49,6 @@ const Login = () => {
   //   useEffect(() => {
   //     if (dataMutation) {
   //       if (dataMutation.login.token) {
-  //         console.log('antes de setToken',dataMutation)
   //         setToken(dataMutation.login.token);
   //         navigate('/');
   //       }

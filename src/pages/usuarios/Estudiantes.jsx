@@ -13,13 +13,11 @@ const Estudiantes = () => {
 
   // useEffect para datos traido del back
   useEffect(() => {
-    console.log('data servidor', data);
     refetch();
   }, [data]);
 
   useEffect(() => {
     if (error) {
-      console.error(`error obteniendo los usuarios ${error}`);
       toast.error('Error consultando los usuarios');
     }
   }, [error]);
@@ -116,12 +114,16 @@ const Estudiantes = () => {
                     <td>{Enum_EstadoUsuario[item.estado]}</td>
                     <td>
                       <Link to={`/usuarios/EditarUsuario/${item._id}`}>
-                        <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'>
+                        <button
+                          type='button'
+                          className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'
+                        >
                           Editar
                         </button>{' '}
                       </Link>
                       {'   '}
                       <button
+                        type='button'
                         className='col-span-2 bg-red-400 p-2 rounded-full shadow-md hover:bg-red-600 text-white'
                         onClick={() => handleDeleteUser(item)}
                       >
@@ -142,19 +144,21 @@ const Estudiantes = () => {
           </h1>
           <div className='flex w-full items-center justify-center my-4'>
             <button
+              type='button'
               onClick={() =>
                 eliminarUsuario({
                   variables: {
                     _id: currentUser._id,
                     correo: currentUser.correo,
                   },
-                }).then((r) => setOpenDialog(false))
+                }).then(() => setOpenDialog(false))
               }
               className='mx-2 px-4 py-2 bg-green-500 text-white hover:bg-green-700 rounded-md shadow-md'
             >
               Sí
             </button>
             <button
+              type='button'
               onClick={() => setOpenDialog(false)}
               className='mx-2 px-4 py-2 bg-red-500 text-white hover:bg-red-700 rounded-md shadow-md'
             >

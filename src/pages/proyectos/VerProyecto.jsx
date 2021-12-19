@@ -5,11 +5,10 @@ import Objetivos from 'components/Objetivos';
 import { CREAR_INSCRIPCION } from 'graphql/inscripciones/mutaciones';
 import { toast } from 'react-toastify';
 import ButtonLoading from 'components/ButtonLoading';
-
 import ReactLoading from 'react-loading';
 import { useUser } from 'context/userContext';
 import PrivateComponent from 'components/PrivateComponent';
-import { GET_PROYECTO } from '../../graphql/proyectos/queries';
+import { GET_PROYECTO } from 'graphql/proyectos/queries';
 
 const VerProyecto = () => {
   const { _id } = useParams();
@@ -19,13 +18,10 @@ const VerProyecto = () => {
     variables: { _id },
   });
 
-  useEffect(() => {
-    console.log('data servidor', data);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   useEffect(() => {
     if (error) {
-      console.log(error.message);
       toast.error('Error al mostrar los proyectos');
     }
   }, [error]);
@@ -127,9 +123,7 @@ const VerProyecto = () => {
 };
 
 const Estudiantes = ({ item }) => {
-  // const estado= item.registros[0].estado;
-  // console.log('Datos de los estudiantes',item.Proyecto.registros)
-  const Estudiantes = item.Proyecto.registros.map((estudiante) => {
+  const EstudiantesCopy = item.Proyecto.registros.map((estudiante) => {
     if (estudiante.estado === 'ACEPTADA') {
       return (
         <ul className='pl-2'>
@@ -142,9 +136,9 @@ const Estudiantes = ({ item }) => {
     return null;
   });
 
-  const filtro = Estudiantes.filter((estudiante) => estudiante !== null);
+  const filtro = EstudiantesCopy.filter((estudiante) => estudiante !== null);
   if (filtro.length !== 0) {
-    return Estudiantes;
+    return EstudiantesCopy;
   }
   return (
     <p className='text-center'>NO HAY ESTUDIANTES REGISTRADOS AL PROYECTO </p>
@@ -152,21 +146,24 @@ const Estudiantes = ({ item }) => {
 };
 
 const Avances = ({ item }) => {
-  const Avances = item.avances;
+  const AvancesCopy = item.avances;
   if (item.registros.length !== 0) {
     if (item.registros[0].estado === 'ACEPTADA') {
       if (item.fase === 'INICIADO' || item.fase === 'DESARROLLO') {
-        if (Avances.length !== 0) {
+        if (AvancesCopy.length !== 0) {
           return (
             <>
               <PrivateComponent roleList={['LIDER', 'ESTUDIANTE']}>
                 <Link to={`/VerAvance/${item._id}`}>
                   <p className='text-center'>
-                    Hay {Avances.length}{' '}
-                    {Avances.length === 1 ? ' avance' : ' avances'} en el
+                    Hay {AvancesCopy.length}{' '}
+                    {AvancesCopy.length === 1 ? ' avance' : ' avances'} en el
                     proyecto{' '}
                   </p>
-                  <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'>
+                  <button
+                    type='button'
+                    className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'
+                  >
                     Ver Avances
                   </button>
                 </Link>
@@ -174,7 +171,10 @@ const Avances = ({ item }) => {
               <br />
               <PrivateComponent roleList={['ESTUDIANTE']}>
                 <Link to={`/Avances/${item._id}`}>
-                  <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white  m-3'>
+                  <button
+                    type='button'
+                    className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white  m-3'
+                  >
                     Añadir Avance
                   </button>
                 </Link>
@@ -188,7 +188,10 @@ const Avances = ({ item }) => {
             <p className='text-center'>No hay avances en el proyecto </p>
             <PrivateComponent roleList={['ESTUDIANTE']}>
               <Link to={`/Avances/${item._id}`}>
-                <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'>
+                <button
+                  type='button'
+                  className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'
+                >
                   Añadir Avance
                 </button>
               </Link>
@@ -203,7 +206,10 @@ const Avances = ({ item }) => {
             No se pueden registrar avances en un proyecto Terminado o Inactivo{' '}
           </p>
           <PrivateComponent roleList={['ESTUDIANTE']}>
-            <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'>
+            <button
+              type='button'
+              className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'
+            >
               Añadir Avance
             </button>
           </PrivateComponent>
@@ -226,7 +232,10 @@ const Avances = ({ item }) => {
         No puedes registrar avances, si no estas inscrito en el proyecto.{' '}
       </p>
       <PrivateComponent roleList={['ESTUDIANTE']}>
-        <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'>
+        <button
+          type='button'
+          className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'
+        >
           Añadir Avance
         </button>
       </PrivateComponent>
@@ -236,8 +245,7 @@ const Avances = ({ item }) => {
 
 const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
   const [estadoInscripcion, setEstadoInscripcion] = useState('');
-  const [crearRegistro, { data, loading, error }] =
-    useMutation(CREAR_INSCRIPCION);
+  const [crearRegistro, { data, loading }] = useMutation(CREAR_INSCRIPCION);
   const { userData } = useUser();
 
   useEffect(() => {
@@ -253,7 +261,6 @@ const InscripcionProyecto = ({ idProyecto, estado, inscripciones }) => {
 
   useEffect(() => {
     if (data) {
-      console.log('datos de la inscripcion', data);
       toast.success('Registro Exitoso');
     }
   }, [data]);

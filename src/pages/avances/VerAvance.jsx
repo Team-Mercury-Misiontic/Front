@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useQuery, useMutation } from '@apollo/client';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { GET_AVANCE_BY_PROJECT } from 'graphql/avances/queries';
 import PrivateComponent from 'components/PrivateComponent';
 import ReactLoading from 'react-loading';
-import { useParams } from 'react-router';
 import { ACTUALIZAR_AVANCE } from 'graphql/avances/mutations';
 
 const VerAvance = () => {
@@ -27,20 +26,17 @@ const VerAvance = () => {
 
   useEffect(() => {
     if (mutationError) {
-      console.error(`error realizando creacion ${mutationError}`);
       toast.error('Error realizando creacion');
     }
   }, [mutationError]);
 
   // useEffect para datos traido del back
   useEffect(() => {
-    console.log('data servidor', data);
     refetch();
   }, [data]);
 
   useEffect(() => {
     if (error) {
-      console.error(`error obteniendo los datos ${error}`);
       toast.error('Error consultando los datos');
     }
   }, [error]);
@@ -54,7 +50,6 @@ const VerAvance = () => {
     const observacion = document.getElementsByName(`obs${avanceId._id}`)[0]
       .value;
     if (observacion) {
-      console.log('añadiendo ', observacion);
       createAvance({
         variables: {
           createAvanceId: avanceId._id,
@@ -110,6 +105,7 @@ const VerAvance = () => {
                       />{' '}
                       <br />
                       <button
+                        type='button'
                         className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'
                         onClick={() => addObservacion(item)}
                       >
@@ -120,7 +116,10 @@ const VerAvance = () => {
                   <PrivateComponent roleList={['ESTUDIANTE']}>
                     <td>
                       <Link to={`/VerAvance/ActualizarAvance/${item._id}`}>
-                        <button className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'>
+                        <button
+                          type='button'
+                          className='col-span-2 bg-blue-400 p-2 rounded-full shadow-md hover:bg-blue-600 text-white'
+                        >
                           Editar
                         </button>{' '}
                       </Link>

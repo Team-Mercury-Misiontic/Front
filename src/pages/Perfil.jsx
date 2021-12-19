@@ -1,5 +1,5 @@
 import { useUser } from 'context/userContext';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
@@ -34,7 +34,7 @@ const Perfil = () => {
   const navigate = useNavigate();
   const [mensaje, guardarMensaje] = useState(null);
   const [editar, setEditar] = useState(false);
-  const [editarUsuario, { data: mutationData }] = useMutation(EDITAR_USUARIO, {
+  const [editarUsuario] = useMutation(EDITAR_USUARIO, {
     onCompleted() {
       toast.success('Usuario actualizado con exito');
       setEditar(false);
@@ -67,13 +67,12 @@ const Perfil = () => {
 
   const { setToken } = useAuth();
   const deleteToken = () => {
-    console.log('eliminar token');
     setToken(null);
   };
 
   const invocarFuncion = async () => {
     try {
-      const { data } = await cambiarClave({
+      cambiarClave({
         variables: {
           correo: userData.correo,
           password: passwordNuevo,
@@ -130,7 +129,7 @@ const Perfil = () => {
     </div>
   );
 
-  const datos = { clave: '', password: '' };
+  // const datos = { clave: '', password: '' };
 
   const usuario = {
     _id: userData._id,
@@ -141,7 +140,6 @@ const Perfil = () => {
     estado: 'AUTORIZADO',
     correo: userData.correo,
   };
-  console.log(usuario);
   /* useEffect(() => {
     if (mutationData) {
       toast.success('Usuario modificado correctamente');
@@ -256,7 +254,7 @@ const Perfil = () => {
             <button
               type='button'
               className='inline-block bg-red-700 text-white font-bold text-lg py-2 px-4  rounded-xl hover:bg-red-500 shadow-md my-4 mx-1 disabled:opacity-50 disabled:bg-gray-700'
-              onClick={(e) => setEditar(!editar)}
+              onClick={() => setEditar(!editar)}
             >
               Cancelar
             </button>
@@ -265,7 +263,7 @@ const Perfil = () => {
           <button
             type='button'
             className='bg-indigo-700 text-white font-bold text-lg py-2 px-4  rounded-xl hover:bg-indigo-500 shadow-md my-4 mx-4 disabled:opacity-50 disabled:bg-gray-700'
-            onClick={(e) => setEditar(!editar)}
+            onClick={() => setEditar(!editar)}
           >
             Editar perfil
           </button>

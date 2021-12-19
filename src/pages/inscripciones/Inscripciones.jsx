@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
+import ReactLoading from 'react-loading';
 import { useMutation, useQuery } from '@apollo/client';
-// import PrivateRoute from 'components/PrivateRoute';
 import { GET_INSCRIPCIONES } from 'graphql/inscripciones/queries';
 import {
   APROBAR_INSCRIPCION,
@@ -16,12 +16,13 @@ import {
 import PrivateRoute from 'components/PrivateRoute';
 
 const IndexInscription = () => {
-  const { data, loading, error, refetch } = useQuery(GET_INSCRIPCIONES);
+  const { data, loading, refetch } = useQuery(GET_INSCRIPCIONES);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-  if (loading) return <div>Loading...</div>;
+  useEffect(() => {}, [data]);
+  if (loading)
+    return (
+      <ReactLoading type='cylon' color='#4c2882' height={667} width={365} />
+    );
   return (
     <PrivateRoute roleList={['ADMINISTRADOR', 'LIDER']}>
       <div className='p-10'>
@@ -69,10 +70,8 @@ const AccordionInscripcion = ({ data, titulo, refetch = () => {} }) => {
 const Inscripcion = ({ inscripcion, refetch }) => {
   const [aprobarInscripcion, { data, loading, error }] =
     useMutation(APROBAR_INSCRIPCION);
-  const [
-    rechazarInscripcion,
-    { data: dataMutation, loading: loadingMutation, error: errorMutation },
-  ] = useMutation(RECHAZAR_INSCRIPCION);
+  const [rechazarInscripcion, { data: dataMutation, error: errorMutation }] =
+    useMutation(RECHAZAR_INSCRIPCION);
 
   useEffect(() => {
     if (data) {
@@ -101,7 +100,6 @@ const Inscripcion = ({ inscripcion, refetch }) => {
   }, [errorMutation]);
 
   const cambiarEstadoInscripcion = (variable) => {
-    console.log('valor de la variable', variable);
     if (variable === 0) {
       aprobarInscripcion({
         variables: {

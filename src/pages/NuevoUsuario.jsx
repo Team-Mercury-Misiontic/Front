@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-
-import { REGISTRAR_USUARIO } from '../graphql/usuarios/mutations';
+import { REGISTRAR_USUARIO } from 'graphql/usuarios/mutations';
 
 const NuevoUsuario = () => {
   const [register] = useMutation(REGISTRAR_USUARIO);

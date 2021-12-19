@@ -19,8 +19,6 @@ const ActualizarAvance = () => {
     loading: queryLoading,
   } = useQuery(GET_AVANCE_ID, { variables: { id: _id } });
 
-  // console.log('Datos de la query',queryData);
-  // console.log('Descripcion',queryData.avanceFiltrado[0].descripcion);
   const [
     editarAvance,
     { data: mutationData, loading: mutationLoading, error: mutationError },
@@ -28,8 +26,6 @@ const ActualizarAvance = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log('datos fomulario', formData);
-    console.log('id a modificar', _id);
     editarAvance({
       variables: { editarAvanceId: _id, ...formData },
     });

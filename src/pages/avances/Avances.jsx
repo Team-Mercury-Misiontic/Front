@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import useFormData from 'hooks/useFormData';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Input from 'components/Input';
 import { EDITAR_PROYECTO } from 'graphql/proyectos/mutations';
 import { GET_PROYECTO } from 'graphql/proyectos/queries';
@@ -9,7 +9,6 @@ import { CREAR_AVANCE } from 'graphql/avances/mutations';
 import ReactLoading from 'react-loading';
 import ButtonLoading from 'components/ButtonLoading';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router';
 import { useUser } from 'context/userContext';
 
 const Avances = () => {
@@ -28,13 +27,10 @@ const Avances = () => {
     { data: mutationData, loading: mutationLoading, error: mutationError },
   ] = useMutation(CREAR_AVANCE);
 
-  useEffect(() => {
-    console.log('data servidor', project);
-  }, [project]);
+  useEffect(() => {}, [project]);
 
   useEffect(() => {
     if (error) {
-      console.error(`Error obteniendo los datos ${error}`);
       toast.error('Error consultando los datos');
     }
   }, [error]);
@@ -45,8 +41,6 @@ const Avances = () => {
     formData.creadoPor = userData._id;
     formData.proyecto = project.Proyecto._id;
 
-    console.log('fd', formData);
-    console.log('project', project);
     crearAvance({
       variables: formData,
     });
@@ -64,7 +58,6 @@ const Avances = () => {
 
   useEffect(() => {
     if (mutationData) {
-      console.log(`Se ha creado con éxito`);
       toast.success('Se ha creado con éxito');
       refetch();
     }
@@ -72,7 +65,6 @@ const Avances = () => {
 
   useEffect(() => {
     if (mutationError) {
-      console.error(`Error realizando creación ${mutationError}`);
       toast.error('Error  realizando creación');
     }
   }, [mutationError]);

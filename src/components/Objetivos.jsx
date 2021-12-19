@@ -1,5 +1,5 @@
 const Objetivos = ({ item, tipo, className }) => {
-  const Objetivos = item.objetivos.map((objetivo) => {
+  const ObjetivosCopy = item.objetivos.map((objetivo) => {
     if (objetivo.tipo === tipo) {
       return (
         <>
@@ -9,7 +9,7 @@ const Objetivos = ({ item, tipo, className }) => {
     }
     return null;
   });
-  return Objetivos;
+  return ObjetivosCopy;
 };
 
 export default Objetivos;

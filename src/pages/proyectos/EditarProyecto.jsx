@@ -34,10 +34,7 @@ const EditarProyecto = () => {
     tipo: '',
   };
 
-  const [
-    finalizarInscripcion,
-    { data: dataMutation, loading: loadingMutation, error: errorMutation },
-  ] = useMutation(FECHA_FINAL);
+  const [finalizarInscripcion] = useMutation(FECHA_FINAL);
 
   const [
     editarProyecto,
@@ -79,7 +76,7 @@ const EditarProyecto = () => {
 
   if (queryError)
     return toast.error('Error al consultar los datos del proyecto');
-  if (queryLoading)
+  if (queryLoading || mutationLoading)
     return (
       <ReactLoading type='cylon' color='#4c2882' height={667} width={365} />
     );
@@ -365,7 +362,7 @@ const EditarProyecto = () => {
             <button
               type='submit'
               className='bg-red-700 text-white font-bold text-lg py-1 px-6 rounded-xl hover:bg-red-500 shadow-md mx-4 disabled:opacity-50 disabled:bg-gray-700  '
-              onClick={(e) => {
+              onClick={() => {
                 proyecto.estado = 'INACTIVO';
                 proyecto.fase = 'TERMINADO';
                 proyecto.fechaFin = `${fechaHoy}`;
