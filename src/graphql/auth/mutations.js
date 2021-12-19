@@ -23,11 +23,10 @@ const REGISTRO = gql`
   }
 `;
 
-
 const CAMBIAR_CLAVE = gql`
-mutation CambiarClave($correo: String, $password: String, $clave: String) {
-  cambiarClave(correo: $correo, password: $password, clave: $clave)
-}
+  mutation CambiarClave($correo: String, $password: String, $clave: String) {
+    cambiarClave(correo: $correo, password: $password, clave: $clave)
+  }
 `;
 
 const LOGIN = gql`
