@@ -2,10 +2,10 @@ import { gql } from '@apollo/client';
 
 const CREAR_INSCRIPCION = gql`
   mutation CrearRegistro($proyecto: String!, $estudiante: String!) {
-  crearRegistro(proyecto: $proyecto, estudiante: $estudiante) {
-    _id
+    crearRegistro(proyecto: $proyecto, estudiante: $estudiante) {
+      _id
+    }
   }
-}
 `;
 
 const APROBAR_INSCRIPCION = gql`
@@ -17,19 +17,24 @@ const APROBAR_INSCRIPCION = gql`
 `;
 
 const FECHA_FINAL = gql`
-mutation FinalizarInscripcion($finalizarInscripcionId: String!) {
-  finalizarInscripcion(id: $finalizarInscripcionId) {
-   _id
+  mutation FinalizarInscripcion($finalizarInscripcionId: String!) {
+    finalizarInscripcion(id: $finalizarInscripcionId) {
+      _id
+    }
   }
-}
 `;
 
 const RECHAZAR_INSCRIPCION = gql`
-mutation RechazarInscripcion($rechazarInscripcionId: String!) {
-  rechazarInscripcion(id: $rechazarInscripcionId) {
-    _id
+  mutation RechazarInscripcion($rechazarInscripcionId: String!) {
+    rechazarInscripcion(id: $rechazarInscripcionId) {
+      _id
+    }
   }
-}
 `;
 
-export { CREAR_INSCRIPCION, APROBAR_INSCRIPCION, RECHAZAR_INSCRIPCION,FECHA_FINAL};
+export {
+  CREAR_INSCRIPCION,
+  APROBAR_INSCRIPCION,
+  RECHAZAR_INSCRIPCION,
+  FECHA_FINAL,
+};

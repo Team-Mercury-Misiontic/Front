@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const CREAR_AVANCE = gql`
   mutation Mutation(
@@ -33,11 +33,11 @@ const ACTUALIZAR_AVANCE = gql`
   }
 `;
 const EDITAR_AVANCE = gql`
-mutation EditarAvance($editarAvanceId: String!, $descripcion: String) {
-  editarAvance(id: $editarAvanceId, descripcion: $descripcion) {
-    _id
+  mutation EditarAvance($editarAvanceId: String!, $descripcion: String) {
+    editarAvance(id: $editarAvanceId, descripcion: $descripcion) {
+      _id
+    }
   }
-}
 `;
 
 export { CREAR_AVANCE, ACTUALIZAR_AVANCE, EDITAR_AVANCE };
